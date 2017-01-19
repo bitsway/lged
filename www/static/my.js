@@ -55,13 +55,10 @@ function onErrorComp(error) {
 
 
 //---- online 
-//var apipath_pmt="http://c003.cloudapp.net/banbeis/syncmobile_new/";
-//var apipath_compliance="http://c003.cloudapp.net/banbeis/syncmobile_comp_new/";
-
-//--- local
 var apipath="http://a006.yeapps.com/lged/syncmobile/";
 
-//var apipath_compliance="http://127.0.0.1:8000/banbeis/syncmobile_comp_new/";
+//--- local
+//var apipath="http://127.0.0.1:8000/lged/syncmobile/";
 
  url ="";
 
@@ -210,7 +207,7 @@ function ruralV(){
 }
 
 //-----------------
-function schoolSearch(){
+function schoolSelect(){
 	$(".error").text("");
 	var school_list=$("#school_list").val();
 	if(school_list==""){
@@ -218,7 +215,7 @@ function schoolSearch(){
 	}else{		
 		//alert(apipath+'search_school?cid=LGED&school_list='+school_list);
 		$.ajax({
-			url:apipath+'search_school?cid=LGED&school_list='+school_list,
+			url:apipath+'search_school?cid=LGED&school_code='+school_list,
 			success: function(result) {				  
 				resultStr=result.split("<fd>");	  	
 				 if (resultStr[0]=="Success"){
@@ -236,14 +233,26 @@ function schoolSearch(){
 					  $("#school_id").val(school_code);
 					  $("#school_name").val(school_name);
 					  
-					}
-	
+					  url="#page2";					
+					  $.mobile.navigate(url);
+					  
+					}else if (resultStr[0]=="Failed"){
+						$(".errorChk").text("Audit report already submitted for this school . Please contact with admin if you think this school in incorrectly flagged.");
+											
+					} 
+				
 			  }
-	
-		})
-
+		});
 	}
+		
 }
+
+
+function schoolSearch(){
+	
+	url="#school_select_page";					
+	$.mobile.navigate(url);	
+	}
 
 
 function ruralData1Next(){	
@@ -1019,14 +1028,14 @@ function ruralDataSubmit(){
 		//image1 start	
 		//------------------------------------image 1					
 		//imagePathA="test"					
-		/*if (imagePath1A!=""){							
+		if (imagePath1A!=""){							
 			$(".errorChk").text("Syncing photo 1..");
 			imageName = localStorage.mobile_no+"_"+get_time+".jpg";										
 			uploadPhotoAch(imagePath1A, imageName);	
 			//$("#btn_rural_submit").show();					
-		}*/
+		}
 	
-		syncData();		
+		//syncData();		
 	}
 
 function getAchivementImage1() {
