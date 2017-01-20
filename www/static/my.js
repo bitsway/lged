@@ -17,13 +17,13 @@ var upListFlag=0;
 
 
 
-function getLocationInfoAch() {	
+function getLocationInfoAch() {		
 	var options = { enableHighAccuracy: false};	
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, options);				
 	$(".errorChk").html("Confirming location. Please wait.");
 }
 // onSuccess Geolocation
-function onSuccess(position) {
+function onSuccess(position) {	
 	$("#ach_lat").val(position.coords.latitude);
 	$("#ach_long").val(position.coords.longitude);
 	$(".errorChk").html("Location Confirmed");
@@ -976,11 +976,7 @@ function ruralData5Next(){
 	
 	
 	
-	
-	
-	
 		
-
 
 function ruralDataSubmit(){
 		//$("#btn_rural_submit").hide();
@@ -1326,7 +1322,7 @@ function syncData(){
 			//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+imageName+'&image2='+imageName2+'&image3='+imageName3+'&image4='+imageName4+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+ruralData1+"&ruralData2="+ruralData2+"&ruralData3="+ruralData3+"&ruralData5="+ruralData5);
 			$.ajax({
 					type: 'POST',
-					url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+imageName+'&image2='+imageName2+'&image3='+imageName3+'&image4='+imageName4+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+ruralData1+"&ruralData2="+ruralData2+"&ruralData3="+ruralData3+"&ruralData5="+ruralData5,
+					url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+imageName+'&image2='+imageName2+'&image3='+imageName3+'&image4='+imageName4+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData5="+encodeURIComponent(ruralData5),
 					
 					success: function(result) {
 					   if(result!=''){
