@@ -17,42 +17,23 @@ var upListFlag=0;
 
 
 
-function getLocationInfoAchPmt() {	
+function getLocationInfoAch() {	
 	var options = { enableHighAccuracy: false};	
-	navigator.geolocation.getCurrentPosition(onSuccessPmt, onErrorPmt, options);				
+	navigator.geolocation.getCurrentPosition(onSuccess, onError, options);				
 	$(".errorChk").html("Confirming location. Please wait.");
 }
 // onSuccess Geolocation
-function onSuccessPmt(position) {
-	$("#pmt_ach_lat").val(position.coords.latitude);
-	$("#pmt_ach_long").val(position.coords.longitude);
+function onSuccess(position) {
+	$("#ach_lat").val(position.coords.latitude);
+	$("#ach_long").val(position.coords.longitude);
 	$(".errorChk").html("Location Confirmed");
 }
 // onError Callback receives a PositionError object
-function onErrorPmt(error) {
-   $("#pmt_ach_lat").val(0);
-   $("#pmt_ach_long").val(0);
+function onError(error) {
+   $("#ach_lat").val(0);
+   $("#ach_long").val(0);
    $(".errorChk").html("Failed to Confirmed Location.");
 }
-
-function getLocationInfoAchComp() {	
-	var options = { enableHighAccuracy: false};	
-	navigator.geolocation.getCurrentPosition(onSuccessComp, onErrorComp, options);				
-	$(".errorChk").html("Confirming location. Please wait.");
-}
-// onSuccess Geolocation
-function onSuccessComp(position) {
-	$("#com_ach_lat").val(position.coords.latitude);
-	$("#com_ach_long").val(position.coords.longitude);
-	$(".errorChk").html("Location Confirmed");
-}
-// onError Callback receives a PositionError object
-function onErrorComp(error) {
-   $("#com_ach_lat").val(0);
-   $("#com_ach_long").val(0);
-   $(".errorChk").html("Failed to Confirmed Location.");
-}
-
 
 //---- online 
 var apipath="http://a006.yeapps.com/lged/syncmobile/";
@@ -182,7 +163,7 @@ function ruralV(){
 			$(".errorChk").text("Required Sync");
 			
 		}else{
-			//alert(apipath_compliance+'get_com_div_list?cid=BANBEIS&sync_code='+localStorage.sync_code);
+			//alert(apipath+'get_school_list?cid=LGED&sync_code='+localStorage.sync_code);
 			$.ajax({
 			  url:apipath+'get_school_list?cid=LGED&sync_code='+localStorage.sync_code,
 			  success: function(schStr) {
@@ -1027,12 +1008,11 @@ function ruralDataSubmit(){
 		//---------------
 		//image1 start	
 		//------------------------------------image 1					
-		//imagePathA="test"					
+		//imagePath1A="test"					
 		if (imagePath1A!=""){							
 			$(".errorChk").text("Syncing photo 1..");
-			imageName = localStorage.mobile_no+"_"+get_time+".jpg";										
-			uploadPhotoAch(imagePath1A, imageName);	
-			//$("#btn_rural_submit").show();					
+			imageName = localStorage.mobile_no+"_"+get_time+".jpg";					
+			uploadPhotoAch(imagePath1A, imageName);						
 		}
 	
 		//syncData();		
@@ -1147,7 +1127,7 @@ function winComInfo2(r) {
 	var d = new Date();	
 	var get_time=d.getTime();
 		
-	//imagePath3A="test2"
+	//imagePath3A="test3"
 	if (imagePath3A!=""){							
 		$(".errorChk").text("Syncing photo 3..");
 		imageName3 = localStorage.mobile_no+"_"+get_time+".jpg";
@@ -1210,7 +1190,7 @@ function winComInfo3(r) {
 	var d = new Date();	
 	var get_time=d.getTime();
 		
-	//imagePath3A="test2"
+	//imagePath4A="test4"
 	if (imagePath4A!=""){							
 		$(".errorChk").text("Syncing photo 4..");
 		imageName4 = localStorage.mobile_no+"_"+get_time+".jpg";
@@ -1273,7 +1253,7 @@ function winComInfo4(r) {
 	var d = new Date();	
 	var get_time=d.getTime();
 		
-	//imagePath5A="test2"
+	//imagePath5A="test5"
 	if (imagePath5A!=""){							
 		$(".errorChk").text("Syncing photo 5..");
 		imageName5 = localStorage.mobile_no+"_"+get_time+".jpg";
@@ -1334,14 +1314,19 @@ function winComInfo5(r) {
 	syncData();
 }
 
+function onfail5(r) {
+	$("#errorChk").text('File upload Failed. Syncing Data...');
+	syncData();
+}
+
 
 function syncData(){	
 			var school_id=$("#school_id").val();
 			
-			//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+image1+'&image2='+image2+'&image3='+image3+'&image4='+image4+'&image5='+image5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+ruralData1+"&ruralData2="+ruralData2+"&ruralData3="+ruralData3+"&ruralData5="+ruralData5);
+			//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+imageName+'&image2='+imageName2+'&image3='+imageName3+'&image4='+imageName4+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+ruralData1+"&ruralData2="+ruralData2+"&ruralData3="+ruralData3+"&ruralData5="+ruralData5);
 			$.ajax({
 					type: 'POST',
-					url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+image1+'&image2='+image2+'&image3='+image3+'&image4='+image4+'&image5='+image5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+ruralData1+"&ruralData2="+ruralData2+"&ruralData3="+ruralData3+"&ruralData5="+ruralData5,
+					url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+imageName+'&image2='+imageName2+'&image3='+imageName3+'&image4='+imageName4+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+ruralData1+"&ruralData2="+ruralData2+"&ruralData3="+ruralData3+"&ruralData5="+ruralData5,
 					
 					success: function(result) {
 					   if(result!=''){
@@ -1375,7 +1360,7 @@ function syncData_2(sl){
 							
 							$(".sucChk").text('Successfully Submitted');
 							$(".errorChk").text("");
-							$("#btn_rural_submit").show();						
+							$("#btn_rural_submit").hide();						
 						}else{
 							$(".errorChk").text('Unauthorized Access');																	
 							$("#btn_rural_submit").show();
