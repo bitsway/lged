@@ -17,6 +17,28 @@
 				
 				$('#loader').hide();
 				
+				<!---->
+				$("#school_close_others").hide();
+				$("#school_close_sesond_others").hide();
+				
+				$("#house_school_others").hide();
+				$("#type_school_others").hide();
+				
+				$("#distance_water").hide();
+				
+				$("#expense_repair_others").hide();
+				
+				$('#education_allowance_receipt_date').hide();
+				$('#education_allowance_not_receipt').hide();
+				
+				$('#education_aundan_receipt_date').hide();
+				$('#education_aundan_not_receipt').hide();
+				
+				$("#depends_on_semister1").hide();
+				$("#depends_on_semister2").hide();
+				
+				<!---->
+				
 		});
 	
 		function syncPage(){
@@ -62,7 +84,7 @@
            
     </div>
     
-    <div data-theme="c" data-role="footer" data-position="fixed" style="font-size:12px;background-color:#CCC;" align="center" >m-Reporting 20170121</div><!------/footer  -->
+    <div data-theme="c" data-role="footer" data-position="fixed" style="font-size:12px;background-color:#CCC;" align="center" >m-Reporting 20170130</div><!------/footer  -->
     
     <div data-role="panel" id="leftpanel" data-position="left" data-display="overlay" data-theme="c">
         <div align="center"></div>
@@ -123,12 +145,12 @@
     </div>
     
     <div data-role="content" >
-             <input name="tempSchoolList" id="tempSchoolList" placeholder="" value="" type="hidden">
-             <!--<div id="school_list"></div>-->
+             <input name="tempSchoolList" id="tempSchoolList" placeholder="" value="" type="hidden">             
              
             <ul data-role="listview" data-inset="true">
                 <li style="background-color:#F2F2F2;" class="auto_break"><strong>School List</strong> </li>
               	<li class="ui-field-contain auto_break" >
+                	<!--<div id="school_list"></div>-->
                     <!--<label for="">School List </label>-->
                        <select name="school_list" id="school_list" data-native-menu="false">
                             <option value="0">Select School</option>							 												
@@ -191,9 +213,10 @@
             </li>    
             <li class="ui-field-contain">
                 <label for="semister">সেমিস্টার </label>
-                 <select name="semister" id="semister" data-native-menu="false">
-                    <option value="1" selected="selected">জানুয়ারি-জুন</option> 
-                    <option value="2">জুলাই-ডিসেম্বর</option>				
+                 <select name="semister" id="semister" data-native-menu="false" onchange="depend_semister()">
+                 	<option value="0" selected="selected">-</option> 
+                    <option value="1" >১-জানুয়ারি-জুন</option> 
+                    <option value="2">২-জুলাই-ডিসেম্বর</option>				
                 </select>
             </li>                  
             <li class="ui-field-contain">
@@ -206,16 +229,16 @@
             </li>
             <li class="ui-field-contain" >
                 <label for="daily_from_time">দৈনিক আনন্দ স্কুল পরিচালনার সময়কাল </label>
-                <label for="daily_from_time">From time </label>
+                <label for="daily_from_time">Start time </label>
                 	<input type="time" name="daily_from_time" id="daily_from_time" />
             </li>
             <li class="ui-field-contain" >
-                <label for="daily_to_time">To time </label>
+                <label for="daily_to_time">End time </label>
                 	<input type="time" name="daily_to_time" id="daily_to_time" />                   
             </li>
             <li class="ui-field-contain" >
                 <label for="total_hour">Total time </label>
-                	<input type="text" name="total_hour" id="total_hour" />               
+                	<input type="time" name="total_hour" id="total_hour" />               
             </li>
             
             <li style="background-color:#F2F2F2;" class="auto_break"><strong>১ম পরিদর্শনের তথ্য :</strong> </li>
@@ -223,32 +246,35 @@
                 <label for="visit_date">পরিদর্শনের তারিখ  </label>
                 <input type="date" name="visit_date" id="visit_date"/>
             </li>
-            <li class="ui-field-contain">
+            <li class="ui-field-contain auto_break">
                 <label for="school_condition">স্কুলটির অবস্থা </label>
                 <select name="school_condition" id="school_condition" data-native-menu="false">
-                    <option value="1" selected="selected">ক্লাশ চালু আছে </option> 
-                    <option value="2">পরিদর্শন কালে স্কুলটি বন্ধ </option>	
-                    <option value="3">স্থায়ীভাবে বন্ধ</option>			
+                	<option value="0" selected="selected">-</option> 
+                    <option value="1" >১-ক্লাশ চালু আছে </option> 
+                    <option value="2" class="auto_break">২-পরিদর্শন কালে স্কুলটি বন্ধ </option>	
+                    <option value="3">৩-স্থায়ীভাবে বন্ধ</option>			
                 </select>
             </li>
-            <li class="ui-field-contain">
+            <li class="ui-field-contain auto_break" onchange="school_close()">
                 <label for="close_school">স্কুলটি বন্ধ হলে, বন্ধের কারণ কী? </label>
-                <select name="close_school" id="close_school" data-native-menu="false">
-                    <option value="1" selected="selected">শিক্ষক অনুপস্থিত </option> 
-                    <option value="2">শিক্ষার্থীর উপস্থিতি সন্তোষজনক নয় </option>	
-                    <option value="3">স্থায়ীভাবে বন্ধ</option>	
-                    <option value="4">অন্যান্য </option>
+                <select name="close_school" id="close_school" data-native-menu="false" >
+                	<option value="0" selected="selected">-</option> 
+                    <option value="1">১-শিক্ষক অনুপস্থিত </option> 
+                    <option value="2" class="auto_break">২-শিক্ষার্থীর উপস্থিতি সন্তোষজনক নয় </option>	
+                    <option value="3">৩-স্থায়ীভাবে বন্ধ</option>	
+                    <option value="4">৪-অন্যান্য </option>
                 </select>
             </li>
-            <li class="ui-field-contain">    
+            <li class="ui-field-contain" id="school_close_others">    
                 <label for="close_school_others">উল্লেখ করুন</label>
                     <input type="text" name="close_school_others" id="close_school_others" />
             </li>
             <li class="ui-field-contain">
                 <label for="next_visit">পরবর্তী পরিদর্শনের প্রয়োজন আছে কি?  </label>
                  <select name="next_visit" id="next_visit" data-native-menu="false">
-                    <option value="1" selected="selected">হ্যাঁ  </option> 
-                    <option value="2">না </option>	
+                 	<option value="0" selected="selected">-</option> 
+                    <option value="1">১-হ্যাঁ  </option> 
+                    <option value="2">২-না </option>	
                 </select>
             </li>
             
@@ -257,24 +283,26 @@
                 <label for="visit_date_second">পরিদর্শনের তারিখ  </label>
                 <input type="date" name="visit_date_second" id="visit_date_second"/>
             </li>
-            <li class="ui-field-contain">
+            <li class="ui-field-contain auto_break">
                 <label for="school_condition_second">স্কুলটির অবস্থা </label>
                 <select name="school_condition_second" id="school_condition_second" data-native-menu="false">
-                    <option value="1" selected="selected">ক্লাশ চালু আছে </option> 
-                    <option value="2">পরিদর্শন কালে স্কুলটি বন্ধ </option>	
-                    <option value="3">স্থায়ীভাবে বন্ধ</option>			
+                	<option value="0" selected="selected">-</option> 
+                    <option value="1">১-ক্লাশ চালু আছে </option> 
+                    <option value="2" class="auto_break">২-পরিদর্শন কালে স্কুলটি বন্ধ </option>	
+                    <option value="3">৩-স্থায়ীভাবে বন্ধ</option>			
                 </select>
             </li>
-            <li class="ui-field-contain">
+            <li class="ui-field-contain auto_break">
                 <label for="close_school_second">স্কুলটি বন্ধ হলে, বন্ধের কারণ কী? </label>
-                <select name="close_school_second" id="close_school_second" data-native-menu="false">
-                    <option value="1" selected="selected">শিক্ষক অনুপস্থিত </option> 
-                    <option value="2">শিক্ষার্থীর উপস্থিতি সন্তোষজনক নয় </option>	
-                    <option value="3">স্থায়ীভাবে বন্ধ</option>	
-                    <option value="4">অন্যান্য </option>
+                <select name="close_school_second" id="close_school_second" data-native-menu="false" onchange="school_close_second()">
+                	<option value="0" selected="selected">-</option> 
+                    <option value="1">১-শিক্ষক অনুপস্থিত </option> 
+                    <option value="2" class="auto_break">২-শিক্ষার্থীর উপস্থিতি সন্তোষজনক নয় </option>	
+                    <option value="3">৩-স্থায়ীভাবে বন্ধ</option>	
+                    <option value="4">৪-অন্যান্য </option>
                 </select>
             </li>
-            <li class="ui-field-contain">    
+            <li class="ui-field-contain" id="school_close_sesond_others">    
                 <label for="close_school_others_second">উল্লেখ করুন</label>
                     <input type="text" name="close_school_others_second" id="close_school_others_second" />
             </li>
@@ -301,8 +329,8 @@
                 <li style="background-color:#F2F2F2;" class="auto_break"><strong>মডিউল ২ : আনন্দ স্কুলের সার্বিক তথ্য </strong></li>
             
                 <li class="ui-field-contain auto_break">
-                    <label for="school_installation_year">1.আনন্দ স্কুল স্থাপনের বছর (কোহর্ট) : </label>
-                        <input type="text" name="school_installation_year" id="school_installation_year" />
+                    <label for="school_installation_year">১.আনন্দ স্কুল স্থাপনের বছর (কোহর্ট) : </label>
+                        <input type="number" name="school_installation_year" id="school_installation_year" />
                  </li>  
                  
                 <li class="ui-field-contain auto_break">	
@@ -325,23 +353,26 @@
                 <li class="ui-field-contain auto_break">
                     <label for="school_signboard">৪. আনন্দ স্কুল প্রাঙ্গণে স্কুলের নাম ও আইডি সম্বলিত সাইনবোর্ড টানানো আছে কি? </label>
                         <select name="school_signboard" id="school_signboard" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ  </option> 
-                    		<option value="2">না </option>								 												
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>								 												
                         </select>
                   </li>
                 
                 <li class="ui-field-contain auto_break" id="q5_a_hide">
                     <label for="international_flag_size">৫. আনন্দ স্কুল প্রাঙ্গণে সঠিক মাপের জাতীয় পতাকা উত্তোলন করা আছে কি? </label>
                         <select name="international_flag_size" id="international_flag_size" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ  </option> 
-                    		<option value="2">না </option>								 												
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>								 												
                         </select>
                  </li>
                                 
                 <li class="ui-field-contain auto_break">
                     <label for="school_house">৬. আনন্দ স্কুল ঘরটি </label>
-                        <select name="school_house" id="school_house" data-native-menu="false" >
-                            <option value="1" selected="selected">১-শিক্ষকের বাড়ি  </option>
+                        <select name="school_house" id="school_house" data-native-menu="false" onchange="house_school()">
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1" >১-শিক্ষকের বাড়ি  </option>
                             <option value="2" class="auto_break" >২-সিএমসি সভাপতি/ সদস্যের বাড়ি </option>
                             <option value="3">৩-স্থানীয় জনগোষ্ঠীর বাড়ি  </option>
                             <option value="4" class="auto_break">৪-অন্য কোন স্কুল/ ধর্মীয় প্রতিষ্ঠানের ঘর/ঘুর্ণিঝড় বা বন্যা আশ্রয় কেন্দ্র</option>
@@ -349,15 +380,16 @@
                         </select>
                  </li>
                 
-                <li class="ui-field-contain auto_break">
+                <li class="ui-field-contain auto_break" id="house_school_others">
                     <label for="school_house_others">উল্লেখ করুন</label>
                         <input type="text" name="school_house_others" id="school_house_others" />
                 </li>
                                 
                 <li class="ui-field-contain auto_break">
                     <label for="school_type">৭. স্কুল ঘরের ধরণ </label>
-                        <select name="school_type" id="school_type" data-native-menu="false" >
-                            <option value="1" selected="selected">১-পাকা ভবন  </option>
+                        <select name="school_type" id="school_type" data-native-menu="false" onchange="type_school()">
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-পাকা ভবন  </option>
                             <option value="2">২-সেমি পাকা ঘর </option>
                             <option value="3">৩-কাঁচা ঘর  </option>
                             <option value="4">৪-বারান্দা </option>
@@ -367,15 +399,16 @@
                             <option value="8">৮-অন্যান্য </option>					
                         </select>
                 </li>
-                 <li class="ui-field-contain auto_break">
+                 <li class="ui-field-contain auto_break" id="type_school_others">
                     <label for="school_type_others">উল্লেখ করুন</label>
                         <input type="text" name="school_type_others" id="school_type_others" />
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="singing_national_anthem_before_cls_start">৮. ক্লাশ শুরুর পূর্বে ছাত্র সমাবেশে জাতীয় সঙ্গীত গাওয়া হয় কি? </label>
                         <select name="singing_national_anthem_before_cls_start" id="singing_national_anthem_before_cls_start" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ  </option> 
-                    		<option value="2">না </option>								 												
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>								 												
                         </select>
                 </li>
                 
@@ -391,8 +424,9 @@
                 <li class="ui-field-contain auto_break">
                     <label for="huse_light_air">১০. পর্যাপ্ত আলো বাতাসের ব্যবস্থা আছে কি? </label>
                         <select name="huse_light_air" id="huse_light_air" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ  </option> 
-                    		<option value="2">না </option>						 												
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>						 												
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
@@ -405,36 +439,41 @@
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="arsenic_free_water">১৩. আর্সেনিকমুক্ত বিশুদ্ধ পানিয় জলের ব্যবস্থা আছে কি?</label>
-                        <select name="arsenic_free_water" id="arsenic_free_water" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                        <select name="arsenic_free_water" id="arsenic_free_water" data-native-menu="false" onchange="free_water_arsenic()">
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>				
                         </select>
                 </li>
-                <li class="ui-field-contain auto_break">
+                <li class="ui-field-contain auto_break" id="distance_water">
                     <label for="water_distance">১৩.১ হ্যাঁ হলে, পানিয় জলের ব্যবস্থা </label>
                         <select name="water_distance" id="water_distance" data-native-menu="false" >
-                            <option value="1" selected="selected">আনন্দ স্কুল প্রাঙ্গণে </option>
-                            <option value="2">পাঁচ মিনিটের হাঁটা পথের মধ্যে </option>				
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1" >১-আনন্দ স্কুল প্রাঙ্গণে </option>
+                            <option value="2">২-পাঁচ মিনিটের হাঁটা পথের মধ্যে </option>				
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="student_useable_toilate">১৪. শিক্ষার্থীদের ব্যবহার উপযোগী স্বাস্থ্য সম্মত টয়লেট আছে কি?</label>
                         <select name="student_useable_toilate" id="student_useable_toilate" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>				
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="benefit_electricity_cls">১৫. শ্রেণীকক্ষে বৈদ্যুতিক সুবিধা আছে কি? </label>
                         <select name="benefit_electricity_cls" id="benefit_electricity_cls" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="seat_arragement_cls">১৬. শ্রেণীকক্ষে শিক্ষার্থীদের বসার ব্যবস্থা কী রকম?  </label>
                         <select name="seat_arragement_cls" id="seat_arragement_cls" data-native-menu="false" >
-                            <option value="1" selected="selected">১-খোলা মেঝে </option>
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1" >১-খোলা মেঝে </option>
                             <option value="2">২-চটের মাদুর </option>	
                             <option value="3">৩-প্লাস্টিক মাদুর  </option>	
                             <option value="4">৪-বেঞ্চ </option>			
@@ -443,36 +482,41 @@
                 <li class="ui-field-contain auto_break">
                     <label for="cls_usable_board_draster">১৭. শ্রেণীকক্ষের ব্ল্যাক বোর্ড, চক ও ডাস্টার ব্যবহার উপযোগী কি?  </label>
                         <select name="cls_usable_board_draster" id="cls_usable_board_draster" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>				
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="all_student_textbook">১৮. সকল শিক্ষার্থীর পাঠ্যপুস্তক আছে কি?  </label>
                         <select name="all_student_textbook" id="all_student_textbook" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="all_student_pen">১৯. সকল শিক্ষার্থীর খাতা ও কলম/ পেন্সিল আছে কি? </label>
                         <select name="all_student_pen" id="all_student_pen" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="management_school_calender">২০. স্কুল পরিচালনার জন্য আনন্দ স্কুলে কোন বার্ষিক স্কুল ক্যালেন্ডার আছে কি? </label>
                         <select name="management_school_calender" id="management_school_calender" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="management_school_cls_routin">২১. স্কুল পরিচালনার জন্য আনন্দ স্কুলে কোন ক্লাশ রুটিন অনুসরণ করা হচ্ছে কি? </label>
                         <select name="management_school_cls_routin" id="management_school_cls_routin" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>				
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
@@ -486,16 +530,18 @@
                 <li class="ui-field-contain auto_break">
                     <label for="cmc_selebrate_exchange_gardagin">২৪. অভিভাবকদের সাথে মত বিনিময়ের জন্য সিএমসি কর্তৃক কোন সমাবেশ আয়োজন করা হয়েছে কি?     </label>
                        <select name="cmc_selebrate_exchange_gardagin" id="cmc_selebrate_exchange_gardagin" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                       		<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="previous_semister_school_anudan_time">২৫. গত সেমিস্টারে স্কুল অনুদানের অর্থ যথাসময়ে পেয়েছে কি?  </label>
                        <select name="previous_semister_school_anudan_time" id="previous_semister_school_anudan_time" data-native-menu="false" >
-                            <option value="1" selected="selected">হ্যাঁ </option>
-                            <option value="2">না</option>	
-                            <option value="3" class="auto_break">অদ্যাবদি অনুদান পাওয়া যায়নি</option>			
+                       		<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>	
+                            <option value="3" class="auto_break">৩-অদ্যাবদি অনুদান পাওয়া যায়নি</option>			
                         </select>
                 </li>
                    
@@ -533,24 +579,22 @@
                           <tr>
                             <td>শিক্ষা ভাতা</td>
                             <td width="100">
-                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-                                <input name="education_allowance_receipt" id="radio-choice-h-2a" value="1" checked="checked" type="radio" >
-                                <label for="radio-choice-h-2a">হ্যাঁ</label>
-                                <input name="education_allowance_receipt" id="radio-choice-h-2b" value="2" type="radio">
-                                <label for="radio-choice-h-2b">না</label>
-                            </fieldset>
-                                <!--<select name="education_allowance_receipt" id="education_allowance_receipt" data-native-menu="false" >
-                                    <option value="1" selected="selected">হ্যাঁ </option>
-                                    <option value="2">না</option>
-                                 </select>-->
+                                <select name="education_allowance_receipt" id="education_allowance_receipt" data-native-menu="false" onchange="education_allowance()">
+                                	<option value="0" selected="selected">-</option> 
+                                    <option value="1">১-হ্যাঁ  </option> 
+                    				<option value="2">২-না </option>	
+                                 </select>
                             </td>
                             <td><input type="date" id="education_allowance_receipt_date" name="education_allowance_receipt_date" /></td>
                             <td>
-                            	<select name="education_allowance_not_receipt" id="education_allowance_not_receipt" data-native-menu="false" >
-                                    <option value="1" selected="selected" class="auto_break">১-স্থানীয় সোনালী ব্যাংকে টাকা আসেনি</option>
+                            <div id="edu_allow_not_receipt">
+                            	<select name="education_allowance_not_receipt" id="education_allowance_not_receipt" data-native-menu="false"  >
+                                	<option value="0" selected="selected">-</option> 
+                                    <option value="1" class="auto_break">১-স্থানীয় সোনালী ব্যাংকে টাকা আসেনি</option>
                                     <option value="2" class="auto_break">২-স্থানীয় সোনালী ব্যাংক যথাসময়ে টাকা বিতরণ করেনি</option>
-                                    <option value="3" class="auto_break">৩-অন্যান্য </option>
+                                    <option value="3" >৩-অন্যান্য </option>
                                  </select>
+                             </div>
                             </td>
                             <td>
                             	<input type="number" id="education_allowance_receipt_delay" name="education_allowance_receipt_delay" />
@@ -558,28 +602,25 @@
                           </tr>
                           <tr>
                             <td>শিক্ষা অনুদান</td>
-                            <td>
-                            	<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-                                <input name="education_aundan_receipt" id="radio-choice-h-2a" value="1" checked="checked" type="radio" >
-                                <label for="radio-choice-h-2a">হ্যাঁ</label>
-                                <input name="education_aundan_receipt" id="radio-choice-h-2b" value="2" type="radio">
-                                <label for="radio-choice-h-2b">না</label>
-                            </fieldset>
-                            
-                            	<!--<select name="education_aundan_receipt" id="education_aundan_receipt" data-native-menu="false" >
-                                    <option value="1" selected="selected">হ্যাঁ </option>
-                                    <option value="2">না</option>
-                                 </select>-->
+                            <td>                            
+                            	<select name="education_aundan_receipt" id="education_aundan_receipt" data-native-menu="false"  onchange="edu_aundan()">
+                                    <option value="0" selected="selected">-</option> 
+                                    <option value="1">১-হ্যাঁ  </option> 
+                    				<option value="2">২-না </option>	
+                                 </select>
                             </td>
                             <td>
                             	<input type="date" id="education_aundan_receipt_date" name="education_aundan_receipt_date" />
                             </td>
                             <td>
+                            <div id="edu_anudan_not_receipt">
                             	<select name="education_aundan_not_receipt" id="education_aundan_not_receipt" data-native-menu="false" >
-                                    <option value="1" selected="selected" class="auto_break">১-স্থানীয় সোনালী ব্যাংকে টাকা আসেনি</option>
+                                	<option value="0" selected="selected">-</option> 
+                                    <option value="1" class="auto_break">১-স্থানীয় সোনালী ব্যাংকে টাকা আসেনি</option>
                                     <option value="2" class="auto_break">২-স্থানীয় সোনালী ব্যাংক যথাসময়ে টাকা বিতরণ করেনি</option>
-                                    <option value="3">৩= অন্যান্য </option>
+                                    <option value="3">৩- অন্যান্য </option>
                                  </select>
+                            </div>
                             </td>
                             <td>
                             	<input type="number" id="education_aundan_receipt_delay" name="education_aundan_receipt_delay" />
@@ -587,13 +628,15 @@
                           </tr>
                         </table>
                         
+                        
                 </li>
             
                 <li class="ui-field-contain auto_break">
                     <label for="school_necessary_rec_conservation_trank">২৭. আনন্দ স্কুল ঘরে প্রয়োজনীয় রেকর্ডপত্র সংরক্ষণের জন্য ট্রাংক আছে কি? </label>
                         <select name="school_necessary_rec_conservation_trank" id="school_necessary_rec_conservation_trank" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                        	<option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>				
                         </select>
                 </li>
                 
@@ -601,70 +644,79 @@
                     <label for="">২৮. নিম্নোক্ত রেজিস্টার, নথি ও তথ্যসমূহ শ্রেণী কক্ষে সংরক্ষিত আছে কি?</label>
                     <label for="cmc_metting_log_register">ক. সিএমসি সভার কার্যবিবরণ রেজিস্টার</label>
                         <select name="cmc_metting_log_register" id="cmc_metting_log_register" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="cash_register">খ. ক্যাশ রেজিস্টার</label>
                         <select name="cash_register" id="cash_register" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="school_visit_register">গ. স্কুল পরিদর্শন রেজিস্টার </label>
                         <select name="school_visit_register" id="school_visit_register" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="school_aundan_expense_cashMemo">ঘ. স্কুল অনুদান ব্যয়-এর প্রমাণক রশিদ/ ক্যাশমেমো </label>
                         <select name="school_aundan_expense_cashMemo" id="school_aundan_expense_cashMemo" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="check_book">ঙ. চেক বই  </label>
                         <select name="check_book" id="check_book" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>			
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="previous_semister_ACF">চ. বিগত সেমিস্টারের এসিএফ  </label>
                         <select name="previous_semister_ACF" id="previous_semister_ACF" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>				
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="student_attendence_register">ছ. শিক্ষার্থীদের হাজিরা খাতা (উপস্থিতি রেজিস্টার)   </label>
                         <select name="student_attendence_register" id="student_attendence_register" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="repair_expense">২৯. মেরামত ও সংস্কার বাবদ ১,০০০ টাকা কোন কাজে ব্যয় হয়েছে?  </label>
-                        <select name="repair_expense" id="repair_expense" data-native-menu="false" >
+                        <select name="repair_expense" id="repair_expense" data-native-menu="false" onchange="expense_repair()">
+                            <option value="0" selected="selected">-</option> 
                             <option value="1">১-ব্ল্যাক বোর্ড রঙ করা  </option>
                             <option value="2">২-চক-ডাস্টার কেনা </option>
                             <option value="3">৩-শ্রেণীকক্ষ সংস্কার </option>	
                             <option value="4">৪-অন্যান্য </option>			
                         </select>
                 </li>
-                <li class="ui-field-contain auto_break">
+                <li class="ui-field-contain auto_break" id="expense_repair_others">
                     <label for="repair_expense">উল্লেখ করুন</label>
                         <input type="text" id="repair_expense_others"  name="repair_expense_others" />
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="expense_prove">২৯.১ এই ব্যয়ের প্রমাণক/ ভাউচার আছে কি?  </label>
                         <select name="expense_prove" id="expense_prove" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>				
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break" style="overflow:scroll">
@@ -674,7 +726,15 @@
                         <td rowspan="2">পরিদর্শনকারী</td>
                         <td colspan="6" align="center">বিগত সেমিস্টারে পরিদর্শন সংখ্যা </td>
                       </tr>
-                      <tr>
+                      <tr id="depends_on_semister1">
+                        <td align="center">জানুয়ারি </td>
+                        <td align="center">ফেব্রুয়ারি</td>
+                        <td align="center">মার্চ</td>
+                        <td align="center">এপ্রিল</td>
+                        <td align="center">মে</td>
+                        <td align="center">জুন</td>
+                      </tr>
+                      <tr id="depends_on_semister2">
                         <td align="center">জুলাই</td>
                         <td align="center">আগস্ট</td>
                         <td align="center">সেপ্টেম্বর</td>
@@ -773,8 +833,9 @@
                 <li class="ui-field-contain auto_break">
                     <label for="visit_LC_regu_teacher_present">৩১. পরিদর্শনের সময় এলসি প্রোফাইলভুক্ত নিয়মিত শিক্ষক উপস্থিত কি? </label>
                        <select name="visit_LC_regu_teacher_present" id="visit_LC_regu_teacher_present" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>						
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
@@ -784,6 +845,7 @@
                 <li class="ui-field-contain auto_break">
                     <label for="regu_tea_instead_teacher_type">৩২.২ নিয়মিত শিক্ষক এর পরিবর্তে আনন্দ স্কুলে পাঠদানকারী শিক্ষকের ধরণ </label>
                        <select name="regu_tea_instead_teacher_type" id="regu_tea_instead_teacher_type" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 
                             <option value="1">১-প্রতিস্থাপিত </option>
                             <option value="2">২-প্রক্সি </option>	
                             <option value="3">৩-মোবাইল পুল শিক্ষক </option>				
@@ -792,15 +854,17 @@
                 <li class="ui-field-contain auto_break">
                     <label for="teacher_replaced_appointment_office">৩২.৩ শিক্ষক প্রতিস্থাপিত হয়ে থাকলে, সংশ্লিষ্ট টিসি কর্তৃক শিক্ষক নিয়োগ ও প্রতিস্থাপন সংক্রান্ত প্রস্তাব প্রকল্প কার্যালয়ে প্রেরণ করা হয়েছে কি?  </label>
                         <select name="teacher_replaced_appointment_office" id="teacher_replaced_appointment_office" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="visit_display_id_card_teacher">৩৩. পরিদর্শনকালে শিক্ষক প্রকল্প হতে প্রদত্ত আইডি কার্ড প্রদর্শন করেছেন কি?  </label>
                        <select name="visit_display_id_card_teacher" id="visit_display_id_card_teacher" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>						
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
@@ -810,8 +874,9 @@
                 <li class="ui-field-contain auto_break">
                     <label for="previous_semister_school_teacher_training">৩৫. আনন্দ স্কুল শিক্ষক গত সেমিস্টারে বিষয় ভিত্তিক প্রশিক্ষণে অংশগ্রহণ করেছেন কি?  </label>
                         <select name="previous_semister_school_teacher_training" id="previous_semister_school_teacher_training" data-native-menu="false" >
-                            <option value="1">হ্যাঁ </option>
-                            <option value="2">না</option>				
+                            <option value="0" selected="selected">-</option> 
+                            <option value="1">১-হ্যাঁ  </option> 
+                    		<option value="2">২-না </option>					
                         </select>
                 </li>
                 
@@ -823,20 +888,39 @@
                 <li class="ui-field-contain auto_break" >
                     <label for="">৩৭. পরিদর্শনের দিন উপস্থিত শিক্ষার্থীর সংখ্যা   </label>
                     <label for="visit_day_attendence_students_boys"> বালক</label>
-                    	<input type="number" name="visit_day_attendence_students_boys" id="visit_day_attendence_students_boys" />   				</li>
+                    	<input type="number" name="visit_day_attendence_students_boys" id="visit_day_attendence_students_boys" onblur="total_student()" />   				</li>
                 <li class="ui-field-contain auto_break" >
                     <label for="visit_day_attendence_students_girls">বালিকা </label>
-                   		<input type="number" name="visit_day_attendence_students_girls" id="visit_day_attendence_students_girls" />  
+                   		<input type="number" name="visit_day_attendence_students_girls" id="visit_day_attendence_students_girls" onblur="total_student()" />  
                 </li>
                 <li class="ui-field-contain auto_break" >
                     <label for="visit_day_attendence_students_total"> মোট</label>
-                   		<input type="number" name="visit_day_attendence_students_total" id="visit_day_attendence_students_total" />   
+                   		<input type="number" name="visit_day_attendence_students_total" id="visit_day_attendence_students_total" readonly="readonly" style="background-color:#E8E8E8;" />   
                 </li>
                                 
                 <li class="ui-field-contain auto_break" >
                     <label for="previous_semister_total_school_dibos">৩৮. শ্রেণীকক্ষে সংরক্ষিত হাজিরা খাতা অনুযায়ী বিগত সেমিস্টারের মোট স্কুল দিবস  </label>
                     <input type="number" id="previous_semister_total_school_dibos" name="previous_semister_total_school_dibos" />  				</li>
-                
+                                    
+            </ul>
+            
+            <a data-role="button" onclick="ruralData4Next()" href="#" data-transition="slide" >Next</a>
+      <div class="errorChk"></div>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </div>
+
+</div>
+     
+                    
+<div data-role="page" data-theme="c" id="page6" style="overflow:scroll;">
+	<div data-theme="c" data-role="header" data-position="fixed" >
+    	<a data-role="button" onClick="menuClick();" data-icon="bullets" data-iconpos="left" class="ui-btn ui-shadow ui-corner-all ui-icon-bullets " ><img src="menu.png" /></a>
+    	<a data-role="button" onclick="backClick();" data-rel="back" class="ui-btn-right" data-transition="slide"><img src="back.png" /></a>
+    	<h3>LGED</h3>
+</div>
+    
+        <div data-role="content" >
+                <ul data-role="listview" data-inset="true">
                 <li style="background-color:#F2F2F2;" class="auto_break"><strong>৩৯. শিক্ষার্থীগণের বিস্তারিত তথ্য :</strong> </li> 
                 <li class="ui-field-contain auto_break" style="overflow:scroll">
                 	<table width="1200" border="1" bordercolor="#00CCFF" cellspacing="0" cellpadding="0">
@@ -860,7 +944,7 @@
                       <tr>
                         <td><input type="number" id="lc_profile_studentID_three_digit1" name="lc_profile_studentID_three_digit1" /></td>
                         <td>
-                        	<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                        	<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">                          
                                 <input name="classroom_present_student1" id="radio-choice-h-2a" value="1" checked="checked" type="radio" >
                                 <label for="radio-choice-h-2a">হ্যাঁ</label>
                                 <input name="classroom_present_student1" id="radio-choice-h-2b" value="2" type="radio">
@@ -925,6 +1009,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent1" id="student_abcent1" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1005,6 +1090,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent2" id="student_abcent2" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1085,6 +1171,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent3" id="student_abcent3" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1165,6 +1252,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent4" id="student_abcent4" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1245,6 +1333,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent5" id="student_abcent5" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1325,6 +1414,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent6" id="student_abcent6" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1405,6 +1495,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent7" id="student_abcent7" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1485,6 +1576,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent8" id="student_abcent8" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1565,6 +1657,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent9" id="student_abcent9" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 		
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1645,6 +1738,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent10" id="student_abcent10" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 		
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1725,6 +1819,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent11" id="student_abcent11" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1805,6 +1900,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent12" id="student_abcent12" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1885,6 +1981,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent13" id="student_abcent13" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -1965,6 +2062,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent14" id="student_abcent14" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2045,6 +2143,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent15" id="student_abcent15" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2125,6 +2224,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent16" id="student_abcent16" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2205,6 +2305,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent17" id="student_abcent17" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2285,6 +2386,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent18" id="student_abcent18" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2365,6 +2467,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent19" id="student_abcent19" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2445,6 +2548,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent20" id="student_abcent20" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 		
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2525,6 +2629,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent21" id="student_abcent21" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2605,6 +2710,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent22" id="student_abcent22" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2685,6 +2791,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent23" id="student_abcent23" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2765,6 +2872,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent24" id="student_abcent24" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2845,6 +2953,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent25" id="student_abcent25" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -2925,6 +3034,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent26" id="student_abcent26" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3005,6 +3115,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent27" id="student_abcent27" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3085,6 +3196,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent28" id="student_abcent28" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3165,6 +3277,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent29" id="student_abcent29" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3245,6 +3358,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent30" id="student_abcent30" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3325,6 +3439,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent31" id="student_abcent31" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option>                            	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3405,6 +3520,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent32" id="student_abcent32" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3485,6 +3601,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent33" id="student_abcent33" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3565,6 +3682,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent34" id="student_abcent34" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3645,6 +3763,7 @@
                         </td>
                         <td>
                         	<select name="student_abcent35" id="student_abcent35" data-native-menu="false" >
+                            <option value="0" selected="selected">-</option> 	
                             <option value="1">১-বাতিল</option>
                             <option value="2">২-অন্যত্র চলে গেছে</option>
                             <option value="3">৩-অসুস্থ</option>	
@@ -3669,8 +3788,9 @@
                 <li class="ui-field-contain auto_break" >
                  <label for="">৪২. গত সেমিস্টারে শিক্ষার্থীদের পরীক্ষা সরকারি প্রাথমিক বিদ্যালয় প্রাঙ্গণে অনুষ্ঠিত হয়েছে কি? </label>
                     <select name="previous_semister_exam_gov_primary_school" id="previous_semister_exam_gov_primary_school" data-native-menu="false" >
-                        <option value="1">হ্যাঁ </option>
-                        <option value="2">না</option>			 												
+                        <option value="0" selected="selected">-</option> 
+                        <option value="1">১-হ্যাঁ  </option> 
+                        <option value="2">২-না </option>			 												
                     </select>
                 </li> 
                 <li class="ui-field-contain auto_break" >
@@ -3680,20 +3800,20 @@
                 <li class="ui-field-contain auto_break" >
                  <label for="">৪৪. বিবাহের কারণে আনন্দ স্কুল পরিত্যাগকারী শিক্ষার্থীর সংখ্যা </label>
                  <label for="">বালক</label>
-                 	<input type="number" name="marriage_abandonment_boys" id="marriage_abandonment_boys" /> 
+                 	<input type="number" name="marriage_abandonment_boys" id="marriage_abandonment_boys" onblur="marriage_total_stu()" /> 
                 </li> 
                 <li class="ui-field-contain" >
                  <label for="">বালিকা </label>
-                 	<input type="number" name="marriage_abandonment_girls" id="marriage_abandonment_girls" />
+                 	<input type="number" name="marriage_abandonment_girls" id="marriage_abandonment_girls" onblur="marriage_total_stu()"/>
                 </li>
                 <li class="ui-field-contain" >
                  <label for="">মোট </label>
-                 	<input type="number" name="marriage_abandonment_total" id="marriage_abandonment_total" />
+                 	<input type="number" name="marriage_abandonment_total" id="marriage_abandonment_total"  readonly="readonly" style="background-color:#E8E8E8;"/>
                 </li>
                                        
             </ul>
             
-            <a data-role="button" onclick="ruralData4Next()" href="#" data-transition="slide" >Next</a>
+            <a data-role="button" onclick="ruralData5Next()" href="#" data-transition="slide" >Next</a>
       <div class="errorChk"></div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
@@ -3703,7 +3823,7 @@
 
 
 <!-- --------------------LGED page5------------------------------------------------- -->
-<div data-role="page" data-theme="c" id="page6" style="overflow:scroll;">
+<div data-role="page" data-theme="c" id="page7" style="overflow:scroll;">
     <div data-theme="c" data-role="header" data-position="fixed" >
         <a data-role="button" onClick="menuClick();" data-icon="bullets" data-iconpos="left" class="ui-btn ui-shadow ui-corner-all ui-icon-bullets " ><img src="menu.png" /></a>
         <a data-role="button" onclick="backClick();" data-rel="back" class="ui-btn-right" data-transition="slide"><img src="back.png" /></a>
@@ -3751,10 +3871,23 @@
                  <label for="">আনন্দ স্কুল শিক্ষক মতামত</label>
                  	<input type="text" name="school_teacher_opinion" id="school_teacher_opinion" />
                 </li> 
+                
+                <li class="ui-field-contain auto_break" >
+                 <label for="">পরিদর্শনকারী মোবাইল ভ্যালিডেশন অফিসার নাম</label>
+                 	<input type="text" name="VisitOfficierName" id="VisitOfficierName" />
+                </li>
+                <li class="ui-field-contain auto_break" >
+                 <label for="">পরিদর্শনকারী মোবাইল ভ্যালিডেশন অফিসার মোবাইল নম্বর </label>
+                 	<input type="number" name="VisitOfficierContact" id="VisitOfficierContact" />
+                </li>
+                <li class="ui-field-contain auto_break" >
+                 <label for="">পরিদর্শনকারী মোবাইল ভ্যালিডেশন অফিসার মতামত</label>
+                 	<input type="text" name="VisitOfficerComments" id="VisitOfficerComments" />
+                </li> 
                       
             </ul>
             
-            <a data-role="button" onclick="ruralData5Next()" href="#" data-transition="slide" >Next</a>
+            <a data-role="button" onclick="ruralData6Next()" href="#" data-transition="slide" >Next</a>
       <div class="errorChk"></div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
@@ -3762,7 +3895,7 @@
 </div>
 
 
-<div data-role="page" data-theme="c" id="page7" style="overflow:scroll" >
+<div data-role="page" data-theme="c" id="page8" style="overflow:scroll" >
     <div data-theme="c" data-role="header" data-position="fixed" >
     <a data-role="button" onClick="menuClick();" data-icon="bullets" data-iconpos="left" class="ui-btn ui-shadow ui-corner-all ui-icon-bullets " ><img src="menu.png" /></a>
         <a data-role="button" onclick="backClick();" data-rel="back" class="ui-btn-right" data-transition="slide"><img src="back.png" /></a>
