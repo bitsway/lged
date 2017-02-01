@@ -20,19 +20,19 @@ var upListFlag=0;
 function getLocationInfoAch() {		
 	var options = { enableHighAccuracy: false};	
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, options);				
-	$(".errorChk").html("Confirming location. Please wait.");
+	//$(".errorChk").html("Confirming location. Please wait.");
 }
 // onSuccess Geolocation
 function onSuccess(position) {	
 	$("#ach_lat").val(position.coords.latitude);
 	$("#ach_long").val(position.coords.longitude);
-	$(".errorChk").html("Location Confirmed");
+	//$(".errorChk").html("Location Confirmed");
 }
 // onError Callback receives a PositionError object
 function onError(error) {
    $("#ach_lat").val(0);
    $("#ach_long").val(0);
-   $(".errorChk").html("Failed to Confirmed Location.");
+   //$(".errorChk").html("Failed to Confirmed Location.");
 }
 
 //---- online 
@@ -162,6 +162,7 @@ var ruralData3="";
 var ruralData4="";
 var ruralData5A=""
 var ruralData5B="";
+var ruralData5C="";
 var ruralData6="";
 
 
@@ -183,7 +184,7 @@ function ruralV(){
 		rpt_rep_ob.selectmenu("refresh");
 		*/				
 		
-		
+		//alert(apipath+'get_school_list?cid=LGED&sync_code='+localStorage.sync_code);
 		$.ajax({
 			  url:apipath+'get_school_list?cid=LGED&sync_code='+localStorage.sync_code,
 			  success: function(schStr) {
@@ -191,12 +192,15 @@ function ruralV(){
 					  schList="";
 					  for (i=0;i<schoolList.length;i++){					
 							schListTotal=schoolList[i].split(',')
-							schList+="<option value="+encodeURIComponent(schListTotal[1])+">"+schListTotal[0]+-+schListTotal[1]+"</option>";
+							
+							schList+="<option value="+encodeURIComponent(schoolList[i])+">"+schListTotal[0].slice(-3)+"-"+schListTotal[1]+"</option>";
 						}							
 						var rpt_rep_ob=$("#school_list");						
 						rpt_rep_ob.empty();
 						rpt_rep_ob.append(schList);
-						rpt_rep_ob.selectmenu("refresh");			  
+						rpt_rep_ob.selectmenu("refresh");
+						
+						getLocationInfoAch();			  
 					 									  
 				  }		  
 			});	 		
@@ -208,15 +212,16 @@ function ruralV(){
 }
 
 //-----------------
-function schoolSelect(){
-	$(".error").text("");
+function schoolSearch(){
+	
 	var school_list=$("#school_list").val();
+
 	if(school_list==""){
 		$(".error").text("Required School");
 	}else{		
-		//alert(apipath+'search_school?cid=LGED&school_list='+school_list);
+		//alert(apipath+'search_school?cid=LGED&school='+school_list);
 		$.ajax({
-			url:apipath+'search_school?cid=LGED&school_code='+school_list,
+			url:apipath+'search_school?cid=LGED&school='+school_list,
 			success: function(result) {				  
 				resultStr=result.split("<fd>");	  	
 				 if (resultStr[0]=="Success"){
@@ -224,15 +229,65 @@ function schoolSelect(){
 					  var div_name=schoolNameStr[0];
 					  var dist_name=schoolNameStr[1];
 					  var up_name=schoolNameStr[2];		
-					  var school_code=schoolNameStr[3];
-					  var school_name=schoolNameStr[4];
-					  
+					  localStorage.school_code=schoolNameStr[3];
+					  localStorage.school_name=schoolNameStr[4];
+					  var cohort=schoolNameStr[5];
+					 // alert(cohort);
 					  $("#division").val(div_name);
 					  $("#district").val(dist_name);
 					  $("#upzila").val(up_name);
 					  $("#ff_id").val(localStorage.ffID);
-					  $("#school_id").val(school_code);
-					  $("#school_name").val(school_name);
+					  $("#school_id").val(localStorage.school_code);
+					  $("#school_name").val(localStorage.school_name);
+					  $("#school_installation_year").val(cohort);
+					  
+					  $("#schoolSelected").html(localStorage.school_code+"-"+localStorage.school_name)
+					  
+					  url="#school_select_page";					
+					  $.mobile.navigate(url);
+					  
+					}else if (resultStr[0]=="Failed"){
+						$(".errorChk").text("Audit report already submitted for this school . Please contact with admin if you think this school in incorrectly flagged.");
+											
+					} 
+				
+			  }
+		});
+	
+	
+	url="#school_select_page";					
+	$.mobile.navigate(url);	
+}
+}
+
+function schoolSelect(){
+	$(".error").text("");
+	/*var school_list=$("#school_list").val();
+
+	if(school_list==""){
+		$(".error").text("Required School");
+	}else{		
+		//alert(apipath+'search_school?cid=LGED&school='+school_list);
+		$.ajax({
+			url:apipath+'search_school?cid=LGED&school='+school_list,
+			success: function(result) {				  
+				resultStr=result.split("<fd>");	  	
+				 if (resultStr[0]=="Success"){
+					  var schoolNameStr=resultStr[1].split("fdfd");	
+					  var div_name=schoolNameStr[0];
+					  var dist_name=schoolNameStr[1];
+					  var up_name=schoolNameStr[2];		
+					  localStorage.school_code=schoolNameStr[3];
+					  localStorage.school_name=schoolNameStr[4];
+					  var cohort=schoolNameStr[5];
+					 // alert(cohort);
+					  $("#division").val(div_name);
+					  $("#district").val(dist_name);
+					  $("#upzila").val(up_name);
+					  $("#ff_id").val(localStorage.ffID);
+					  $("#school_id").val(localStorage.school_code);
+					  $("#school_name").val(localStorage.school_name);
+					  $("#school_installation_year").val(cohort);
 					  
 					  url="#page2";					
 					  $.mobile.navigate(url);
@@ -243,22 +298,13 @@ function schoolSelect(){
 					} 
 				
 			  }
-		});
+		});*/
 		
 		url="#page2";					
 		$.mobile.navigate(url);
-	}
+	//}
 		
 }
-
-
-function schoolSearch(){
-	
-	
-	
-	url="#school_select_page";					
-	$.mobile.navigate(url);	
-	}
 
 
 function ruralData1Next(){	
@@ -364,7 +410,27 @@ function depend_semister(){
 	}	
 }
 
+function condition_school(){
+	var school_condition=$("#school_condition").val();
+	if(school_condition==0){
+		$("#cloSchool").hide();
+	}else  if(school_condition==1){
+		$("#cloSchool").hide();
+	}else{
+		$("#cloSchool").show();
+	}		
+}
 
+function condition_school_second(){
+	var school_condition_second=$("#school_condition_second").val();
+	if(school_condition_second==0){
+		$("#cloSchoolSecond").hide();
+	}else  if(school_condition_second==1){
+		$("#cloSchoolSecond").hide();
+	}else{
+		$("#cloSchoolSecond").show();
+	}		
+}
 /*function totalTime(){
 	var daily_from_time=$("#daily_from_time").val();
 	var daily_to_time=$("#daily_to_time").val();
@@ -435,8 +501,9 @@ function ruralData2Next(){
 		var cmc_selebrate_exchange_gardagin=$("#cmc_selebrate_exchange_gardagin").val();
 		var previous_semister_school_anudan_time=$("#previous_semister_school_anudan_time").val();
 		
-		var decimal=/^[-+]?[0-9]+\.[0-9]+$/;
-							
+		var deci=/^[-+]?[0-9]+\.[0-9]+$/;
+		var decimal=/^\.[0-9]+$/;
+		//alert(parseInt(classroom_windows))				
 		if(school_installation_year==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-১");
 		}else if(distance_school_near_GPS==""){
@@ -462,9 +529,18 @@ function ruralData2Next(){
 		}else if(huse_light_air=="" || huse_light_air==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-১০");	
 		}else if(classroom_windows==""){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-১১");		
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-১১");
+						
+		}else if(classroom_windows.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-১১ প্লিজ কারেক্ট ভালু" );
+		}else if(classroom_windows.length > 2){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-১১ সর্বাধিক ২ সংখ্যা");	
 		}else if(classroom_doors==""){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-১২");		
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-১২");
+		}else if(classroom_doors.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-১২ প্লিজ কারেক্ট ভালু" );	
+		}else if(classroom_doors.length > 2){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-১২ সর্বাধিক ২ সংখ্যা");	
 		}else if(arsenic_free_water=="" || arsenic_free_water==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-১৩");	
 		}else if(arsenic_free_water==1 && water_distance==0){
@@ -488,11 +564,17 @@ function ruralData2Next(){
 		}else if(cmc_metting_previous_semister==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২২");
 		}else if(cmc_metting_previous_semister.match(decimal)){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-২২ invalid" );	
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-২২ প্লিজ কারেক্ট ভালু" );	
+		}else if(cmc_metting_previous_semister.length >2 ){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-২২ সর্বাধিক ২ সংখ্যা");	
 		}else if(last_cmc_metting_present_cmc_member==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৩");	
 		}else if(last_cmc_metting_present_cmc_member.match(decimal)){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৩ Invalid");		
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৩ প্লিজ কারেক্ট ভালু");
+		}else if(last_cmc_metting_present_cmc_member.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৩ প্লিজ কারেক্ট ভালু");	
+		}else if(last_cmc_metting_present_cmc_member.length >3 ){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৩ সর্বাধিক ৩ সংখ্যা");	
 		}else if(cmc_selebrate_exchange_gardagin=="" || cmc_selebrate_exchange_gardagin==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৪");			
 		}else if(previous_semister_school_anudan_time=="" || previous_semister_school_anudan_time==0){
@@ -566,56 +648,57 @@ function ruralData3Next(){
 		var repair_expense_others=$("#repair_expense_others").val();
 		var expense_prove=$("#expense_prove").val();
 		
-		var chief_executive_officer_month1=$("#chief_executive_officer_month1").val();
-		var chief_executive_officer_month2=$("#chief_executive_officer_month2").val();
-		var chief_executive_officer_month3=$("#chief_executive_officer_month3").val();
-		var chief_executive_officer_month4=$("#chief_executive_officer_month4").val();
-		var chief_executive_officer_month5=$("#chief_executive_officer_month5").val();
-		var chief_executive_officer_month6=$("#chief_executive_officer_month6").val();
+		var chief_executive_officer_month1=$("#chief_executive_officer_month1").val().replace(/\./g, '');
+		var chief_executive_officer_month2=$("#chief_executive_officer_month2").val().replace(/\./g, '');
+		var chief_executive_officer_month3=$("#chief_executive_officer_month3").val().replace(/\./g, '');
+		var chief_executive_officer_month4=$("#chief_executive_officer_month4").val().replace(/\./g, '');
+		var chief_executive_officer_month5=$("#chief_executive_officer_month5").val().replace(/\./g, '');
+		var chief_executive_officer_month6=$("#chief_executive_officer_month6").val().replace(/\./g, '');
 		
-		var up_education_officer_month1=$("#up_education_officer_month1").val();
-		var up_education_officer_month2=$("#up_education_officer_month2").val();
-		var up_education_officer_month3=$("#up_education_officer_month3").val();
-		var up_education_officer_month4=$("#up_education_officer_month4").val();
-		var up_education_officer_month5=$("#up_education_officer_month5").val();
-		var up_education_officer_month6=$("#up_education_officer_month6").val();
+		var up_education_officer_month1=$("#up_education_officer_month1").val().replace(/\./g, '');
+		var up_education_officer_month2=$("#up_education_officer_month2").val().replace(/\./g, '');
+		var up_education_officer_month3=$("#up_education_officer_month3").val().replace(/\./g, '');
+		var up_education_officer_month4=$("#up_education_officer_month4").val().replace(/\./g, '');
+		var up_education_officer_month5=$("#up_education_officer_month5").val().replace(/\./g, '');
+		var up_education_officer_month6=$("#up_education_officer_month6").val().replace(/\./g, '');
 		
-		var training_co_ordinator_month1=$("#training_co_ordinator_month1").val();
-		var training_co_ordinator_month2=$("#training_co_ordinator_month2").val();
-		var training_co_ordinator_month3=$("#training_co_ordinator_month3").val();
-		var training_co_ordinator_month4=$("#training_co_ordinator_month4").val();
-		var training_co_ordinator_month5=$("#training_co_ordinator_month5").val();
-		var training_co_ordinator_month6=$("#training_co_ordinator_month6").val();
+		var training_co_ordinator_month1=$("#training_co_ordinator_month1").val().replace(/\./g, '');
+		var training_co_ordinator_month2=$("#training_co_ordinator_month2").val().replace(/\./g, '');
+		var training_co_ordinator_month3=$("#training_co_ordinator_month3").val().replace(/\./g, '');
+		var training_co_ordinator_month4=$("#training_co_ordinator_month4").val().replace(/\./g, '');
+		var training_co_ordinator_month5=$("#training_co_ordinator_month5").val().replace(/\./g, '');
+		var training_co_ordinator_month6=$("#training_co_ordinator_month6").val().replace(/\./g, '');
 		
-		var assistant_up_education_officer_month1=$("#assistant_up_education_officer_month1").val();
-		var assistant_up_education_officer_month2=$("#assistant_up_education_officer_month2").val();
-		var assistant_up_education_officer_month3=$("#assistant_up_education_officer_month3").val();
-		var assistant_up_education_officer_month4=$("#assistant_up_education_officer_month4").val();
-		var assistant_up_education_officer_month5=$("#assistant_up_education_officer_month5").val();
-		var assistant_up_education_officer_month6=$("#assistant_up_education_officer_month6").val();
+		var assistant_up_education_officer_month1=$("#assistant_up_education_officer_month1").val().replace(/\./g, '');
+		var assistant_up_education_officer_month2=$("#assistant_up_education_officer_month2").val().replace(/\./g, '');
+		var assistant_up_education_officer_month3=$("#assistant_up_education_officer_month3").val().replace(/\./g, '');
+		var assistant_up_education_officer_month4=$("#assistant_up_education_officer_month4").val().replace(/\./g, '');
+		var assistant_up_education_officer_month5=$("#assistant_up_education_officer_month5").val().replace(/\./g, '');
+		var assistant_up_education_officer_month6=$("#assistant_up_education_officer_month6").val().replace(/\./g, '');
 				
-		var assistant_teacher_month1=$("#assistant_teacher_month1").val();
-		var assistant_teacher_month2=$("#assistant_teacher_month2").val();
-		var assistant_teacher_month3=$("#assistant_teacher_month3").val();
-		var assistant_teacher_month4=$("#assistant_teacher_month4").val();
-		var assistant_teacher_month5=$("#assistant_teacher_month5").val();
-		var assistant_teacher_month6=$("#assistant_teacher_month6").val();
+		var assistant_teacher_month1=$("#assistant_teacher_month1").val().replace(/\./g, '');
+		var assistant_teacher_month2=$("#assistant_teacher_month2").val().replace(/\./g, '');
+		var assistant_teacher_month3=$("#assistant_teacher_month3").val().replace(/\./g, '');
+		var assistant_teacher_month4=$("#assistant_teacher_month4").val().replace(/\./g, '');
+		var assistant_teacher_month5=$("#assistant_teacher_month5").val().replace(/\./g, '');
+		var assistant_teacher_month6=$("#assistant_teacher_month6").val().replace(/\./g, '');
 		
-		var mobile_pool_teacher_month1=$("#mobile_pool_teacher_month1").val();
-		var mobile_pool_teacher_month2=$("#mobile_pool_teacher_month2").val();
-		var mobile_pool_teacher_month3=$("#mobile_pool_teacher_month3").val();
-		var mobile_pool_teacher_month4=$("#mobile_pool_teacher_month4").val();
-		var mobile_pool_teacher_month5=$("#mobile_pool_teacher_month5").val();
-		var mobile_pool_teacher_month6=$("#mobile_pool_teacher_month6").val();
+		var mobile_pool_teacher_month1=$("#mobile_pool_teacher_month1").val().replace(/\./g, '');
+		var mobile_pool_teacher_month2=$("#mobile_pool_teacher_month2").val().replace(/\./g, '');
+		var mobile_pool_teacher_month3=$("#mobile_pool_teacher_month3").val().replace(/\./g, '');
+		var mobile_pool_teacher_month4=$("#mobile_pool_teacher_month4").val().replace(/\./g, '');
+		var mobile_pool_teacher_month5=$("#mobile_pool_teacher_month5").val().replace(/\./g, '');
+		var mobile_pool_teacher_month6=$("#mobile_pool_teacher_month6").val().replace(/\./g, '');
 		
-		var others_month1=$("#others_month1").val();
-		var others_month2=$("#others_month2").val();
-		var others_month3=$("#others_month3").val();
-		var others_month4=$("#others_month4").val();
-		var others_month5=$("#others_month5").val();
-		var others_month6=$("#others_month6").val();
+		var others_month1=$("#others_month1").val().replace(/\./g, '');
+		var others_month2=$("#others_month2").val().replace(/\./g, '');
+		var others_month3=$("#others_month3").val().replace(/\./g, '');
+		var others_month4=$("#others_month4").val().replace(/\./g, '');
+		var others_month5=$("#others_month5").val().replace(/\./g, '');
+		var others_month6=$("#others_month6").val().replace(/\./g, '');
 		
-		var decimal=/^[-+]?[0-9]+\.[0-9]+$/;
+		//var decimal=/^[-+]?[0-9]+\.[0-9]+$/;
+		var decimal=/^\.[0-9]+$/;
 				
 		if(education_allowance_receipt==""|| education_allowance_receipt==0){
 			$(".errorChk").text("অবশ্যক শিক্ষা ভাতা");	
@@ -660,7 +743,99 @@ function ruralData3Next(){
 		}else if(repair_expense==4 && repair_expense_others==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৯ উল্লেখ করুন");
 		}else if(expense_prove=="" || expense_prove==0){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৯.১");			
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৯.১");	
+			/*======================*/
+		}else if(chief_executive_officer_month1.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা নির্বাহী অফিসার সর্বাধিক ২ সংখ্যা");
+		}else if(chief_executive_officer_month2.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা নির্বাহী অফিসার সর্বাধিক ২ সংখ্যা");
+		}else if(chief_executive_officer_month3.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা নির্বাহী অফিসার সর্বাধিক ২ সংখ্যা");
+		}else if(chief_executive_officer_month4.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা নির্বাহী অফিসার সর্বাধিক ২ সংখ্যা");
+		}else if(chief_executive_officer_month5.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা নির্বাহী অফিসার সর্বাধিক ২ সংখ্যা");
+		}else if(chief_executive_officer_month6.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা নির্বাহী অফিসার সর্বাধিক ২ সংখ্যা");
+			
+		}else if(up_education_officer_month1.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(up_education_officer_month2.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(up_education_officer_month3.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(up_education_officer_month4.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(up_education_officer_month5.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(up_education_officer_month6.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+			
+		}else if(training_co_ordinator_month1.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ ট্রেনিং কো-অর্ডিনেটর সর্বাধিক ২ সংখ্যা");		
+		}else if(training_co_ordinator_month2.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ ট্রেনিং কো-অর্ডিনেটর সর্বাধিক ২ সংখ্যা");	
+		}else if(training_co_ordinator_month3.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ ট্রেনিং কো-অর্ডিনেটর সর্বাধিক ২ সংখ্যা");	
+		}else if(training_co_ordinator_month4.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ ট্রেনিং কো-অর্ডিনেটর সর্বাধিক ২ সংখ্যা");	
+		}else if(training_co_ordinator_month5.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ ট্রেনিং কো-অর্ডিনেটর সর্বাধিক ২ সংখ্যা");	
+		}else if(training_co_ordinator_month6.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ ট্রেনিং কো-অর্ডিনেটর সর্বাধিক ২ সংখ্যা");		
+			
+		}else if(assistant_up_education_officer_month1.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ সহকারী উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");		
+		}else if(assistant_up_education_officer_month2.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ সহকারী উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_up_education_officer_month3.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ সহকারী উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");
+		}else if(assistant_up_education_officer_month4.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ সহকারী উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_up_education_officer_month5.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ সহকারী উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_up_education_officer_month6.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ সহকারী উপজেলা শিক্ষা অফিসার সর্বাধিক ২ সংখ্যা");	
+			
+		}else if(assistant_teacher_month1.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান/ সহকারী শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_teacher_month2.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান/ সহকারী শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_teacher_month3.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান/ সহকারী শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_teacher_month4.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান/ সহকারী শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_teacher_month5.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান/ সহকারী শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(assistant_teacher_month6.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান/ সহকারী শিক্ষক সর্বাধিক ২ সংখ্যা");	
+			
+		}else if(mobile_pool_teacher_month1.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ মোবাইল পুল শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(mobile_pool_teacher_month2.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ মোবাইল পুল শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(mobile_pool_teacher_month3.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ মোবাইল পুল শিক্ষক সর্বাধিক ২ সংখ্যা");	
+		}else if(mobile_pool_teacher_month4.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ মোবাইল পুল শিক্ষক সর্বাধিক ২ সংখ্যা");		
+		}else if(mobile_pool_teacher_month5.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ মোবাইল পুল শিক্ষক সর্বাধিক ২ সংখ্যা");		
+		}else if(mobile_pool_teacher_month6.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ মোবাইল পুল শিক্ষক সর্বাধিক ২ সংখ্যা");		
+			
+		}else if(others_month1.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ অন্যান্য সর্বাধিক ২ সংখ্যা");		
+		}else if(others_month2.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ অন্যান্য সর্বাধিক ২ সংখ্যা");	
+		}else if(others_month3.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ অন্যান্য সর্বাধিক ২ সংখ্যা");	
+		}else if(others_month4.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ অন্যান্য সর্বাধিক ২ সংখ্যা");	
+		}else if(others_month5.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ অন্যান্য সর্বাধিক ২ সংখ্যা");	
+		}else if(others_month6.length > 2){
+			$(".errorChk").text("প্রশ্ন ৩০ অন্যান্য সর্বাধিক ২ সংখ্যা");				
+			/*========================*/
 		
 		}else{
 					
@@ -730,7 +905,8 @@ function ruralData4Next(){
 		var v_day_atte_stu_total=$("#visit_day_attendence_students_total").val();//change
 		var pre_sem_total_sch=$("#previous_semister_total_school_dibos").val();//change
 		
-		var decimal=/^[-+]?[0-9]+\.[0-9]+$/;
+		var deci=/^[-+]?[0-9]+\.[0-9]+$/;
+		var decimal=/^\.[0-9]+$/;
 		
 		if(v_LC_reg_tea_pre=="" || v_LC_reg_tea_pre==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩১");			
@@ -750,17 +926,23 @@ function ruralData4Next(){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৬");
 		}else if(cls_atte_stu.match(decimal)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৬ প্লিজ কারেক্ট ভালু");
+		}else if(cls_atte_stu.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৬ প্লিজ কারেক্ট ভালু");
 		}else if(cls_atte_stu>999 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৬ সর্বাধিক ৩ সংখ্যা");
 		}else if(v_day_atte_stu_boys=="" ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালক");
 		}else if(v_day_atte_stu_boys.match(decimal)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালক প্লিজ কারেক্ট ভালু");
+		}else if(v_day_atte_stu_boys.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালক প্লিজ কারেক্ট ভালু");
 		}else if(v_day_atte_stu_boys>999 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালক - সর্বাধিক ৩ সংখ্যা");
 		}else if(v_day_atte_stu_girls=="" ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালিকা");	
 		}else if(v_day_atte_stu_girls.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালিকা প্লিজ কারেক্ট ভালু");
+		}else if(v_day_atte_stu_girls.match(deci)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালিকা প্লিজ কারেক্ট ভালু");
 		}else if(v_day_atte_stu_girls>999 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৭ বালিকা - সর্বাধিক ৩ সংখ্যা");
@@ -771,6 +953,8 @@ function ruralData4Next(){
 		}else if(pre_sem_total_sch=="" ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৮");
 		}else if(pre_sem_total_sch.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৮ প্লিজ কারেক্ট ভালু");
+		}else if(pre_sem_total_sch.match(deci)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৮ প্লিজ কারেক্ট ভালু");
 		}else if(pre_sem_total_sch>999 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৮ সর্বাধিক ৩ সংখ্যা");	
@@ -808,7 +992,7 @@ function total_student(){
 
 function ruralData5Next(){		
 		//35 fields
-		var col1=$("#lc_profile_studentID_three_digit1").val();
+		var col1=$("#lc_profile_studentID_three_digit1").val().replace(/\./g, '');
 		var stu1=$("input[name='classroom_present_student1']:checked").val();
 		var image_match1=$("input[name='image_match1']:checked").val();
 		var name_match1=$("input[name='name_match1']:checked").val();
@@ -818,10 +1002,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow1=$("input[name='previous_semister_edu_allowance1']:checked").val();
 		var edu_ot_sch1=$("input[name='education_other_school1']:checked").val();
 		var student_abcent1=$("#student_abcent1").val();
-		var pre1=$("#previous_semister_total_present1").val();
-		var rec_num1=$("#previous_semister_recived_number1").val();
+		var pre1=$("#previous_semister_total_present1").val().replace(/\./g, '');
+		var rec_num1=$("#previous_semister_recived_number1").val().replace(/\./g, '');
 			
-		var col2=$("#lc_profile_studentID_three_digit2").val();
+		var col2=$("#lc_profile_studentID_three_digit2").val().replace(/\./g, '');
 		var stu2=$("input[name='classroom_present_student2']:checked").val();
 		var image_match2=$("input[name='image_match2']:checked").val();
 		var name_match2=$("input[name='name_match2']:checked").val();
@@ -831,10 +1015,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow2=$("input[name='previous_semister_edu_allowance2']:checked").val();
 		var edu_ot_sch2=$("input[name='education_other_school2']:checked").val();
 		var student_abcent2=$("#student_abcent2").val();
-		var pre2=$("#previous_semister_total_present2").val();
-		var rec_num2=$("#previous_semister_recived_number2").val();
+		var pre2=$("#previous_semister_total_present2").val().replace(/\./g, '');
+		var rec_num2=$("#previous_semister_recived_number2").val().replace(/\./g, '');
 		
-		var col3=$("#lc_profile_studentID_three_digit3").val();
+		var col3=$("#lc_profile_studentID_three_digit3").val().replace(/\./g, '');
 		var stu3=$("input[name='classroom_present_student3']:checked").val();
 		var image_match3=$("input[name='image_match3']:checked").val();
 		var name_match3=$("input[name='name_match3']:checked").val();
@@ -844,10 +1028,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow3=$("input[name='previous_semister_edu_allowance3']:checked").val();
 		var edu_ot_sch3=$("input[name='education_other_school3']:checked").val();
 		var student_abcent3=$("#student_abcent3").val();
-		var pre3=$("#previous_semister_total_present3").val();
-		var rec_num3=$("#previous_semister_recived_number3").val();
+		var pre3=$("#previous_semister_total_present3").val().replace(/\./g, '');
+		var rec_num3=$("#previous_semister_recived_number3").val().replace(/\./g, '');
 		
-		var col4=$("#lc_profile_studentID_three_digit3").val();
+		var col4=$("#lc_profile_studentID_three_digit3").val().replace(/\./g, '');
 		var stu4=$("input[name='classroom_present_student4']:checked").val();
 		var image_match4=$("input[name='image_match4']:checked").val();
 		var name_match4=$("input[name='name_match4']:checked").val();
@@ -857,10 +1041,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow4=$("input[name='previous_semister_edu_allowance4']:checked").val();
 		var edu_ot_sch4=$("input[name='education_other_school4']:checked").val();
 		var student_abcent4=$("#student_abcent4").val();
-		var pre4=$("#previous_semister_total_present4").val();
-		var rec_num4=$("#previous_semister_recived_number4").val();
+		var pre4=$("#previous_semister_total_present4").val().replace(/\./g, '');
+		var rec_num4=$("#previous_semister_recived_number4").val().replace(/\./g, '');
 		
-		var col5=$("#lc_profile_studentID_three_digit5").val();
+		var col5=$("#lc_profile_studentID_three_digit5").val().replace(/\./g, '');
 		var stu5=$("input[name='classroom_present_student5']:checked").val();
 		var image_match5=$("input[name='image_match5']:checked").val();
 		var name_match5=$("input[name='name_match5']:checked").val();
@@ -870,10 +1054,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow5=$("input[name='previous_semister_edu_allowance5']:checked").val();
 		var edu_ot_sch5=$("input[name='education_other_school5']:checked").val();
 		var student_abcent5=$("#student_abcent5").val();
-		var pre5=$("#previous_semister_total_present5").val();
-		var rec_num5=$("#previous_semister_recived_number5").val();
+		var pre5=$("#previous_semister_total_present5").val().replace(/\./g, '');
+		var rec_num5=$("#previous_semister_recived_number5").val().replace(/\./g, '');
 		
-		var col6=$("#lc_profile_studentID_three_digit6").val();
+		var col6=$("#lc_profile_studentID_three_digit6").val().replace(/\./g, '');
 		var stu6=$("input[name='classroom_present_student6']:checked").val();
 		var image_match6=$("input[name='image_match6']:checked").val();
 		var name_match6=$("input[name='name_match6']:checked").val();
@@ -883,10 +1067,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow6=$("input[name='previous_semister_edu_allowance6']:checked").val();
 		var edu_ot_sch6=$("input[name='education_other_school6']:checked").val();
 		var student_abcent6=$("#student_abcent6").val();
-		var pre6=$("#previous_semister_total_present6").val();
-		var rec_num6=$("#previous_semister_recived_number6").val();
+		var pre6=$("#previous_semister_total_present6").val().replace(/\./g, '');
+		var rec_num6=$("#previous_semister_recived_number6").val().replace(/\./g, '');
 		
-		var col7=$("#lc_profile_studentID_three_digit7").val();
+		var col7=$("#lc_profile_studentID_three_digit7").val().replace(/\./g, '');
 		var stu7=$("input[name='classroom_present_student7']:checked").val();
 		var image_match7=$("input[name='image_match7']:checked").val();
 		var name_match7=$("input[name='name_match7']:checked").val();
@@ -896,10 +1080,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow7=$("input[name='previous_semister_edu_allowance7']:checked").val();
 		var edu_ot_sch7=$("input[name='education_other_school7']:checked").val();
 		var student_abcent7=$("#student_abcent7").val();
-		var pre7=$("#previous_semister_total_present7").val();
-		var rec_num7=$("#previous_semister_recived_number7").val();
+		var pre7=$("#previous_semister_total_present7").val().replace(/\./g, '');
+		var rec_num7=$("#previous_semister_recived_number7").val().replace(/\./g, '');
 		
-		var col8=$("#lc_profile_studentID_three_digit8").val();
+		var col8=$("#lc_profile_studentID_three_digit8").val().replace(/\./g, '');
 		var stu8=$("input[name='classroom_present_student8']:checked").val();
 		var image_match8=$("input[name='image_match8']:checked").val();
 		var name_match8=$("input[name='name_match8']:checked").val();
@@ -909,10 +1093,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow8=$("input[name='previous_semister_edu_allowance8']:checked").val();
 		var edu_ot_sch8=$("input[name='education_other_school8']:checked").val();
 		var student_abcent8=$("#student_abcent8").val();
-		var pre8=$("#previous_semister_total_present8").val();
-		var rec_num8=$("#previous_semister_recived_number8").val();
+		var pre8=$("#previous_semister_total_present8").val().replace(/\./g, '');
+		var rec_num8=$("#previous_semister_recived_number8").val().replace(/\./g, '');
 		
-		var col9=$("#lc_profile_studentID_three_digit9").val();
+		var col9=$("#lc_profile_studentID_three_digit9").val().replace(/\./g, '');
 		var stu9=$("input[name='classroom_present_student9']:checked").val();
 		var image_match9=$("input[name='image_match9']:checked").val();
 		var name_match9=$("input[name='name_match9']:checked").val();
@@ -922,10 +1106,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow9=$("input[name='previous_semister_edu_allowance9']:checked").val();
 		var edu_ot_sch9=$("input[name='education_other_school9']:checked").val();
 		var student_abcent9=$("#student_abcent9").val();
-		var pre9=$("#previous_semister_total_present9").val();
-		var rec_num9=$("#previous_semister_recived_number9").val();
+		var pre9=$("#previous_semister_total_present9").val().replace(/\./g, '');
+		var rec_num9=$("#previous_semister_recived_number9").val().replace(/\./g, '');
 		
-		var col10=$("#lc_profile_studentID_three_digit10").val();
+		var col10=$("#lc_profile_studentID_three_digit10").val().replace(/\./g, '');
 		var stu10=$("input[name='classroom_present_student10']:checked").val();
 		var image_match10=$("input[name='image_match10']:checked").val();
 		var name_match10=$("input[name='name_match10']:checked").val();
@@ -935,10 +1119,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow10=$("input[name='previous_semister_edu_allowance10']:checked").val();
 		var edu_ot_sch10=$("input[name='education_other_school10']:checked").val();
 		var student_abcent10=$("#student_abcent10").val();
-		var pre10=$("#previous_semister_total_present10").val();
-		var rec_num10=$("#previous_semister_recived_number10").val();
+		var pre10=$("#previous_semister_total_present10").val().replace(/\./g, '');
+		var rec_num10=$("#previous_semister_recived_number10").val().replace(/\./g, '');
 		
-		var col11=$("#lc_profile_studentID_three_digit11").val();
+		var col11=$("#lc_profile_studentID_three_digit11").val().replace(/\./g, '');
 		var stu11=$("input[name='classroom_present_student11']:checked").val();
 		var image_match11=$("input[name='image_match11']:checked").val();
 		var name_match11=$("input[name='name_match11']:checked").val();
@@ -948,10 +1132,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow11=$("input[name='previous_semister_edu_allowance11']:checked").val();
 		var edu_ot_sch11=$("input[name='education_other_school11']:checked").val();
 		var student_abcent11=$("#student_abcent11").val();
-		var pre11=$("#previous_semister_total_present11").val();
-		var rec_num11=$("#previous_semister_recived_number11").val();
+		var pre11=$("#previous_semister_total_present11").val().replace(/\./g, '');
+		var rec_num11=$("#previous_semister_recived_number11").val().replace(/\./g, '');
 		
-		var col12=$("#lc_profile_studentID_three_digit12").val();
+		var col12=$("#lc_profile_studentID_three_digit12").val().replace(/\./g, '');
 		var stu12=$("input[name='classroom_present_student12']:checked").val();
 		var image_match12=$("input[name='image_match12']:checked").val();
 		var name_match12=$("input[name='name_match12']:checked").val();
@@ -961,10 +1145,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow12=$("input[name='previous_semister_edu_allowance12']:checked").val();
 		var edu_ot_sch12=$("input[name='education_other_school12']:checked").val();
 		var student_abcent12=$("#student_abcent12").val();
-		var pre12=$("#previous_semister_total_present12").val();
-		var rec_num12=$("#previous_semister_recived_number12").val();
+		var pre12=$("#previous_semister_total_present12").val().replace(/\./g, '');
+		var rec_num12=$("#previous_semister_recived_number12").val().replace(/\./g, '');
 		
-		var col13=$("#lc_profile_studentID_three_digit13").val();
+		var col13=$("#lc_profile_studentID_three_digit13").val().replace(/\./g, '');
 		var stu13=$("input[name='classroom_present_student13']:checked").val();
 		var image_match13=$("input[name='image_match13']:checked").val();
 		var name_match13=$("input[name='name_match13']:checked").val();
@@ -974,10 +1158,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow13=$("input[name='previous_semister_edu_allowance13']:checked").val();
 		var edu_ot_sch13=$("input[name='education_other_school13']:checked").val();
 		var student_abcent13=$("#student_abcent13").val();
-		var pre13=$("#previous_semister_total_present13").val();
-		var rec_num13=$("#previous_semister_recived_number13").val();
+		var pre13=$("#previous_semister_total_present13").val().replace(/\./g, '');
+		var rec_num13=$("#previous_semister_recived_number13").val().replace(/\./g, '');
 		
-		var col14=$("#lc_profile_studentID_three_digit14").val();
+		var col14=$("#lc_profile_studentID_three_digit14").val().replace(/\./g, '');
 		var stu14=$("input[name='classroom_present_student14']:checked").val();
 		var image_match14=$("input[name='image_match14']:checked").val();
 		var name_match14=$("input[name='name_match14']:checked").val();
@@ -987,10 +1171,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow14=$("input[name='previous_semister_edu_allowance14']:checked").val();
 		var edu_ot_sch14=$("input[name='education_other_school14']:checked").val();
 		var student_abcent14=$("#student_abcent14").val();
-		var pre14=$("#previous_semister_total_present14").val();
-		var rec_num14=$("#previous_semister_recived_number14").val();
+		var pre14=$("#previous_semister_total_present14").val().replace(/\./g, '');
+		var rec_num14=$("#previous_semister_recived_number14").val().replace(/\./g, '');
 		
-		var col15=$("#lc_profile_studentID_three_digit15").val();
+		var col15=$("#lc_profile_studentID_three_digit15").val().replace(/\./g, '');
 		var stu15=$("input[name='classroom_present_student15']:checked").val();
 		var image_match15=$("input[name='image_match15']:checked").val();
 		var name_match15=$("input[name='name_match15']:checked").val();
@@ -1000,10 +1184,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow15=$("input[name='previous_semister_edu_allowance15']:checked").val();
 		var edu_ot_sch15=$("input[name='education_other_school15']:checked").val();
 		var student_abcent15=$("#student_abcent15").val();
-		var pre15=$("#previous_semister_total_present15").val();
-		var rec_num15=$("#previous_semister_recived_number15").val();
+		var pre15=$("#previous_semister_total_present15").val().replace(/\./g, '');
+		var rec_num15=$("#previous_semister_recived_number15").val().replace(/\./g, '');
 		
-		var col16=$("#lc_profile_studentID_three_digit16").val();
+		var col16=$("#lc_profile_studentID_three_digit16").val().replace(/\./g, '');
 		var stu16=$("input[name='classroom_present_student16']:checked").val();
 		var image_match16=$("input[name='image_match16']:checked").val();
 		var name_match16=$("input[name='name_match16']:checked").val();
@@ -1013,10 +1197,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow16=$("input[name='previous_semister_edu_allowance16']:checked").val();
 		var edu_ot_sch16=$("input[name='education_other_school16']:checked").val();
 		var student_abcent16=$("#student_abcent16").val();
-		var pre16=$("#previous_semister_total_present16").val();
-		var rec_num16=$("#previous_semister_recived_number16").val();
+		var pre16=$("#previous_semister_total_present16").val().replace(/\./g, '');
+		var rec_num16=$("#previous_semister_recived_number16").val().replace(/\./g, '');
 		
-		var col17=$("#lc_profile_studentID_three_digit17").val();
+		var col17=$("#lc_profile_studentID_three_digit17").val().replace(/\./g, '');
 		var stu17=$("input[name='classroom_present_student17']:checked").val();
 		var image_match17=$("input[name='image_match17']:checked").val();
 		var name_match17=$("input[name='name_match17']:checked").val();
@@ -1026,10 +1210,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow17=$("input[name='previous_semister_edu_allowance17']:checked").val();
 		var edu_ot_sch17=$("input[name='education_other_school17']:checked").val();
 		var student_abcent17=$("#student_abcent17").val();
-		var pre17=$("#previous_semister_total_present17").val();
-		var rec_num17=$("#previous_semister_recived_number17").val();
+		var pre17=$("#previous_semister_total_present17").val().replace(/\./g, '');
+		var rec_num17=$("#previous_semister_recived_number17").val().replace(/\./g, '');
 		
-		var col18=$("#lc_profile_studentID_three_digit18").val();
+		var col18=$("#lc_profile_studentID_three_digit18").val().replace(/\./g, '');
 		var stu18=$("input[name='classroom_present_student18']:checked").val();
 		var image_match18=$("input[name='image_match18']:checked").val();
 		var name_match18=$("input[name='name_match18']:checked").val();
@@ -1039,10 +1223,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow18=$("input[name='previous_semister_edu_allowance18']:checked").val();
 		var edu_ot_sch18=$("input[name='education_other_school18']:checked").val();
 		var student_abcent18=$("#student_abcent18").val();
-		var pre18=$("#previous_semister_total_present18").val();
-		var rec_num18=$("#previous_semister_recived_number18").val();
+		var pre18=$("#previous_semister_total_present18").val().replace(/\./g, '');
+		var rec_num18=$("#previous_semister_recived_number18").val().replace(/\./g, '');
 		
-		var col19=$("#lc_profile_studentID_three_digit19").val();
+		var col19=$("#lc_profile_studentID_three_digit19").val().replace(/\./g, '');
 		var stu19=$("input[name='classroom_present_student19']:checked").val();
 		var image_match19=$("input[name='image_match19']:checked").val();
 		var name_match19=$("input[name='name_match19']:checked").val();
@@ -1052,10 +1236,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow19=$("input[name='previous_semister_edu_allowance19']:checked").val();
 		var edu_ot_sch19=$("input[name='education_other_school19']:checked").val();
 		var student_abcent19=$("#student_abcent19").val();
-		var pre19=$("#previous_semister_total_present19").val();
-		var rec_num19=$("#previous_semister_recived_number19").val();
+		var pre19=$("#previous_semister_total_present19").val().replace(/\./g, '');
+		var rec_num19=$("#previous_semister_recived_number19").val().replace(/\./g, '');
 		
-		var col20=$("#lc_profile_studentID_three_digit20").val();
+		var col20=$("#lc_profile_studentID_three_digit20").val().replace(/\./g, '');
 		var stu20=$("input[name='classroom_present_student20']:checked").val();
 		var image_match20=$("input[name='image_match20']:checked").val();
 		var name_match20=$("input[name='name_match20']:checked").val();
@@ -1065,10 +1249,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow20=$("input[name='previous_semister_edu_allowance20']:checked").val();
 		var edu_ot_sch20=$("input[name='education_other_school20']:checked").val();
 		var student_abcent20=$("#student_abcent20").val();
-		var pre20=$("#previous_semister_total_present20").val();
-		var rec_num20=$("#previous_semister_recived_number20").val();
+		var pre20=$("#previous_semister_total_present20").val().replace(/\./g, '');
+		var rec_num20=$("#previous_semister_recived_number20").val().replace(/\./g, '');
 		
-		var col21=$("#lc_profile_studentID_three_digit21").val();
+		var col21=$("#lc_profile_studentID_three_digit21").val().replace(/\./g, '');
 		var stu21=$("input[name='classroom_present_student21']:checked").val();
 		var image_match21=$("input[name='image_match21']:checked").val();
 		var name_match21=$("input[name='name_match21']:checked").val();
@@ -1078,10 +1262,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow21=$("input[name='previous_semister_edu_allowance21']:checked").val();
 		var edu_ot_sch21=$("input[name='education_other_school21']:checked").val();
 		var student_abcent21=$("#student_abcent21").val();
-		var pre21=$("#previous_semister_total_present21").val();
-		var rec_num21=$("#previous_semister_recived_number21").val();
+		var pre21=$("#previous_semister_total_present21").val().replace(/\./g, '');
+		var rec_num21=$("#previous_semister_recived_number21").val().replace(/\./g, '');
 		
-		var col22=$("#lc_profile_studentID_three_digit22").val();
+		var col22=$("#lc_profile_studentID_three_digit22").val().replace(/\./g, '');
 		var stu22=$("input[name='classroom_present_student22']:checked").val();
 		var image_match22=$("input[name='image_match22']:checked").val();
 		var name_match22=$("input[name='name_match22']:checked").val();
@@ -1091,10 +1275,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow22=$("input[name='previous_semister_edu_allowance22']:checked").val();
 		var edu_ot_sch22=$("input[name='education_other_school22']:checked").val();
 		var student_abcent22=$("#student_abcent22").val();
-		var pre22=$("#previous_semister_total_present22").val();
-		var rec_num22=$("#previous_semister_recived_number22").val();
+		var pre22=$("#previous_semister_total_present22").val().replace(/\./g, '');
+		var rec_num22=$("#previous_semister_recived_number22").val().replace(/\./g, '');
 		
-		var col23=$("#lc_profile_studentID_three_digit23").val();
+		var col23=$("#lc_profile_studentID_three_digit23").val().replace(/\./g, '');
 		var stu23=$("input[name='classroom_present_student23']:checked").val();
 		var image_match23=$("input[name='image_match23']:checked").val();
 		var name_match23=$("input[name='name_match23']:checked").val();
@@ -1104,10 +1288,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow23=$("input[name='previous_semister_edu_allowance23']:checked").val();
 		var edu_ot_sch23=$("input[name='education_other_school23']:checked").val();
 		var student_abcent23=$("#student_abcent23").val();
-		var pre23=$("#previous_semister_total_present23").val();
-		var rec_num23=$("#previous_semister_recived_number23").val();
+		var pre23=$("#previous_semister_total_present23").val().replace(/\./g, '');
+		var rec_num23=$("#previous_semister_recived_number23").val().replace(/\./g, '');
 		
-		var col24=$("#lc_profile_studentID_three_digit24").val();
+		var col24=$("#lc_profile_studentID_three_digit24").val().replace(/\./g, '');
 		var stu24=$("input[name='classroom_present_student24']:checked").val();
 		var image_match24=$("input[name='image_match24']:checked").val();
 		var name_match24=$("input[name='name_match24']:checked").val();
@@ -1117,10 +1301,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow24=$("input[name='previous_semister_edu_allowance24']:checked").val();
 		var edu_ot_sch24=$("input[name='education_other_school24']:checked").val();
 		var student_abcent24=$("#student_abcent24").val();
-		var pre24=$("#previous_semister_total_present24").val();
-		var rec_num24=$("#previous_semister_recived_number24").val();
+		var pre24=$("#previous_semister_total_present24").val().replace(/\./g, '');
+		var rec_num24=$("#previous_semister_recived_number24").val().replace(/\./g, '');
 		
-		var col25=$("#lc_profile_studentID_three_digit25").val();
+		var col25=$("#lc_profile_studentID_three_digit25").val().replace(/\./g, '');
 		var stu25=$("input[name='classroom_present_student25']:checked").val();
 		var image_match25=$("input[name='image_match25']:checked").val();
 		var name_match25=$("input[name='name_match25']:checked").val();
@@ -1130,10 +1314,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow25=$("input[name='previous_semister_edu_allowance25']:checked").val();
 		var edu_ot_sch25=$("input[name='education_other_school25']:checked").val();
 		var student_abcent25=$("#student_abcent25").val();
-		var pre25=$("#previous_semister_total_present25").val();
-		var rec_num25=$("#previous_semister_recived_number25").val();
+		var pre25=$("#previous_semister_total_present25").val().replace(/\./g, '');
+		var rec_num25=$("#previous_semister_recived_number25").val().replace(/\./g, '');
 		
-		var col26=$("#lc_profile_studentID_three_digit26").val();
+		var col26=$("#lc_profile_studentID_three_digit26").val().replace(/\./g, '');
 		var stu26=$("input[name='classroom_present_student26']:checked").val();
 		var image_match26=$("input[name='image_match26']:checked").val();
 		var name_match26=$("input[name='name_match26']:checked").val();
@@ -1143,10 +1327,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow26=$("input[name='previous_semister_edu_allowance26']:checked").val();
 		var edu_ot_sch26=$("input[name='education_other_school26']:checked").val();
 		var student_abcent26=$("#student_abcent26").val();
-		var pre26=$("#previous_semister_total_present26").val();
-		var rec_num26=$("#previous_semister_recived_number26").val();
+		var pre26=$("#previous_semister_total_present26").val().replace(/\./g, '');
+		var rec_num26=$("#previous_semister_recived_number26").val().replace(/\./g, '');
 		
-		var col27=$("#lc_profile_studentID_three_digit27").val();
+		var col27=$("#lc_profile_studentID_three_digit27").val().replace(/\./g, '');
 		var stu27=$("input[name='classroom_present_student27']:checked").val();
 		var image_match27=$("input[name='image_match27']:checked").val();
 		var name_match27=$("input[name='name_match27']:checked").val();
@@ -1156,10 +1340,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow27=$("input[name='previous_semister_edu_allowance27']:checked").val();
 		var edu_ot_sch27=$("input[name='education_other_school27']:checked").val();
 		var student_abcent27=$("#student_abcent27").val();
-		var pre27=$("#previous_semister_total_present27").val();
-		var rec_num27=$("#previous_semister_recived_number27").val();
+		var pre27=$("#previous_semister_total_present27").val().replace(/\./g, '');
+		var rec_num27=$("#previous_semister_recived_number27").val().replace(/\./g, '');
 		
-		var col28=$("#lc_profile_studentID_three_digit28").val();
+		var col28=$("#lc_profile_studentID_three_digit28").val().replace(/\./g, '');
 		var stu28=$("input[name='classroom_present_student28']:checked").val();
 		var image_match28=$("input[name='image_match28']:checked").val();
 		var name_match28=$("input[name='name_match28']:checked").val();
@@ -1169,10 +1353,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow28=$("input[name='previous_semister_edu_allowance28']:checked").val();
 		var edu_ot_sch28=$("input[name='education_other_school28']:checked").val();
 		var student_abcent28=$("#student_abcent28").val();
-		var pre28=$("#previous_semister_total_present28").val();
-		var rec_num28=$("#previous_semister_recived_number28").val();
+		var pre28=$("#previous_semister_total_present28").val().replace(/\./g, '');
+		var rec_num28=$("#previous_semister_recived_number28").val().replace(/\./g, '');
 		
-		var col29=$("#lc_profile_studentID_three_digit29").val();
+		var col29=$("#lc_profile_studentID_three_digit29").val().replace(/\./g, '');
 		var stu29=$("input[name='classroom_present_student29']:checked").val();
 		var image_match29=$("input[name='image_match29']:checked").val();
 		var name_match29=$("input[name='name_match29']:checked").val();
@@ -1182,10 +1366,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow29=$("input[name='previous_semister_edu_allowance29']:checked").val();
 		var edu_ot_sch29=$("input[name='education_other_school29']:checked").val();
 		var student_abcent29=$("#student_abcent29").val();
-		var pre29=$("#previous_semister_total_present29").val();
-		var rec_num29=$("#previous_semister_recived_number29").val();
+		var pre29=$("#previous_semister_total_present29").val().replace(/\./g, '');
+		var rec_num29=$("#previous_semister_recived_number29").val().replace(/\./g, '');
 		
-		var col30=$("#lc_profile_studentID_three_digit30").val();
+		var col30=$("#lc_profile_studentID_three_digit30").val().replace(/\./g, '');
 		var stu30=$("input[name='classroom_present_student30']:checked").val();
 		var image_match30=$("input[name='image_match30']:checked").val();
 		var name_match30=$("input[name='name_match30']:checked").val();
@@ -1195,10 +1379,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow30=$("input[name='previous_semister_edu_allowance30']:checked").val();
 		var edu_ot_sch30=$("input[name='education_other_school30']:checked").val();
 		var student_abcent30=$("#student_abcent30").val();
-		var pre30=$("#previous_semister_total_present30").val();
-		var rec_num30=$("#previous_semister_recived_number30").val();
+		var pre30=$("#previous_semister_total_present30").val().replace(/\./g, '');
+		var rec_num30=$("#previous_semister_recived_number30").val().replace(/\./g, '');
 		
-		var col31=$("#lc_profile_studentID_three_digit31").val();
+		var col31=$("#lc_profile_studentID_three_digit31").val().replace(/\./g, '');
 		var stu31=$("input[name='classroom_present_student31']:checked").val();
 		var image_match31=$("input[name='image_match31']:checked").val();
 		var name_match31=$("input[name='name_match31']:checked").val();
@@ -1208,10 +1392,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow31=$("input[name='previous_semister_edu_allowance31']:checked").val();
 		var edu_ot_sch31=$("input[name='education_other_school31']:checked").val();
 		var student_abcent31=$("#student_abcent31").val();
-		var pre31=$("#previous_semister_total_present31").val();
-		var rec_num31=$("#previous_semister_recived_number31").val();
+		var pre31=$("#previous_semister_total_present31").val().replace(/\./g, '');
+		var rec_num31=$("#previous_semister_recived_number31").val().replace(/\./g, '');
 		
-		var col32=$("#lc_profile_studentID_three_digit32").val();
+		var col32=$("#lc_profile_studentID_three_digit32").val().replace(/\./g, '');
 		var stu32=$("input[name='classroom_present_student32']:checked").val();
 		var image_match32=$("input[name='image_match32']:checked").val();
 		var name_match32=$("input[name='name_match32']:checked").val();
@@ -1221,10 +1405,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow32=$("input[name='previous_semister_edu_allowance32']:checked").val();
 		var edu_ot_sch32=$("input[name='education_other_school32']:checked").val();
 		var student_abcent32=$("#student_abcent32").val();
-		var pre32=$("#previous_semister_total_present32").val();
-		var rec_num32=$("#previous_semister_recived_number32").val();
+		var pre32=$("#previous_semister_total_present32").val().replace(/\./g, '');
+		var rec_num32=$("#previous_semister_recived_number32").val().replace(/\./g, '');
 		
-		var col33=$("#lc_profile_studentID_three_digit33").val();
+		var col33=$("#lc_profile_studentID_three_digit33").val().replace(/\./g, '');
 		var stu33=$("input[name='classroom_present_student33']:checked").val();
 		var image_match33=$("input[name='image_match33']:checked").val();
 		var name_match33=$("input[name='name_match33']:checked").val();
@@ -1234,10 +1418,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow33=$("input[name='previous_semister_edu_allowance33']:checked").val();
 		var edu_ot_sch33=$("input[name='education_other_school33']:checked").val();
 		var student_abcent33=$("#student_abcent33").val();
-		var pre33=$("#previous_semister_total_present33").val();
-		var rec_num33=$("#previous_semister_recived_number33").val();
+		var pre33=$("#previous_semister_total_present33").val().replace(/\./g, '');
+		var rec_num33=$("#previous_semister_recived_number33").val().replace(/\./g, '');
 		
-		var col34=$("#lc_profile_studentID_three_digit34").val();
+		var col34=$("#lc_profile_studentID_three_digit34").val().replace(/\./g, '');
 		var stu34=$("input[name='classroom_present_student34']:checked").val();
 		var image_match34=$("input[name='image_match34']:checked").val();
 		var name_match34=$("input[name='name_match34']:checked").val();
@@ -1247,10 +1431,10 @@ function ruralData5Next(){
 		var pre_sem_edu_allow34=$("input[name='previous_semister_edu_allowance34']:checked").val();
 		var edu_ot_sch34=$("input[name='education_other_school34']:checked").val();
 		var student_abcent34=$("#student_abcent34").val();
-		var pre34=$("#previous_semister_total_present34").val();
-		var rec_num34=$("#previous_semister_recived_number34").val();
+		var pre34=$("#previous_semister_total_present34").val().replace(/\./g, '');
+		var rec_num34=$("#previous_semister_recived_number34").val().replace(/\./g, '');
 		
-		var col35=$("#lc_profile_studentID_three_digit35").val();
+		var col35=$("#lc_profile_studentID_three_digit35").val().replace(/\./g, '');
 		var stu35=$("input[name='classroom_present_student35']:checked").val();
 		var image_match35=$("input[name='image_match35']:checked").val();
 		var name_match35=$("input[name='name_match35']:checked").val();
@@ -1258,10 +1442,10 @@ function ruralData5Next(){
 		var school_dress35=$("input[name='school_dress35']:checked").val();
 		var school_idCard35=$("input[name='school_idCard35']:checked").val();
 		var pre_sem_edu_allow35=$("input[name='previous_semister_edu_allowance35']:checked").val();
-		var edu_ot_sch35=$("input[name='education_other_school35']:checked").val();//change
+		var edu_ot_sch35=$("input[name='education_other_school35']:checked").val();
 		var student_abcent35=$("#student_abcent35").val();
-		var pre35=$("#previous_semister_total_present35").val();
-		var rec_num35=$("#previous_semister_recived_number35").val();//change
+		var pre35=$("#previous_semister_total_present35").val().replace(/\./g, '');
+		var rec_num35=$("#previous_semister_recived_number35").val().replace(/\./g, '');
 		
 		var lc_name_ot_match_stu=$("#lc_profile_name_not_match_student").val();//change
 		var lc_image_not_match_st=$("#lc_profile_image_not_match_student").val();//change
@@ -1271,17 +1455,22 @@ function ruralData5Next(){
 		var marriage_abandonment_girls=$("#marriage_abandonment_girls").val();
 		var marriage_abandonment_total=$("#marriage_abandonment_total").val();
 		
-		var decimal=/^[-+]?[0-9]+\.[0-9]+$/;
+		var deci=/^[-+]?[0-9]+\.[0-9]+$/;
+		var decimal=/^\.[0-9]+$/;
 		
 		if(lc_name_ot_match_stu==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪০");
 		}else if(lc_name_ot_match_stu.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪০ প্লিজ কারেক্ট ভালু");	
+		}else if(lc_name_ot_match_stu.match(deci)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪০ প্লিজ কারেক্ট ভালু");					
 		}else if(lc_name_ot_match_stu>999){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪০ সর্বাধিক ৩ সংখ্যা");
 		}else if(lc_image_not_match_st==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪১");	
 		}else if(lc_image_not_match_st.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪১ প্লিজ কারেক্ট ভালু");	
+		}else if(lc_image_not_match_st.match(deci)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪১ প্লিজ কারেক্ট ভালু");		
 		}else if(lc_image_not_match_st>999){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪১ সর্বাধিক ৩ সংখ্যা");
@@ -1290,6 +1479,8 @@ function ruralData5Next(){
 		}else if(pre_sem_exam_reg_stu=="" ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৩");
 		}else if(pre_sem_exam_reg_stu.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৩ প্লিজ কারেক্ট ভালু");
+		}else if(pre_sem_exam_reg_stu.match(deci)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৩ প্লিজ কারেক্ট ভালু");	
 		}else if(pre_sem_exam_reg_stu>999 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৩ সর্বাধিক ৩ সংখ্যা");
@@ -1297,11 +1488,15 @@ function ruralData5Next(){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালক");
 		}else if(marriage_abandonment_boys.match(decimal)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালক প্লিজ কারেক্ট ভালু");	
+		}else if(marriage_abandonment_boys.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালক প্লিজ কারেক্ট ভালু");	
 		}else if(marriage_abandonment_boys>999 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালক সর্বাধিক ৩ সংখ্যা");	
 		}else if(marriage_abandonment_girls=="" ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালিকা");	
 		}else if(marriage_abandonment_girls.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালিকা প্লিজ কারেক্ট ভালু");
+		}else if(marriage_abandonment_girls.match(deci)){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালিকা প্লিজ কারেক্ট ভালু");	
 		}else if(marriage_abandonment_girls>999 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৪ বালিকা সর্বাধিক ৩ সংখ্যা");
@@ -1313,9 +1508,13 @@ function ruralData5Next(){
 			
 			ruralData5A="||col1="+col1+"||stu1="+stu1+"||image_match1="+image_match1+"||name_match1="+name_match1+"||gender_match1="+gender_match1+"||school_dress1="+school_dress1+"||school_idCard1="+school_idCard1+"||pre_sem_edu_allow1="+pre_sem_edu_allow1+"||edu_ot_sch1="+edu_ot_sch1+"||student_abcent1="+student_abcent1+"||pre1="+pre1+"||rec_num1="+rec_num1+"||col2="+col2+"||stu2="+stu2+"||image_match2="+image_match2+"||name_match2="+name_match2+"||gender_match2="+gender_match2+"||school_dress2="+school_dress2+"||school_idCard2="+school_idCard2+"||pre_sem_edu_allow2="+pre_sem_edu_allow2+"||edu_ot_sch2="+edu_ot_sch2+"||student_abcent2="+student_abcent2+"||pre2="+pre2+"||rec_num2="+rec_num2+"||col3="+col3+"||stu3="+stu3+"||image_match3="+image_match3+"||name_match3="+name_match3+"||gender_match3="+gender_match3+"||school_dress3="+school_dress3+"||school_idCard3="+school_idCard3+"||pre_sem_edu_allow3="+pre_sem_edu_allow3+"||edu_ot_sch3="+edu_ot_sch3+"||student_abcent3="+student_abcent3+"||pre3="+pre3+"||rec_num3="+rec_num3+"||col4="+col4+"||stu4="+stu4+"||image_match4="+image_match4+"||name_match4="+name_match4+"||gender_match4="+gender_match4+"||school_dress4="+school_dress4+"||school_idCard4="+school_idCard4+"||pre_sem_edu_allow4="+pre_sem_edu_allow4+"||edu_ot_sch4="+edu_ot_sch4+"||student_abcent4="+student_abcent4+"||pre4="+pre4+"||rec_num4="+rec_num4+"||col5="+col5+"||stu5="+stu5+"||image_match5="+image_match5+"||name_match5="+name_match5+"||gender_match5="+gender_match5+"||school_dress5="+school_dress5+"||school_idCard5="+school_idCard5+"||pre_sem_edu_allow5="+pre_sem_edu_allow5+"||edu_ot_sch5="+edu_ot_sch5+"||student_abcent5="+student_abcent5+"||pre5="+pre5+"||rec_num5="+rec_num5+"||col6="+col6+"||stu6="+stu6+"||image_match6="+image_match6+"||name_match6="+name_match6+"||gender_match6="+gender_match6+"||school_dress6="+school_dress6+"||school_idCard6="+school_idCard6+"||pre_sem_edu_allow6="+pre_sem_edu_allow6+"||edu_ot_sch6="+edu_ot_sch6+"||student_abcent6="+student_abcent6+"||pre6="+pre6+"||rec_num6="+rec_num6+"||col7="+col7+"||stu7="+stu7+"||image_match7="+image_match7+"||name_match7="+name_match7+"||gender_match7="+gender_match7+"||school_dress7="+school_dress7+"||school_idCard7="+school_idCard7+"||pre_sem_edu_allow7="+pre_sem_edu_allow7+"||edu_ot_sch7="+edu_ot_sch7+"||student_abcent7="+student_abcent7+"||pre7="+pre7+"||rec_num7="+rec_num7+"||col8="+col8+"||stu8="+stu8+"||image_match8="+image_match8+"||name_match8="+name_match8+"||gender_match8="+gender_match8+"||school_dress8="+school_dress8+"||school_idCard8="+school_idCard8+"||pre_sem_edu_allow8="+pre_sem_edu_allow8+"||edu_ot_sch8="+edu_ot_sch8+"||student_abcent8="+student_abcent8+"||pre8="+pre8+"||rec_num8="+rec_num8+"||col9="+col9+"||stu9="+stu9+"||image_match9="+image_match9+"||name_match9="+name_match9+"||gender_match9="+gender_match9+"||school_dress9="+school_dress9+"||school_idCard9="+school_idCard9+"||pre_sem_edu_allow9="+pre_sem_edu_allow9+"||edu_ot_sch9="+edu_ot_sch9+"||student_abcent9="+student_abcent9+"||pre9="+pre9+"||rec_num9="+rec_num9+"||col10="+col10+"||stu10="+stu10+"||image_match10="+image_match10+"||name_match10="+name_match10+"||gender_match10="+gender_match10+"||school_dress10="+school_dress10+"||school_idCard10="+school_idCard10+"||pre_sem_edu_allow10="+pre_sem_edu_allow10+"||edu_ot_sch10="+edu_ot_sch10+"||student_abcent10="+student_abcent10+"||pre10="+pre10+"||rec_num10="+rec_num10+"||col11="+col11+"||stu11="+stu11+"||image_match11="+image_match11+"||name_match11="+name_match11+"||gender_match11="+gender_match11+"||school_dress11="+school_dress11+"||school_idCard11="+school_idCard11+"||pre_sem_edu_allow11="+pre_sem_edu_allow11+"||edu_ot_sch11="+edu_ot_sch11+"||student_abcent11="+student_abcent11+"||pre11="+pre11+"||rec_num11="+rec_num11+"||col12="+col12+"||stu12="+stu12+"||image_match12="+image_match12+"||name_match12="+name_match12+"||gender_match12="+gender_match12+"||school_dress12="+school_dress12+"||school_idCard12="+school_idCard12+"||pre_sem_edu_allow12="+pre_sem_edu_allow12+"||edu_ot_sch12="+edu_ot_sch12+"||student_abcent12="+student_abcent12+"||pre12="+pre12+"||rec_num12="+rec_num12+"||col13="+col13+"||stu13="+stu13+"||image_match13="+image_match13+"||name_match13="+name_match13+"||gender_match13="+gender_match13+"||school_dress13="+school_dress13+"||school_idCard13="+school_idCard13+"||pre_sem_edu_allow13="+pre_sem_edu_allow13+"||edu_ot_sch13="+edu_ot_sch13+"||student_abcent13="+student_abcent13+"||pre13="+pre13+"||rec_num13="+rec_num13+"||col14="+col14+"||stu14="+stu14+"||image_match14="+image_match14+"||name_match14="+name_match14+"||gender_match14="+gender_match14+"||school_dress14="+school_dress14+"||school_idCard14="+school_idCard14+"||pre_sem_edu_allow14="+pre_sem_edu_allow14+"||edu_ot_sch14="+edu_ot_sch14+"||student_abcent14="+student_abcent14+"||pre14="+pre14+"||rec_num14="+rec_num14+"||col15="+col15+"||stu15="+stu15+"||image_match15="+image_match15+"||name_match15="+name_match15+"||gender_match15="+gender_match15+"||school_dress15="+school_dress15+"||school_idCard15="+school_idCard15+"||pre_sem_edu_allow15="+pre_sem_edu_allow15+"||edu_ot_sch15="+edu_ot_sch15+"||student_abcent15="+student_abcent15+"||pre15="+pre15+"||rec_num15="+rec_num15+"||col16="+col16+"||stu16="+stu16+"||image_match16="+image_match16+"||name_match16="+name_match16+"||gender_match16="+gender_match16+"||school_dress16="+school_dress16+"||school_idCard16="+school_idCard16+"||pre_sem_edu_allow16="+pre_sem_edu_allow16+"||edu_ot_sch16="+edu_ot_sch16+"||student_abcent16="+student_abcent16+"||pre16="+pre16+"||rec_num16="+rec_num16+"||col17="+col17+"||stu17="+stu17+"||image_match17="+image_match17+"||name_match17="+name_match17+"||gender_match17="+gender_match17+"||school_dress17="+school_dress17+"||school_idCard17="+school_idCard17+"||pre_sem_edu_allow17="+pre_sem_edu_allow17+"||edu_ot_sch17="+edu_ot_sch17+"||student_abcent17="+student_abcent17+"||pre17="+pre17+"||rec_num17="+rec_num17;
 			//alert(ruralData5A);
-			ruralData5B="||col18="+col18+"||stu18="+stu18+"||image_match18="+image_match18+"||name_match18="+name_match18+"||gender_match18="+gender_match18+"||school_dress18="+school_dress18+"||school_idCard18="+school_idCard18+"||pre_sem_edu_allow18="+pre_sem_edu_allow18+"||edu_ot_sch18="+edu_ot_sch18+"||student_abcent18="+student_abcent18+"||pre18="+pre18+"||rec_num18="+rec_num18+"||col19="+col19+"||stu19="+stu19+"||image_match19="+image_match19+"||name_match19="+name_match19+"||gender_match19="+gender_match19+"||school_dress19="+school_dress19+"||school_idCard19="+school_idCard19+"||pre_sem_edu_allow19="+pre_sem_edu_allow19+"||edu_ot_sch19="+edu_ot_sch19+"||student_abcent19="+student_abcent19+"||pre19="+pre19+"||rec_num19="+rec_num19+"||col20="+col20+"||stu20="+stu20+"||image_match20="+image_match20+"||name_match20="+name_match20+"||gender_match20="+gender_match20+"||school_dress20="+school_dress20+"||school_idCard20="+school_idCard20+"||pre_sem_edu_allow20="+pre_sem_edu_allow20+"||edu_ot_sch20="+edu_ot_sch20+"||student_abcent20="+student_abcent20+"||pre20="+pre20+"||rec_num20="+rec_num20+"||col21="+col21+"||stu21="+stu21+"||image_match21="+image_match21+"||name_match21="+name_match21+"||gender_match21="+gender_match21+"||school_dress21="+school_dress21+"||school_idCard21="+school_idCard21+"||pre_sem_edu_allow21="+pre_sem_edu_allow21+"||edu_ot_sch21="+edu_ot_sch21+"||student_abcent21="+student_abcent21+"||pre21="+pre21+"||rec_num21="+rec_num21+"||col22="+col22+"||stu22="+stu22+"||image_match22="+image_match22+"||name_match22="+name_match22+"||gender_match22="+gender_match22+"||school_dress22="+school_dress22+"||school_idCard22="+school_idCard22+"||pre_sem_edu_allow22="+pre_sem_edu_allow22+"||edu_ot_sch22="+edu_ot_sch22+"||student_abcent22="+student_abcent22+"||pre22="+pre22+"||rec_num22="+rec_num22+"||col23="+col23+"||stu23="+stu23+"||image_match23="+image_match23+"||name_match23="+name_match23+"||gender_match23="+gender_match23+"||school_dress23="+school_dress23+"||school_idCard23="+school_idCard23+"||pre_sem_edu_allow23="+pre_sem_edu_allow23+"||edu_ot_sch23="+edu_ot_sch23+"||student_abcent23="+student_abcent23+"||pre23="+pre23+"||rec_num23="+rec_num23+"||col24="+col24+"||stu24="+stu24+"||image_match24="+image_match24+"||name_match24="+name_match24+"||gender_match24="+gender_match24+"||school_dress24="+school_dress24+"||school_idCard24="+school_idCard24+"||pre_sem_edu_allow24="+pre_sem_edu_allow24+"||edu_ot_sch24="+edu_ot_sch24+"||student_abcent24="+student_abcent24+"||pre24="+pre24+"||rec_num24="+rec_num24+"||col25="+col25+"||stu25="+stu25+"||image_match25="+image_match25+"||name_match25="+name_match25+"||gender_match25="+gender_match25+"||school_dress25="+school_dress25+"||school_idCard25="+school_idCard25+"||pre_sem_edu_allow25="+pre_sem_edu_allow25+"||edu_ot_sch25="+edu_ot_sch25+"||student_abcent25="+student_abcent25+"||pre25="+pre25+"||rec_num25="+rec_num25+"||col26="+col26+"||stu26="+stu26+"||image_match26="+image_match26+"||name_match26="+name_match26+"||gender_match26="+gender_match26+"||school_dress26="+school_dress26+"||school_idCard26="+school_idCard26+"||pre_sem_edu_allow26="+pre_sem_edu_allow26+"||edu_ot_sch26="+edu_ot_sch26+"||student_abcent26="+student_abcent26+"||pre26="+pre26+"||rec_num26="+rec_num26+"||col27="+col27+"||stu27="+stu27+"||image_match27="+image_match27+"||name_match27="+name_match27+"||gender_match27="+gender_match27+"||school_dress27="+school_dress27+"||school_idCard27="+school_idCard27+"||pre_sem_edu_allow27="+pre_sem_edu_allow27+"||edu_ot_sch27="+edu_ot_sch27+"||student_abcent27="+student_abcent27+"||pre27="+pre27+"||rec_num27="+rec_num27+"||col28="+col28+"||stu28="+stu28+"||image_match28="+image_match28+"||name_match28="+name_match28+"||gender_match28="+gender_match28+"||school_dress28="+school_dress28+"||school_idCard28="+school_idCard28+"||pre_sem_edu_allow28="+pre_sem_edu_allow28+"||edu_ot_sch28="+edu_ot_sch28+"||student_abcent28="+student_abcent28+"||pre28="+pre28+"||rec_num28="+rec_num28+"||col29="+col29+"||stu29="+stu29+"||image_match29="+image_match29+"||name_match29="+name_match29+"||gender_match29="+gender_match29+"||school_dress29="+school_dress29+"||school_idCard29="+school_idCard29+"||pre_sem_edu_allow29="+pre_sem_edu_allow29+"||edu_ot_sch29="+edu_ot_sch29+"||student_abcent29="+student_abcent29+"||pre29="+pre29+"||rec_num29="+rec_num29+"||col30="+col30+"||stu30="+stu30+"||image_match30="+image_match30+"||name_match30="+name_match30+"||gender_match30="+gender_match30+"||school_dress30="+school_dress30+"||school_idCard30="+school_idCard30+"||pre_sem_edu_allow30="+pre_sem_edu_allow30+"||edu_ot_sch30="+edu_ot_sch30+"||student_abcent30="+student_abcent30+"||pre30="+pre30+"||rec_num30="+rec_num30+"||col31="+col31+"||stu31="+stu31+"||image_match31="+image_match31+"||name_match31="+name_match31+"||gender_match31="+gender_match31+"||school_dress31="+school_dress31+"||school_idCard31="+school_idCard31+"||pre_sem_edu_allow31="+pre_sem_edu_allow31+"||edu_ot_sch31="+edu_ot_sch31+"||student_abcent31="+student_abcent31+"||pre31="+pre31+"||rec_num31="+rec_num31+"||col32="+col32+"||stu32="+stu32+"||image_match32="+image_match32+"||name_match32="+name_match32+"||gender_match32="+gender_match32+"||school_dress32="+school_dress32+"||school_idCard32="+school_idCard32+"||pre_sem_edu_allow32="+pre_sem_edu_allow32+"||edu_ot_sch32="+edu_ot_sch32+"||student_abcent32="+student_abcent32+"||pre32="+pre32+"||rec_num32="+rec_num32+"||col33="+col33+"||stu33="+stu33+"||image_match33="+image_match33+"||name_match33="+name_match33+"||gender_match33="+gender_match33+"||school_dress33="+school_dress33+"||school_idCard33="+school_idCard33+"||pre_sem_edu_allow33="+pre_sem_edu_allow33+"||edu_ot_sch33="+edu_ot_sch33+"||student_abcent33="+student_abcent33+"||pre33="+pre33+"||rec_num33="+rec_num33+"||col34="+col34+"||stu34="+stu34+"||image_match34="+image_match34+"||name_match34="+name_match34+"||gender_match34="+gender_match34+"||school_dress34="+school_dress34+"||school_idCard34="+school_idCard34+"||pre_sem_edu_allow34="+pre_sem_edu_allow34+"||edu_ot_sch34="+edu_ot_sch34+"||student_abcent34="+student_abcent34+"||pre34="+pre34+"||rec_num34="+rec_num34+"||col35="+col35+"||stu35="+stu35+"||image_match35="+image_match35+"||name_match35="+name_match35+"||gender_match35="+gender_match35+"||school_dress35="+school_dress35+"||school_idCard35="+school_idCard35+"||pre_sem_edu_allow35="+pre_sem_edu_allow35+"||edu_ot_sch35="+edu_ot_sch35+"||student_abcent35="+student_abcent35+"||pre35="+pre35+"||rec_num35="+rec_num35+"||lc_name_ot_match_stu="+lc_name_ot_match_stu+"||lc_image_not_match_st="+lc_image_not_match_st+"||pre_semi_exam_gov_pri_sch="+pre_semi_exam_gov_pri_sch+"||pre_sem_exam_reg_stu="+pre_sem_exam_reg_stu+"||marriage_abandonment_boys="+marriage_abandonment_boys+"||marriage_abandonment_girls="+marriage_abandonment_girls+"||marriage_abandonment_total="+marriage_abandonment_total;
+			ruralData5B="||col18="+col18+"||stu18="+stu18+"||image_match18="+image_match18+"||name_match18="+name_match18+"||gender_match18="+gender_match18+"||school_dress18="+school_dress18+"||school_idCard18="+school_idCard18+"||pre_sem_edu_allow18="+pre_sem_edu_allow18+"||edu_ot_sch18="+edu_ot_sch18+"||student_abcent18="+student_abcent18+"||pre18="+pre18+"||rec_num18="+rec_num18+"||col19="+col19+"||stu19="+stu19+"||image_match19="+image_match19+"||name_match19="+name_match19+"||gender_match19="+gender_match19+"||school_dress19="+school_dress19+"||school_idCard19="+school_idCard19+"||pre_sem_edu_allow19="+pre_sem_edu_allow19+"||edu_ot_sch19="+edu_ot_sch19+"||student_abcent19="+student_abcent19+"||pre19="+pre19+"||rec_num19="+rec_num19+"||col20="+col20+"||stu20="+stu20+"||image_match20="+image_match20+"||name_match20="+name_match20+"||gender_match20="+gender_match20+"||school_dress20="+school_dress20+"||school_idCard20="+school_idCard20+"||pre_sem_edu_allow20="+pre_sem_edu_allow20+"||edu_ot_sch20="+edu_ot_sch20+"||student_abcent20="+student_abcent20+"||pre20="+pre20+"||rec_num20="+rec_num20+"||col21="+col21+"||stu21="+stu21+"||image_match21="+image_match21+"||name_match21="+name_match21+"||gender_match21="+gender_match21+"||school_dress21="+school_dress21+"||school_idCard21="+school_idCard21+"||pre_sem_edu_allow21="+pre_sem_edu_allow21+"||edu_ot_sch21="+edu_ot_sch21+"||student_abcent21="+student_abcent21+"||pre21="+pre21+"||rec_num21="+rec_num21+"||col22="+col22+"||stu22="+stu22+"||image_match22="+image_match22+"||name_match22="+name_match22+"||gender_match22="+gender_match22+"||school_dress22="+school_dress22+"||school_idCard22="+school_idCard22+"||pre_sem_edu_allow22="+pre_sem_edu_allow22+"||edu_ot_sch22="+edu_ot_sch22+"||student_abcent22="+student_abcent22+"||pre22="+pre22+"||rec_num22="+rec_num22+"||col23="+col23+"||stu23="+stu23+"||image_match23="+image_match23+"||name_match23="+name_match23+"||gender_match23="+gender_match23+"||school_dress23="+school_dress23+"||school_idCard23="+school_idCard23+"||pre_sem_edu_allow23="+pre_sem_edu_allow23+"||edu_ot_sch23="+edu_ot_sch23+"||student_abcent23="+student_abcent23+"||pre23="+pre23+"||rec_num23="+rec_num23+"||col24="+col24+"||stu24="+stu24+"||image_match24="+image_match24+"||name_match24="+name_match24+"||gender_match24="+gender_match24+"||school_dress24="+school_dress24+"||school_idCard24="+school_idCard24+"||pre_sem_edu_allow24="+pre_sem_edu_allow24+"||edu_ot_sch24="+edu_ot_sch24+"||student_abcent24="+student_abcent24+"||pre24="+pre24+"||rec_num24="+rec_num24+"||col25="+col25+"||stu25="+stu25+"||image_match25="+image_match25+"||name_match25="+name_match25+"||gender_match25="+gender_match25+"||school_dress25="+school_dress25+"||school_idCard25="+school_idCard25+"||pre_sem_edu_allow25="+pre_sem_edu_allow25+"||edu_ot_sch25="+edu_ot_sch25+"||student_abcent25="+student_abcent25+"||pre25="+pre25+"||rec_num25="+rec_num25+"||col26="+col26+"||stu26="+stu26+"||image_match26="+image_match26+"||name_match26="+name_match26+"||gender_match26="+gender_match26+"||school_dress26="+school_dress26+"||school_idCard26="+school_idCard26+"||pre_sem_edu_allow26="+pre_sem_edu_allow26+"||edu_ot_sch26="+edu_ot_sch26+"||student_abcent26="+student_abcent26+"||pre26="+pre26+"||rec_num26="+rec_num26+"||col27="+col27+"||stu27="+stu27+"||image_match27="+image_match27+"||name_match27="+name_match27+"||gender_match27="+gender_match27+"||school_dress27="+school_dress27+"||school_idCard27="+school_idCard27+"||pre_sem_edu_allow27="+pre_sem_edu_allow27+"||edu_ot_sch27="+edu_ot_sch27+"||student_abcent27="+student_abcent27+"||pre27="+pre27+"||rec_num27="+rec_num27+"||col28="+col28+"||stu28="+stu28+"||image_match28="+image_match28+"||name_match28="+name_match28+"||gender_match28="+gender_match28+"||school_dress28="+school_dress28+"||school_idCard28="+school_idCard28+"||pre_sem_edu_allow28="+pre_sem_edu_allow28+"||edu_ot_sch28="+edu_ot_sch28+"||student_abcent28="+student_abcent28+"||pre28="+pre28+"||rec_num28="+rec_num28+"||col29="+col29+"||stu29="+stu29+"||image_match29="+image_match29+"||name_match29="+name_match29+"||gender_match29="+gender_match29+"||school_dress29="+school_dress29+"||school_idCard29="+school_idCard29+"||pre_sem_edu_allow29="+pre_sem_edu_allow29+"||edu_ot_sch29="+edu_ot_sch29+"||student_abcent29="+student_abcent29+"||pre29="+pre29+"||rec_num29="+rec_num29+"||col30="+col30+"||stu30="+stu30+"||image_match30="+image_match30+"||name_match30="+name_match30+"||gender_match30="+gender_match30+"||school_dress30="+school_dress30+"||school_idCard30="+school_idCard30+"||pre_sem_edu_allow30="+pre_sem_edu_allow30+"||edu_ot_sch30="+edu_ot_sch30+"||student_abcent30="+student_abcent30+"||pre30="+pre30+"||rec_num30="+rec_num30+"||col31="+col31+"||stu31="+stu31+"||image_match31="+image_match31+"||name_match31="+name_match31+"||gender_match31="+gender_match31+"||school_dress31="+school_dress31+"||school_idCard31="+school_idCard31+"||pre_sem_edu_allow31="+pre_sem_edu_allow31+"||edu_ot_sch31="+edu_ot_sch31+"||student_abcent31="+student_abcent31+"||pre31="+pre31+"||rec_num31="+rec_num31+"||col32="+col32+"||stu32="+stu32+"||image_match32="+image_match32+"||name_match32="+name_match32+"||gender_match32="+gender_match32+"||school_dress32="+school_dress32+"||school_idCard32="+school_idCard32+"||pre_sem_edu_allow32="+pre_sem_edu_allow32+"||edu_ot_sch32="+edu_ot_sch32+"||student_abcent32="+student_abcent32+"||pre32="+pre32+"||rec_num32="+rec_num32+"||col33="+col33+"||stu33="+stu33+"||image_match33="+image_match33+"||name_match33="+name_match33+"||gender_match33="+gender_match33+"||school_dress33="+school_dress33+"||school_idCard33="+school_idCard33+"||pre_sem_edu_allow33="+pre_sem_edu_allow33+"||edu_ot_sch33="+edu_ot_sch33+"||student_abcent33="+student_abcent33+"||pre33="+pre33+"||rec_num33="+rec_num33+"||col34="+col34+"||stu34="+stu34+"||image_match34="+image_match34+"||name_match34="+name_match34+"||gender_match34="+gender_match34+"||school_dress34="+school_dress34+"||school_idCard34="+school_idCard34+"||pre_sem_edu_allow34="+pre_sem_edu_allow34+"||edu_ot_sch34="+edu_ot_sch34+"||student_abcent34="+student_abcent34+"||pre34="+pre34+"||rec_num34="+rec_num34+"||col35="+col35+"||stu35="+stu35+"||image_match35="+image_match35+"||name_match35="+name_match35+"||gender_match35="+gender_match35+"||school_dress35="+school_dress35+"||school_idCard35="+school_idCard35+"||pre_sem_edu_allow35="+pre_sem_edu_allow35+"||edu_ot_sch35="+edu_ot_sch35+"||student_abcent35="+student_abcent35+"||pre35="+pre35+"||rec_num35="+rec_num35;
 			
 			//alert(ruralData5B);
+			
+			ruralData5C="||lc_name_ot_match_stu="+lc_name_ot_match_stu+"||lc_image_not_match_st="+lc_image_not_match_st+"||pre_semi_exam_gov_pri_sch="+pre_semi_exam_gov_pri_sch+"||pre_sem_exam_reg_stu="+pre_sem_exam_reg_stu+"||marriage_abandonment_boys="+marriage_abandonment_boys+"||marriage_abandonment_girls="+marriage_abandonment_girls+"||marriage_abandonment_total="+marriage_abandonment_total;
+			
+			//alert(ruralData5C);
 			
 			$(".errorChk").text("");
 							
@@ -1359,23 +1558,42 @@ function ruralData6Next(){
 		var visitOfficierContact=$("#VisitOfficierContact").val();
 		var visitOfficerComments=$("#VisitOfficerComments").val();
 		
+		var deci=/^[-+]?[0-9]+\.[0-9]+$/;
+		var decimal=/^\.[0-9]+$/;
+		
 		if(headmaster_name!="" && headmaster_mobileNo==""){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান শিক্ষক মোবাইল নম্বর ");	
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান শিক্ষক মোবাইল নম্বর ");
+		}else if(headmaster_name!="" && headmaster_mobileNo.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");
+		}else if(headmaster_name!="" && headmaster_mobileNo.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");		
 		}else if(headmaster_name!="" && headmaster_opinion==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ নিকটবর্তী জিপিএস/ মাদার স্কুলের প্রধান শিক্ষক মতামত");
 				
 		}else if(mobile_pool_teacher_name!="" && mobile_pool_teacher_mobileNo==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল পুল শিক্ষক মোবাইল নম্বর ");
+		}else if(mobile_pool_teacher_name!="" && mobile_pool_teacher_mobileNo.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");
+		}else if(mobile_pool_teacher_name!="" && mobile_pool_teacher_mobileNo.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");		
 		}else if(mobile_pool_teacher_name!="" && mobile_pool_teacher_opinion==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল পুল শিক্ষক মতামত");
 		
 		}else if(school_teacher_name!="" && school_teacher_mobileNo==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ আনন্দ স্কুল শিক্ষক মোবাইল নম্বর ");
+		}else if(school_teacher_name!="" && school_teacher_mobileNo.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");
+		}else if(school_teacher_name!="" && school_teacher_mobileNo.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");	
 		}else if(school_teacher_name!="" && school_teacher_opinion==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ আনন্দ স্কুল শিক্ষক মতামত");
 		
 		}else if(visitOfficierName!="" && visitOfficierContact==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ পরিদর্শনকারী মোবাইল ভ্যালিডেশন অফিসার মোবাইল নম্বর ");
+		}else if(visitOfficierName!="" && visitOfficierContact.match(deci)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");
+		}else if(visitOfficierName!="" && visitOfficierContact.match(decimal)){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ মোবাইল নম্বর প্লিজ কারেক্ট ভালু");
 		}else if(visitOfficierName!="" && visitOfficerComments==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪৫ পরিদর্শনকারী মোবাইল ভ্যালিডেশন অফিসার মতামত");
 			
@@ -1414,6 +1632,13 @@ function ruralDataSubmit(){
 		 image3=$("#image3").val();
 		 image4=$("#image4").val();
 		 image5=$("#image5").val();
+		 
+		 picType1=$("#picType1").val();
+		 picType2=$("#picType2").val();
+		 picType3=$("#picType3").val();
+		 picType4=$("#picType4").val();
+		 picType5=$("#picType5").val();
+		 
 		
 		
 		if (latitude==undefined || latitude==''){
@@ -1422,17 +1647,30 @@ function ruralDataSubmit(){
 		if (longitude==undefined || longitude==''){
 			longitude=0;
 			}
+			
+		if(picType1==0){
+			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ১");	
+		}else if(picType2==0){
+			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ২");	
+		}else if(picType3==0){
+			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৩");	
+		}else if(picType4==0){
+			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৪");	
+		}else if(picType5==0){
+			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৫");	
+		}else{
 		//---------------
 		//image1 start	
 		//------------------------------------image 1					
 		//imagePath1A="test"					
 		if (imagePath1A!=""){							
 			$(".errorChk").text("Syncing photo 1..");
-			imageName = localStorage.mobile_no+"_"+get_time+".jpg";					
+			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 			uploadPhotoAch(imagePath1A, imageName);						
 		}
 	
-		//syncData();		
+		//syncData();	
+		}
 	}
 
 function getAchivementImage1() {
@@ -1481,19 +1719,27 @@ function winAchInfo(r) {
 	var d = new Date();	
 	var get_time=d.getTime();
 		
-	//imagePath2A="test2"
 	if (imagePath2A!=""){							
 		$(".errorChk").text("Syncing photo 2..");
-		imageName2 = localStorage.mobile_no+"_"+get_time+".jpg";
+		imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 				
-		uploadPhoto2Ach(imagePath2A, imageName2);
-		//$("#btn_rural_submit").show();		
+		uploadPhoto2Ach(imagePath2A, imageName2);	
 	}
 	
 }
 
 function onfail(r) {
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	
+	var d = new Date();	
+	var get_time=d.getTime();
+		
+	if (imagePath2A!=""){							
+		$(".errorChk").text("Syncing photo 2..");
+		imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
+		uploadPhoto2Ach(imagePath2A, imageName2);	
+	}
+	
 	$("#btn_rural_submit").show();
 }
 
@@ -1547,7 +1793,7 @@ function winComInfo2(r) {
 	//imagePath3A="test3"
 	if (imagePath3A!=""){							
 		$(".errorChk").text("Syncing photo 3..");
-		imageName3 = localStorage.mobile_no+"_"+get_time+".jpg";
+		imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 				
 		uploadPhoto3Ach(imagePath3A, imageName3);
 		//$("#btn_rural_submit").show();		
@@ -1557,6 +1803,16 @@ function winComInfo2(r) {
 
 function onfail2(r) {
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	
+	var d = new Date();	
+	var get_time=d.getTime();
+		
+	if (imagePath3A!=""){							
+		$(".errorChk").text("Syncing photo 3..");
+		imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";			
+		uploadPhoto3Ach(imagePath3A, imageName3);		
+	}
+	
 	$("#btn_rural_submit").show();
 }
 
@@ -1610,7 +1866,7 @@ function winComInfo3(r) {
 	//imagePath4A="test4"
 	if (imagePath4A!=""){							
 		$(".errorChk").text("Syncing photo 4..");
-		imageName4 = localStorage.mobile_no+"_"+get_time+".jpg";
+		imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 				
 		uploadPhoto4Ach(imagePath4A, imageName4);
 		//$("#btn_rural_submit").show();		
@@ -1620,6 +1876,16 @@ function winComInfo3(r) {
 
 function onfail3(r) {
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	
+	var d = new Date();	
+	var get_time=d.getTime();
+		
+	if (imagePath4A!=""){							
+		$(".errorChk").text("Syncing photo 4..");
+		imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+		uploadPhoto4Ach(imagePath4A, imageName4);	
+	}
+	
 	$("#btn_rural_submit").show();
 }
 
@@ -1673,7 +1939,7 @@ function winComInfo4(r) {
 	//imagePath5A="test5"
 	if (imagePath5A!=""){							
 		$(".errorChk").text("Syncing photo 5..");
-		imageName5 = localStorage.mobile_no+"_"+get_time+".jpg";
+		imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 				
 		uploadPhoto5Ach(imagePath5A, imageName5);
 		//$("#btn_rural_submit").show();		
@@ -1683,6 +1949,16 @@ function winComInfo4(r) {
 
 function onfail4(r) {
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	
+	var d = new Date();	
+	var get_time=d.getTime();
+		
+	if (imagePath5A!=""){							
+		$(".errorChk").text("Syncing photo 5..");
+		imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+		uploadPhoto5Ach(imagePath5A, imageName5);	
+	}
+	
 	$("#btn_rural_submit").show();
 }
 
@@ -1740,10 +2016,10 @@ function onfail5(r) {
 function syncData(){	
 			var school_id=$("#school_id").val();
 			
-			//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+imageName+'&image2='+imageName2+'&image3='+imageName3+'&image4='+imageName4+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&tempText="+encodeURIComponent(ruralData4)+"&ruralData6="+encodeURIComponent(ruralData6));
+			//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&picType1='+picType1+'&image1='+imageName+'&picType2='+picType2+'&image2='+imageName2+'&picType3='+picType3+'&image3='+imageName3+'&picType4='+picType4+'&image4='+imageName4+'&picType5='+picType5+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData6="+encodeURIComponent(ruralData6)+"&ruralData5C="+encodeURIComponent(ruralData5C));
 			$.ajax({
 					type: 'POST',
-					url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&image1='+imageName+'&image2='+imageName2+'&image3='+imageName3+'&image4='+imageName4+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&tempText="+encodeURIComponent(ruralData4)+"&ruralData6="+encodeURIComponent(ruralData6),
+					url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&picType1='+picType1+'&image1='+imageName+'&picType2='+picType2+'&image2='+imageName2+'&picType3='+picType3+'&image3='+imageName3+'&picType4='+picType4+'&image4='+imageName4+'&picType5='+picType5+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData6="+encodeURIComponent(ruralData6)+"&ruralData5C="+encodeURIComponent(ruralData5C),
 					
 					success: function(result) {
 					   if(result!=''){
@@ -1790,15 +2066,15 @@ function syncData_3(sl){
 							$("#semister").val(0);
 							$("#school_id").val("");
 							$("#school_name").val("");
-							$("#daily_from_time").val();
-							$("#daily_to_time").val();
-							$("#total_hour").val();
-							$("#visit_date").val();
+							$("#daily_from_time").val("");
+							$("#daily_to_time").val("");
+							$("#total_hour").val("");
+							$("#visit_date").val("");
 							$("#school_condition").val(0);
 							$("#close_school").val(0);
 							$("#close_school_others").val("");							
 							$("#next_visit").val(0);
-							$("#visit_date_second").val();
+							$("#visit_date_second").val("");
 							$("#school_condition_second").val(0);
 							$("#close_school_second").val(0);
 							$("#close_school_others_second").val("");
@@ -1873,7 +2149,7 @@ function syncData_3(sl){
 							$("#training_co_ordinator_month5").val("");
 							$("#training_co_ordinator_month6").val("");
 							$("#assistant_up_education_officer_month1").val("");
-							v$("#assistant_up_education_officer_month2").val("");
+							$("#assistant_up_education_officer_month2").val("");
 							$("#assistant_up_education_officer_month3").val("");
 							$("#assistant_up_education_officer_month4").val("");
 							$("#assistant_up_education_officer_month5").val("");
@@ -2226,7 +2502,7 @@ function syncData_3(sl){
 							$("#lc_profile_studentID_three_digit25").val("");
 							$("input[name='classroom_present_student25']:checked").val("");
 							$("input[name='image_match25']:checked").val("");
-							("input[name='name_match25']:checked").val("");
+							$("input[name='name_match25']:checked").val("");
 							$("input[name='gender_match25']:checked").val("");
 							$("input[name='school_dress25']:checked").val("");
 							$("input[name='school_idCard25']:checked").val("");
@@ -2388,9 +2664,26 @@ function syncData_3(sl){
 							$("#VisitOfficierContact").val("");
 							$("#VisitOfficerComments").val("");
 							
+							$("#image1").val("");
+							$("#image2").val("");
+							$("#image3").val("");
+							$("#image4").val("");
+							$("#image5").val("");
+							
+							$("#picType1").val(0);
+							$("#picType2").val(0);
+							$("#picType3").val(0);
+							$("#picType4").val(0);
+							$("#picType5").val(0);
+							
 							$(".sucChk").text('Successfully Submitted');
 							$(".errorChk").text("");
-							$("#btn_rural_submit").hide();						
+							$("#btn_rural_submit").hide();
+							
+							setTimeout(function(){
+								window.location.reload(1);	
+							},5000);
+												
 						}else{
 							$(".errorChk").text('Unauthorized Access');																	
 							$("#btn_rural_submit").show();
@@ -2424,7 +2717,11 @@ ruralData4="||v_LC_reg_tea_pre=0||reg_tea_inst_tea_name=0||reg_tea_inst_tea_type
 ruralData5A="||col1=0||stu1=0||image_match1=0||name_match1=0||gender_match1=0||school_dress1=0||school_idCard1=0||pre_sem_edu_allow1=0||edu_ot_sch1=0||student_abcent1=0||pre1=0||rec_num1=0||col2=0||stu2=0||image_match2=0||name_match2=0||gender_match2=0||school_dress2=0||school_idCard2=0||pre_sem_edu_allow2=0||edu_ot_sch2=0||student_abcent2=0||pre2=0||rec_num2=0||col3=0||stu3=0||image_match3=0||name_match3=0||gender_match3=0||school_dress3=0||school_idCard3=0||pre_sem_edu_allow3=0||edu_ot_sch3=0||student_abcent3=0||pre3=0||rec_num3=0||col4=0||stu4=0||image_match4=0||name_match4=0||gender_match4=0||school_dress4=0||school_idCard4=0||pre_sem_edu_allow4=0||edu_ot_sch4=0||student_abcent4=0||pre4=0||rec_num4=0||col5=0||stu5=0||image_match5=0||name_match5=0||gender_match5=0||school_dress5=0||school_idCard5=0||pre_sem_edu_allow5=0||edu_ot_sch5=0||student_abcent5=0||pre5=0||rec_num5=0||col6=0||stu6=0||image_match6=0||name_match6=0||gender_match6=0||school_dress6=0||school_idCard6=0||pre_sem_edu_allow6=0||edu_ot_sch6=0||student_abcent6=0||pre6=0||rec_num6=0||col7=0||stu7=0||image_match7=0||name_match7=0||gender_match7=0||school_dress7=0||school_idCard7=0||pre_sem_edu_allow7=0||edu_ot_sch7=0||student_abcent7=0||pre7=0||rec_num7=0||col8=0||stu8=0||image_match8=0||name_match8=0||gender_match8=0||school_dress8=0||school_idCard8=0||pre_sem_edu_allow8=0||edu_ot_sch8=0||student_abcent8=0||pre8=0||rec_num8=0||col9=0||stu9=0||image_match9=0||name_match9=0||gender_match9=0||school_dress9=0||school_idCard9=0||pre_sem_edu_allow9=0||edu_ot_sch9=0||student_abcent9=0||pre9=0||rec_num9=0||col10=0||stu10=0||image_match10=0||name_match10=0||gender_match10=0||school_dress10=0||school_idCard10=0||pre_sem_edu_allow10=0||edu_ot_sch10=0||student_abcent10=0||pre10=0||rec_num10=0||col11=0||stu11=0||image_match11=0||name_match11=0||gender_match11=0||school_dress11=0||school_idCard11=0||pre_sem_edu_allow11=0||edu_ot_sch11=0||student_abcent11=0||pre11=0||rec_num11=0||col12=0||stu12=0||image_match12=0||name_match12=0||gender_match12=0||school_dress12=0||school_idCard12=0||pre_sem_edu_allow12=0||edu_ot_sch12=0||student_abcent12=0||pre12=0||rec_num12=0||col13=0||stu13=0||image_match13=0||name_match13=0||gender_match13=0||school_dress13=0||school_idCard13=0||pre_sem_edu_allow13=0||edu_ot_sch13=0||student_abcent13=0||pre13=0||rec_num13=0||col14=0||stu14=0||image_match14=0||name_match14=0||gender_match14=0||school_dress14=0||school_idCard14=0||pre_sem_edu_allow14=0||edu_ot_sch14=0||student_abcent14=0||pre14=0||rec_num14=0||col15=0||stu15=0||image_match15=0||name_match15=0||gender_match15=0||school_dress15=0||school_idCard15=0||pre_sem_edu_allow15=0||edu_ot_sch15=0||student_abcent15=0||pre15=0||rec_num15=0||col16=0||stu16=0||image_match16=0||name_match16=0||gender_match16=0||school_dress16=0||school_idCard16=0||pre_sem_edu_allow16=0||edu_ot_sch16=0||student_abcent16=0||pre16=0||rec_num16=0||col17=0||stu17=0||image_match17=0||name_match17=0||gender_match17=0||school_dress17=0||school_idCard17=0||pre_sem_edu_allow17=0||edu_ot_sch17=0||student_abcent17=0||pre17=0||rec_num17=0";
 
 
-ruralData5B="||col18=0||stu18=0||image_match18=0||name_match18=0||gender_match18=0||school_dress18=0||school_idCard18=0||pre_sem_edu_allow18=0||edu_ot_sch18=0||student_abcent18=0||pre18=0||rec_num18=0||col19=0||stu19=0||image_match19=0||name_match19=0||gender_match19=0||school_dress19=0||school_idCard19=0||pre_sem_edu_allow19=0||edu_ot_sch19=0||student_abcent19=0||pre19=0||rec_num19=0||col20=0||stu20=0||image_match20=0||name_match20=0||gender_match20=0||school_dress20=0||school_idCard20=0||pre_sem_edu_allow20=0||edu_ot_sch20=0||student_abcent20=0||pre20=0||rec_num20=0||col21=0||stu21=0||image_match21=0||name_match21=0||gender_match21=0||school_dress21=0||school_idCard21=0||pre_sem_edu_allow21=0||edu_ot_sch21=0||student_abcent21=0||pre21=0||rec_num21=0||col22=0||stu22=0||image_match22=0||name_match22=0||gender_match22=0||school_dress22=0||school_idCard22=0||pre_sem_edu_allow22=0||edu_ot_sch22=0||student_abcent22=0||pre22=0||rec_num22=0||col23=0||stu23=0||image_match23=0||name_match23=0||gender_match23=0||school_dress23=0||school_idCard23=0||pre_sem_edu_allow23=0||edu_ot_sch23=0||student_abcent23=0||pre23=0||rec_num23=0||col24=0||stu24=0||image_match24=0||name_match24=0||gender_match24=0||school_dress24=0||school_idCard24=0||pre_sem_edu_allow24=0||edu_ot_sch24=0||student_abcent24=0||pre24=0||rec_num24=0||col25=0||stu25=0||image_match25=0||name_match25=0||gender_match25=0||school_dress25=0||school_idCard25=0||pre_sem_edu_allow25=0||edu_ot_sch25=0||student_abcent25=0||pre25=0||rec_num25=0||col26=0||stu26=0||image_match26=0||name_match26=0||gender_match26=0||school_dress26=0|school_idCard26=0||pre_sem_edu_allow26=0||edu_ot_sch26=0||student_abcent26=0||pre26=0||rec_num26=0||col27=0||stu27=0||image_match27=0||name_match27=0||gender_match27=0||school_dress27=0||school_idCard27=0||pre_sem_edu_allow27=0||edu_ot_sch27=0||student_abcent27=0||pre27=0||rec_num27=0||col28=0||stu28=0||image_match28=0||name_match28=0||gender_match28=0||school_dress28=0||school_idCard28=0||pre_sem_edu_allow28=0||edu_ot_sch28=0||student_abcent28=0||pre28=0||rec_num28=0||col29=0||stu29=0||image_match29=0||name_match29=0||gender_match29=0||school_dress29=0||school_idCard29=0||pre_sem_edu_allow29=0||edu_ot_sch29=0||student_abcent29=0||pre29=0||rec_num29=0||col30=0||stu30=0||image_match30=0||name_match30=0||gender_match30=0||school_dress30=0||school_idCard30=0||pre_sem_edu_allow30=0||edu_ot_sch30=0||student_abcent30=0||pre30=0||rec_num30=0||col31=0||stu31=0||image_match31=0||name_match31=0||gender_match31=0||school_dress31=0||school_idCard31=0||pre_sem_edu_allow31=0||edu_ot_sch31=0||student_abcent31=0||pre31=0||rec_num31=0||col32=0||stu32=0||image_match32=0||name_match32=0||gender_match32=0||school_dress32=0||school_idCard32=0||pre_sem_edu_allow32=0||edu_ot_sch32=0||student_abcent32=0||pre32=0||rec_num32=0||col33=0||stu33=0||image_match33=0||name_match33=0||gender_match33=0||school_dress33=0||school_idCard33=0||pre_sem_edu_allow33=0||edu_ot_sch33=0||student_abcent33=0||pre33=0||rec_num33=0||col34=0||stu34=0||image_match34=0||name_match34=0||gender_match34=0||school_dress34=0||school_idCard34=0||pre_sem_edu_allow34=0||edu_ot_sch34=0||student_abcent34=0||pre34=0||rec_num34=0||col35=0||stu35=0||image_match35=0||name_match35=0||gender_match35=0||school_dress35=0||school_idCard35=0||pre_sem_edu_allow35=0||edu_ot_sch35=0||student_abcent35=0||pre35=0||rec_num35=0||lc_name_ot_match_stu=0||lc_image_not_match_st=0||pre_semi_exam_gov_pri_sch=0||pre_sem_exam_reg_stu=0||marriage_abandonment_boys=0||marriage_abandonment_girls=0||marriage_abandonment_total=0";
+ruralData5B="||col18=0||stu18=0||image_match18=0||name_match18=0||gender_match18=0||school_dress18=0||school_idCard18=0||pre_sem_edu_allow18=0||edu_ot_sch18=0||student_abcent18=0||pre18=0||rec_num18=0||col19=0||stu19=0||image_match19=0||name_match19=0||gender_match19=0||school_dress19=0||school_idCard19=0||pre_sem_edu_allow19=0||edu_ot_sch19=0||student_abcent19=0||pre19=0||rec_num19=0||col20=0||stu20=0||image_match20=0||name_match20=0||gender_match20=0||school_dress20=0||school_idCard20=0||pre_sem_edu_allow20=0||edu_ot_sch20=0||student_abcent20=0||pre20=0||rec_num20=0||col21=0||stu21=0||image_match21=0||name_match21=0||gender_match21=0||school_dress21=0||school_idCard21=0||pre_sem_edu_allow21=0||edu_ot_sch21=0||student_abcent21=0||pre21=0||rec_num21=0||col22=0||stu22=0||image_match22=0||name_match22=0||gender_match22=0||school_dress22=0||school_idCard22=0||pre_sem_edu_allow22=0||edu_ot_sch22=0||student_abcent22=0||pre22=0||rec_num22=0||col23=0||stu23=0||image_match23=0||name_match23=0||gender_match23=0||school_dress23=0||school_idCard23=0||pre_sem_edu_allow23=0||edu_ot_sch23=0||student_abcent23=0||pre23=0||rec_num23=0||col24=0||stu24=0||image_match24=0||name_match24=0||gender_match24=0||school_dress24=0||school_idCard24=0||pre_sem_edu_allow24=0||edu_ot_sch24=0||student_abcent24=0||pre24=0||rec_num24=0||col25=0||stu25=0||image_match25=0||name_match25=0||gender_match25=0||school_dress25=0||school_idCard25=0||pre_sem_edu_allow25=0||edu_ot_sch25=0||student_abcent25=0||pre25=0||rec_num25=0||col26=0||stu26=0||image_match26=0||name_match26=0||gender_match26=0||school_dress26=0|school_idCard26=0||pre_sem_edu_allow26=0||edu_ot_sch26=0||student_abcent26=0||pre26=0||rec_num26=0||col27=0||stu27=0||image_match27=0||name_match27=0||gender_match27=0||school_dress27=0||school_idCard27=0||pre_sem_edu_allow27=0||edu_ot_sch27=0||student_abcent27=0||pre27=0||rec_num27=0||col28=0||stu28=0||image_match28=0||name_match28=0||gender_match28=0||school_dress28=0||school_idCard28=0||pre_sem_edu_allow28=0||edu_ot_sch28=0||student_abcent28=0||pre28=0||rec_num28=0||col29=0||stu29=0||image_match29=0||name_match29=0||gender_match29=0||school_dress29=0||school_idCard29=0||pre_sem_edu_allow29=0||edu_ot_sch29=0||student_abcent29=0||pre29=0||rec_num29=0||col30=0||stu30=0||image_match30=0||name_match30=0||gender_match30=0||school_dress30=0||school_idCard30=0||pre_sem_edu_allow30=0||edu_ot_sch30=0||student_abcent30=0||pre30=0||rec_num30=0||col31=0||stu31=0||image_match31=0||name_match31=0||gender_match31=0||school_dress31=0||school_idCard31=0||pre_sem_edu_allow31=0||edu_ot_sch31=0||student_abcent31=0||pre31=0||rec_num31=0||col32=0||stu32=0||image_match32=0||name_match32=0||gender_match32=0||school_dress32=0||school_idCard32=0||pre_sem_edu_allow32=0||edu_ot_sch32=0||student_abcent32=0||pre32=0||rec_num32=0||col33=0||stu33=0||image_match33=0||name_match33=0||gender_match33=0||school_dress33=0||school_idCard33=0||pre_sem_edu_allow33=0||edu_ot_sch33=0||student_abcent33=0||pre33=0||rec_num33=0||col34=0||stu34=0||image_match34=0||name_match34=0||gender_match34=0||school_dress34=0||school_idCard34=0||pre_sem_edu_allow34=0||edu_ot_sch34=0||student_abcent34=0||pre34=0||rec_num34=0||col35=0||stu35=0||image_match35=0||name_match35=0||gender_match35=0||school_dress35=0||school_idCard35=0||pre_sem_edu_allow35=0||edu_ot_sch35=0||student_abcent35=0||pre35=0||rec_num35=0";
+
+
+ruralData5C="||lc_name_ot_match_stu=0||lc_image_not_match_st=0||pre_semi_exam_gov_pri_sch=0||pre_sem_exam_reg_stu=0||marriage_abandonment_boys=0||marriage_abandonment_girls=0||marriage_abandonment_total=0";
+
 
 
 ruralData6="||headmaster_name=0||headmaster_mobileNo=0||headmaster_opinion=0||mobile_pool_teacher_name=0||mobile_pool_teacher_mobileNo=0||mobile_pool_teacher_opinion=0||school_teacher_name=0||school_teacher_mobileNo=0||school_teacher_opinion=0||VisitOfficierName=0||VisitOfficierContact=0||VisitOfficerComments=0";

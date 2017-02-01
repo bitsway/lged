@@ -18,6 +18,9 @@
 				$('#loader').hide();
 				
 				<!---->
+				$("#cloSchool").hide();
+				$("#cloSchoolSecond").hide();
+				
 				$("#school_close_others").hide();
 				$("#school_close_sesond_others").hide();
 				
@@ -175,7 +178,9 @@
     <div class="errorChk" style="color:#C00"></div> 
     	
           School Selected
-         <br/><br/><br/>           
+         <br/><br/>  
+         <div id="schoolSelected" style="font-size:20px; text-align:center;"></div>       
+         <br/>          
         <a data-role="button" onclick="schoolSelect()" href="#" data-theme="c" data-transition="slide" >Next</a>
        
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -227,18 +232,18 @@
                 <label for="school_name">আনন্দ স্কুলের নাম </label>
                 <input type="text" name="school_name" id="school_name"  readonly="readonly" style="background-color:#E8E8E8;" />
             </li>
+            <li style="background-color:#F2F2F2;" class="auto_break"><strong>দৈনিক আনন্দ স্কুল পরিচালনার সময়কাল:</strong> </li>
             <li class="ui-field-contain" >
-                <label for="daily_from_time">দৈনিক আনন্দ স্কুল পরিচালনার সময়কাল </label>
-                <label for="daily_from_time">Start time </label>
+                <label for="daily_from_time">শুরু সময়  </label>
                 	<input type="time" name="daily_from_time" id="daily_from_time" />
             </li>
             <li class="ui-field-contain" >
-                <label for="daily_to_time">End time </label>
+                <label for="daily_to_time">শেষ সময় </label>
                 	<input type="time" name="daily_to_time" id="daily_to_time" />                   
             </li>
             <li class="ui-field-contain" >
-                <label for="total_hour">Total time </label>
-                	<input type="time" name="total_hour" id="total_hour" />               
+                <label for="total_hour">মোট সময় </label>
+                	<input type="number" name="total_hour" id="total_hour" />               
             </li>
             
             <li style="background-color:#F2F2F2;" class="auto_break"><strong>১ম পরিদর্শনের তথ্য :</strong> </li>
@@ -248,14 +253,14 @@
             </li>
             <li class="ui-field-contain auto_break">
                 <label for="school_condition">স্কুলটির অবস্থা </label>
-                <select name="school_condition" id="school_condition" data-native-menu="false">
+                <select name="school_condition" id="school_condition" data-native-menu="false" onchange="condition_school()">
                 	<option value="0" selected="selected">-</option> 
                     <option value="1" >১-ক্লাশ চালু আছে </option> 
                     <option value="2" class="auto_break">২-পরিদর্শন কালে স্কুলটি বন্ধ </option>	
                     <option value="3">৩-স্থায়ীভাবে বন্ধ</option>			
                 </select>
             </li>
-            <li class="ui-field-contain auto_break" onchange="school_close()">
+            <li class="ui-field-contain auto_break" id="cloSchool" onchange="school_close()">
                 <label for="close_school">স্কুলটি বন্ধ হলে, বন্ধের কারণ কী? </label>
                 <select name="close_school" id="close_school" data-native-menu="false" >
                 	<option value="0" selected="selected">-</option> 
@@ -285,14 +290,14 @@
             </li>
             <li class="ui-field-contain auto_break">
                 <label for="school_condition_second">স্কুলটির অবস্থা </label>
-                <select name="school_condition_second" id="school_condition_second" data-native-menu="false">
+                <select name="school_condition_second" id="school_condition_second" data-native-menu="false" onchange="condition_school_second()">
                 	<option value="0" selected="selected">-</option> 
                     <option value="1">১-ক্লাশ চালু আছে </option> 
                     <option value="2" class="auto_break">২-পরিদর্শন কালে স্কুলটি বন্ধ </option>	
                     <option value="3">৩-স্থায়ীভাবে বন্ধ</option>			
                 </select>
             </li>
-            <li class="ui-field-contain auto_break">
+            <li class="ui-field-contain auto_break" id="cloSchoolSecond">
                 <label for="close_school_second">স্কুলটি বন্ধ হলে, বন্ধের কারণ কী? </label>
                 <select name="close_school_second" id="close_school_second" data-native-menu="false" onchange="school_close_second()">
                 	<option value="0" selected="selected">-</option> 
@@ -330,11 +335,10 @@
             
                 <li class="ui-field-contain auto_break">
                     <label for="school_installation_year">১.আনন্দ স্কুল স্থাপনের বছর (কোহর্ট) : </label>
-                        <input type="number" name="school_installation_year" id="school_installation_year" />
+                        <input type="text" name="school_installation_year" id="school_installation_year" readonly="readonly" style="background-color:#E8E8E8;" />
                  </li>  
-                 
+                <li style="background-color:#F2F2F2;" class="auto_break"><strong>২.আনন্দ স্কুলের ঠিকানা (পূর্ববর্তী ঠিকানা পরিবর্তন হয়ে থাকলে) : </strong></li> 
                 <li class="ui-field-contain auto_break">	
-                    <label for="q2_a">২.আনন্দ স্কুলের ঠিকানা (পূর্ববর্তী ঠিকানা পরিবর্তন হয়ে থাকলে) : </label>
                     <label for="school_address_house">বাড়ি </label>
                         <input type="text" name="school_address_house" id="school_address_house" />
                </li>
@@ -348,7 +352,7 @@
                </li>
                 <li class="ui-field-contain auto_break">
                     <label for="distance_school_near_GPS">৩. নিকটবর্তী জিপিএস থেকে আনন্দ স্কুলের দূরত্ব...কিঃমিঃ</label>
-                       <input type="text" name="distance_school_near_GPS" id="distance_school_near_GPS" />
+                       <input type="number" name="distance_school_near_GPS" id="distance_school_near_GPS" />
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="school_signboard">৪. আনন্দ স্কুল প্রাঙ্গণে স্কুলের নাম ও আইডি সম্বলিত সাইনবোর্ড টানানো আছে কি? </label>
@@ -411,15 +415,14 @@
                     		<option value="2">২-না </option>								 												
                         </select>
                 </li>
-                
+                <li style="background-color:#F2F2F2;" class="auto_break"><strong>৯. শ্রেণীকক্ষের আয়তন :</strong></li>
                 <li class="ui-field-contain auto_break">
-                    <label for="">৯. শ্রেণীকক্ষের আয়তন </label>
                     <label for="classroom_aayaton_hight">দৈর্ঘ্য  </label>
-                        <input type="text" name="classroom_aayaton_hight" id="classroom_aayaton_hight" />
+                        <input type="number" name="classroom_aayaton_hight" id="classroom_aayaton_hight" />
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="classroom_aayaton_width">প্রস্থ  </label>
-                        <input type="text" name="classroom_aayaton_width" id="classroom_aayaton_width" />
+                        <input type="number" name="classroom_aayaton_width" id="classroom_aayaton_width" />
                 </li>         
                 <li class="ui-field-contain auto_break">
                     <label for="huse_light_air">১০. পর্যাপ্ত আলো বাতাসের ব্যবস্থা আছে কি? </label>
@@ -869,7 +872,7 @@
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="check_book">৩৪. শিক্ষকের বাড়ি হতে আনন্দ স্কুলের দূরত্ব  </label>
-                        <input type="text" id="distance_teacher_house_to_school" name="distance_teacher_house_to_school" />
+                        <input type="number" id="distance_teacher_house_to_school" name="distance_teacher_house_to_school" />
                 </li>
                 <li class="ui-field-contain auto_break">
                     <label for="previous_semister_school_teacher_training">৩৫. আনন্দ স্কুল শিক্ষক গত সেমিস্টারে বিষয় ভিত্তিক প্রশিক্ষণে অংশগ্রহণ করেছেন কি?  </label>
@@ -885,8 +888,9 @@
                     <label for="class_attendence_students">৩৬. শ্রেণীকক্ষে সংরক্ষিত হাজিরা খাতা অনুযায়ী শিক্ষার্থী সংখ্যা  </label>
                         <input type="number" id="class_attendence_students" name="class_attendence_students" />
                 </li>
+                
+                <li style="background-color:#F2F2F2;" class="auto_break"><strong>৩৭. পরিদর্শনের দিন উপস্থিত শিক্ষার্থীর সংখ্যা </strong> </li>
                 <li class="ui-field-contain auto_break" >
-                    <label for="">৩৭. পরিদর্শনের দিন উপস্থিত শিক্ষার্থীর সংখ্যা   </label>
                     <label for="visit_day_attendence_students_boys"> বালক</label>
                     	<input type="number" name="visit_day_attendence_students_boys" id="visit_day_attendence_students_boys" onblur="total_student()" />   				</li>
                 <li class="ui-field-contain auto_break" >
@@ -1019,7 +1023,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present1" name="previous_semister_total_present1" /></td>
-                        <td><input type="text" id="previous_semister_recived_number1" name="previous_semister_recived_number1" /></td>
+                        <td><input type="number" id="previous_semister_recived_number1" name="previous_semister_recived_number1" /></td>
                       </tr>
                       
                       <tr>
@@ -1100,7 +1104,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present2" name="previous_semister_total_present2" /></td>
-                        <td><input type="text" id="previous_semister_recived_number2" name="previous_semister_recived_number2" /></td>
+                        <td><input type="number" id="previous_semister_recived_number2" name="previous_semister_recived_number2" /></td>
                       </tr>
                       
                       <tr>
@@ -1181,7 +1185,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present3" name="previous_semister_total_present3" /></td>
-                        <td><input type="text" id="previous_semister_recived_number3" name="previous_semister_recived_number3" /></td>
+                        <td><input type="number" id="previous_semister_recived_number3" name="previous_semister_recived_number3" /></td>
                       </tr>
                       
                       <tr>
@@ -1262,7 +1266,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present4" name="previous_semister_total_present4" /></td>
-                        <td><input type="text" id="previous_semister_recived_number4" name="previous_semister_recived_number4" /></td>
+                        <td><input type="number" id="previous_semister_recived_number4" name="previous_semister_recived_number4" /></td>
                       </tr>
                       
                       <tr>
@@ -1343,7 +1347,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present5" name="previous_semister_total_present5" /></td>
-                        <td><input type="text" id="previous_semister_recived_number5" name="previous_semister_recived_number5" /></td>
+                        <td><input type="number" id="previous_semister_recived_number5" name="previous_semister_recived_number5" /></td>
                       </tr>
                       
                       <tr>
@@ -1424,7 +1428,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present6" name="previous_semister_total_present6" /></td>
-                        <td><input type="text" id="previous_semister_recived_number6" name="previous_semister_recived_number6" /></td>
+                        <td><input type="number" id="previous_semister_recived_number6" name="previous_semister_recived_number6" /></td>
                       </tr>
                       
                       <tr>
@@ -1505,7 +1509,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present7" name="previous_semister_total_present7" /></td>
-                        <td><input type="text" id="previous_semister_recived_number7" name="previous_semister_recived_number7" /></td>
+                        <td><input type="number" id="previous_semister_recived_number7" name="previous_semister_recived_number7" /></td>
                       </tr>
                       
                       <tr>
@@ -1586,7 +1590,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present8" name="previous_semister_total_present8" /></td>
-                        <td><input type="text" id="previous_semister_recived_number8" name="previous_semister_recived_number8" /></td>
+                        <td><input type="number" id="previous_semister_recived_number8" name="previous_semister_recived_number8" /></td>
                       </tr>
                       
                       <tr>
@@ -1667,7 +1671,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present9" name="previous_semister_total_present9" /></td>
-                        <td><input type="text" id="previous_semister_recived_number9" name="previous_semister_recived_number9" /></td>
+                        <td><input type="number" id="previous_semister_recived_number9" name="previous_semister_recived_number9" /></td>
                       </tr>
                       
                       <tr>
@@ -1748,7 +1752,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present10" name="previous_semister_total_present10" /></td>
-                        <td><input type="text" id="previous_semister_recived_number10" name="previous_semister_recived_number10" /></td>
+                        <td><input type="number" id="previous_semister_recived_number10" name="previous_semister_recived_number10" /></td>
                       </tr>
                       
                       <tr>
@@ -1829,7 +1833,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present11" name="previous_semister_total_present11" /></td>
-                        <td><input type="text" id="previous_semister_recived_number11" name="previous_semister_recived_number11" /></td>
+                        <td><input type="number" id="previous_semister_recived_number11" name="previous_semister_recived_number11" /></td>
                       </tr>
                       
                       <tr>
@@ -1910,7 +1914,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present12" name="previous_semister_total_present12" /></td>
-                        <td><input type="text" id="previous_semister_recived_number12" name="previous_semister_recived_number12" /></td>
+                        <td><input type="number" id="previous_semister_recived_number12" name="previous_semister_recived_number12" /></td>
                       </tr>
                       
                       <tr>
@@ -1991,7 +1995,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present13" name="previous_semister_total_present13" /></td>
-                        <td><input type="text" id="previous_semister_recived_number13" name="previous_semister_recived_number13" /></td>
+                        <td><input type="number" id="previous_semister_recived_number13" name="previous_semister_recived_number13" /></td>
                       </tr>
                       
                       <tr>
@@ -2072,7 +2076,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present14" name="previous_semister_total_present14" /></td>
-                        <td><input type="text" id="previous_semister_recived_number14" name="previous_semister_recived_number14" /></td>
+                        <td><input type="number" id="previous_semister_recived_number14" name="previous_semister_recived_number14" /></td>
                       </tr>
                       
                       <tr>
@@ -2153,7 +2157,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present15" name="previous_semister_total_present15" /></td>
-                        <td><input type="text" id="previous_semister_recived_number15" name="previous_semister_recived_number15" /></td>
+                        <td><input type="number" id="previous_semister_recived_number15" name="previous_semister_recived_number15" /></td>
                       </tr>
                       
                       <tr>
@@ -2234,7 +2238,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present16" name="previous_semister_total_present16" /></td>
-                        <td><input type="text" id="previous_semister_recived_number16" name="previous_semister_recived_number16" /></td>
+                        <td><input type="number" id="previous_semister_recived_number16" name="previous_semister_recived_number16" /></td>
                       </tr>
                       
                       <tr>
@@ -2315,7 +2319,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present17" name="previous_semister_total_present17" /></td>
-                        <td><input type="text" id="previous_semister_recived_number17" name="previous_semister_recived_number17" /></td>
+                        <td><input type="number" id="previous_semister_recived_number17" name="previous_semister_recived_number17" /></td>
                       </tr>
                       
                       <tr>
@@ -2396,7 +2400,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present18" name="previous_semister_total_present18" /></td>
-                        <td><input type="text" id="previous_semister_recived_number18" name="previous_semister_recived_number18" /></td>
+                        <td><input type="number" id="previous_semister_recived_number18" name="previous_semister_recived_number18" /></td>
                       </tr>
                       
                       <tr>
@@ -2477,7 +2481,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present19" name="previous_semister_total_present19" /></td>
-                        <td><input type="text" id="previous_semister_recived_number19" name="previous_semister_recived_number19" /></td>
+                        <td><input type="number" id="previous_semister_recived_number19" name="previous_semister_recived_number19" /></td>
                       </tr>
                       
                       <tr>
@@ -2558,7 +2562,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present20" name="previous_semister_total_present20" /></td>
-                        <td><input type="text" id="previous_semister_recived_number20" name="previous_semister_recived_number20" /></td>
+                        <td><input type="number" id="previous_semister_recived_number20" name="previous_semister_recived_number20" /></td>
                       </tr>
                       
                       <tr>
@@ -2639,7 +2643,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present21" name="previous_semister_total_present21" /></td>
-                        <td><input type="text" id="previous_semister_recived_number21" name="previous_semister_recived_number21" /></td>
+                        <td><input type="number" id="previous_semister_recived_number21" name="previous_semister_recived_number21" /></td>
                       </tr>
                       
                       <tr>
@@ -2720,7 +2724,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present22" name="previous_semister_total_present22" /></td>
-                        <td><input type="text" id="previous_semister_recived_number22" name="previous_semister_recived_number22" /></td>
+                        <td><input type="number" id="previous_semister_recived_number22" name="previous_semister_recived_number22" /></td>
                       </tr>
                       
                       <tr>
@@ -2801,7 +2805,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present23" name="previous_semister_total_present23" /></td>
-                        <td><input type="text" id="previous_semister_recived_number23" name="previous_semister_recived_number23" /></td>
+                        <td><input type="number" id="previous_semister_recived_number23" name="previous_semister_recived_number23" /></td>
                       </tr>
                       
                       <tr>
@@ -2882,7 +2886,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present24" name="previous_semister_total_present24" /></td>
-                        <td><input type="text" id="previous_semister_recived_number24" name="previous_semister_recived_number24" /></td>
+                        <td><input type="number" id="previous_semister_recived_number24" name="previous_semister_recived_number24" /></td>
                       </tr>
                       
                       <tr>
@@ -2963,7 +2967,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present25" name="previous_semister_total_present25" /></td>
-                        <td><input type="text" id="previous_semister_recived_number25" name="previous_semister_recived_number25" /></td>
+                        <td><input type="number" id="previous_semister_recived_number25" name="previous_semister_recived_number25" /></td>
                       </tr>
                       
                       <tr>
@@ -3044,7 +3048,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present26" name="previous_semister_total_present26" /></td>
-                        <td><input type="text" id="previous_semister_recived_number26" name="previous_semister_recived_number26" /></td>
+                        <td><input type="number" id="previous_semister_recived_number26" name="previous_semister_recived_number26" /></td>
                       </tr>
                       
                       <tr>
@@ -3125,7 +3129,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present27" name="previous_semister_total_present27" /></td>
-                        <td><input type="text" id="previous_semister_recived_number27" name="previous_semister_recived_number27" /></td>
+                        <td><input type="number" id="previous_semister_recived_number27" name="previous_semister_recived_number27" /></td>
                       </tr>
                       
                       <tr>
@@ -3206,7 +3210,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present28" name="previous_semister_total_present28" /></td>
-                        <td><input type="text" id="previous_semister_recived_number28" name="previous_semister_recived_number28" /></td>
+                        <td><input type="number" id="previous_semister_recived_number28" name="previous_semister_recived_number28" /></td>
                       </tr>
                       
                       <tr>
@@ -3287,7 +3291,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present29" name="previous_semister_total_present29" /></td>
-                        <td><input type="text" id="previous_semister_recived_number29" name="previous_semister_recived_number29" /></td>
+                        <td><input type="number" id="previous_semister_recived_number29" name="previous_semister_recived_number29" /></td>
                       </tr>
                       
                       <tr>
@@ -3368,7 +3372,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present30" name="previous_semister_total_present30" /></td>
-                        <td><input type="text" id="previous_semister_recived_number30" name="previous_semister_recived_number30" /></td>
+                        <td><input type="number" id="previous_semister_recived_number30" name="previous_semister_recived_number30" /></td>
                       </tr>
                       
                       <tr>
@@ -3449,7 +3453,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present31" name="previous_semister_total_present31" /></td>
-                        <td><input type="text" id="previous_semister_recived_number31" name="previous_semister_recived_number31" /></td>
+                        <td><input type="number" id="previous_semister_recived_number31" name="previous_semister_recived_number31" /></td>
                       </tr>
                       
                       <tr>
@@ -3530,7 +3534,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present32" name="previous_semister_total_present32" /></td>
-                        <td><input type="text" id="previous_semister_recived_number32" name="previous_semister_recived_number32" /></td>
+                        <td><input type="number" id="previous_semister_recived_number32" name="previous_semister_recived_number32" /></td>
                       </tr>
                       
                       <tr>
@@ -3611,7 +3615,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present33" name="previous_semister_total_present33" /></td>
-                        <td><input type="text" id="previous_semister_recived_number33" name="previous_semister_recived_number33" /></td>
+                        <td><input type="number" id="previous_semister_recived_number33" name="previous_semister_recived_number33" /></td>
                       </tr>
                       
                       <tr>
@@ -3692,7 +3696,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present34" name="previous_semister_total_present34" /></td>
-                        <td><input type="text" id="previous_semister_recived_number34" name="previous_semister_recived_number34" /></td>
+                        <td><input type="number" id="previous_semister_recived_number34" name="previous_semister_recived_number34" /></td>
                       </tr>
                       
                       <tr>
@@ -3773,7 +3777,7 @@
                         </select>
                         </td>
                         <td><input type="number" id="previous_semister_total_present35" name="previous_semister_total_present35" /></td>
-                        <td><input type="text" id="previous_semister_recived_number35" name="previous_semister_recived_number35" /></td>
+                        <td><input type="number" id="previous_semister_recived_number35" name="previous_semister_recived_number35" /></td>
                       </tr> 
                     </table>	
                 </li>
@@ -3797,8 +3801,9 @@
                  <label for="">৪৩. গত সেমিস্টারের পরীক্ষার খাতা অনুযায়ী শিক্ষার্থীর সংখ্যা  </label>
                     <input type="number" id="previous_semister_exam_register_student" name="previous_semister_exam_register_student" />
                 </li> 
+                
+                <li style="background-color:#F2F2F2;" class="auto_break"><strong>৪৪. বিবাহের কারণে আনন্দ স্কুল পরিত্যাগকারী শিক্ষার্থীর সংখ্যা </strong> </li>
                 <li class="ui-field-contain auto_break" >
-                 <label for="">৪৪. বিবাহের কারণে আনন্দ স্কুল পরিত্যাগকারী শিক্ষার্থীর সংখ্যা </label>
                  <label for="">বালক</label>
                  	<input type="number" name="marriage_abandonment_boys" id="marriage_abandonment_boys" onblur="marriage_total_stu()" /> 
                 </li> 
@@ -3901,23 +3906,77 @@
         <a data-role="button" onclick="backClick();" data-rel="back" class="ui-btn-right" data-transition="slide"><img src="back.png" /></a>
         <h3>LGED</h3>
   </div>
-    <div data-role="content">       
-       
+    <div data-role="content">   
+    	 
+        <select id="picType1" name="picType1" data-native-menu="false">
+            <option value="0">0-Select Type</option>
+            <option value="1">1-Lc picture with signboard</option>
+            <option value="2">2-Lc picture inside the school</option>
+            <option value="3">3-Teacher & student picture</option>
+            <option value="4">4-Attendence register</option>
+            <option value="5">5-Visit register</option>
+            <!--<option value="6">Others</option>-->
+        </select>
+          
+       	<br />
         <a data-role="button" id="btn_take_pic1" onClick="getAchivementImage1();" class="ui-btn" >Take Picture 1</a>       
         <img src="" width="128" height="128" alt="Image1" id="myImageA" />        
         <input name="image1" id="image1" value=""  type="hidden">
         
+        <select id="picType2" name="picType2" data-native-menu="false">
+            <option value="0">0-Select Type</option>
+            <option value="1">1-Lc picture with signboard</option>
+            <option value="2">2-Lc picture inside the school</option>
+            <option value="3">3-Teacher & student picture</option>
+            <option value="4">4-Attendence register</option>
+            <option value="5">5-Visit register</option>
+            <!--<option value="6">Others</option>-->
+        </select>
+        <br />
         <a data-role="button" id="btn_take_pic2" onClick="getAchivementImage2();" class="ui-btn" >Take Picture 2</a>       
         <img src="" width="128" height="128" alt="Image2" id="myImageB" />
         <input name="image2" id="image2" value=""  type="hidden">
+        
+        <select id="picType3" name="picType3" data-native-menu="false">
+            <option value="0">0-Select Type</option>
+            <option value="1">1-Lc picture with signboard</option>
+            <option value="2">2-Lc picture inside the school</option>
+            <option value="3">3-Teacher & student picture</option>
+            <option value="4">4-Attendence register</option>
+            <option value="5">5-Visit register</option>
+           <!-- <option value="6">Others</option>-->
+        </select>
+        <br />
         
         <a data-role="button" id="btn_take_pic3" onClick="getAchivementImage3();" class="ui-btn" >Take Picture 3</a>       
         <img src="" width="128" height="128" alt="Image3" id="myImageC" />
         <input name="image3" id="image3" value=""  type="hidden">
         
+        <select id="picType4" name="picType4" data-native-menu="false">
+            <option value="0">0-Select Type</option>
+            <option value="1">1-Lc picture with signboard</option>
+            <option value="2">2-Lc picture inside the school</option>
+            <option value="3">3-Teacher & student picture</option>
+            <option value="4">4-Attendence register</option>
+            <option value="5">5-Visit register</option>
+           <!-- <option value="6">Others</option>-->
+        </select>
+        <br />
+        
         <a data-role="button" id="btn_take_pic4" onClick="getAchivementImage4();" class="ui-btn" >Take Picture 4</a>       
         <img src="" width="128" height="128" alt="Image4" id="myImageD" />
         <input name="image4" id="image4" value=""  type="hidden">
+        
+        <select id="picType5" name="picType5" data-native-menu="false">
+            <option value="0">0-Select Type</option>
+            <option value="1">1-Lc picture with signboard</option>
+            <option value="2">2-Lc picture inside the school</option>
+            <option value="3">3-Teacher & student picture</option>
+            <option value="4">4-Attendence register</option>
+            <option value="5">5-Visit register</option>
+           <!-- <option value="6">Others</option>-->
+        </select>
+        <br />
         
         <a data-role="button" id="btn_take_pic5" onClick="getAchivementImage5();" class="ui-btn" >Take Picture 5</a>       
         <img src="" width="128" height="128" alt="Image5" id="myImageE" />
@@ -3926,7 +3985,7 @@
         
         <input name="ach_lat" id="ach_lat" value=""  type="hidden">
         <input name="ach_long" id="ach_long" value=""  type="hidden">
-        <a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAch();" class="ui-btn" >Confirm Location</a>        
+        <!--<a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAch();" class="ui-btn" >Confirm Location</a>-->        <br/> 
         <div class="errorChk" style="color:#F00;"></div>
         <div class="sucChk" style="color:#00CA00;"></div>
         <br/>
