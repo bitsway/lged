@@ -20,19 +20,19 @@ var upListFlag=0;
 function getLocationInfoAch() {		
 	var options = { enableHighAccuracy: false};	
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, options);				
-	//$(".errorChk").html("Confirming location. Please wait.");
+	$(".errorChk").html("Confirming location. Please wait.");
 }
 // onSuccess Geolocation
 function onSuccess(position) {	
 	$("#ach_lat").val(position.coords.latitude);
 	$("#ach_long").val(position.coords.longitude);
-	//$(".errorChk").html("Location Confirmed");
+	$(".errorChk").html("Location Confirmed");
 }
 // onError Callback receives a PositionError object
 function onError(error) {
    $("#ach_lat").val(0);
    $("#ach_long").val(0);
-   //$(".errorChk").html("Failed to Confirmed Location.");
+   $(".errorChk").html("Failed to Confirmed Location.");
 }
 
 //---- online 
@@ -192,15 +192,15 @@ function ruralV(){
 					  schList="";
 					  for (i=0;i<schoolList.length;i++){					
 							schListTotal=schoolList[i].split(',')
-							
-							schList+="<option value="+encodeURIComponent(schoolList[i])+">"+schListTotal[0].slice(-3)+"-"+schListTotal[1]+"</option>";
+							schList+="<option value="+encodeURIComponent(schoolList[i])+">"+schListTotal[0]+"-"+schListTotal[1]+"</option>";
+							//schList+="<option value="+encodeURIComponent(schoolList[i])+">"+schListTotal[0].slice(-3)+"-"+schListTotal[1]+"</option>";
 						}							
 						var rpt_rep_ob=$("#school_list");						
 						rpt_rep_ob.empty();
 						rpt_rep_ob.append(schList);
 						rpt_rep_ob.selectmenu("refresh");
 						
-						getLocationInfoAch();			  
+						//getLocationInfoAch();			  
 					 									  
 				  }		  
 			});	 		
@@ -359,7 +359,7 @@ function ruralData1Next(){
 			$(".errorChk").text("অবশ্যক- স্কুলটির অবস্থা ");		
 		}else if(visit_date!="" && (school_condition==2 || school_condition==3) && close_school==0){
 			$(".errorChk").text("অবশ্যক- স্কুলটি বন্ধ হলে, বন্ধের কারণ কী");
-		}else if(visit_date!="" && close_school==4 && close_school_others==""){
+		}else if(visit_date!="" && close_school==4 && close_school_others=="" && school_condition !=1){
 			$(".errorChk").text("উল্লেখ করুন");
 		}else if(visit_date!="" && next_visit==0){
 			$(".errorChk").text("অবশ্যক- পরবর্তী পরিদর্শনের প্রয়োজন আছে কি");			
@@ -368,7 +368,7 @@ function ruralData1Next(){
 			$(".errorChk").text("অবশ্যক- স্কুলটির অবস্থা ");	
 		}else if(visit_date_second!="" && (school_condition_second==2 || school_condition_second==3) && close_school_second==0){
 			$(".errorChk").text("অবশ্যক- স্কুলটি বন্ধ হলে, বন্ধের কারণ কী");
-		}else if(visit_date_second!="" && close_school_second==4 && close_school_others_second==""){
+		}else if(visit_date_second!="" && close_school_second==4 && close_school_others_second=="" && school_condition_second !=1 ){
 			$(".errorChk").text("উল্লেখ করুন");
 				
 		}else{
@@ -414,8 +414,10 @@ function condition_school(){
 	var school_condition=$("#school_condition").val();
 	if(school_condition==0){
 		$("#cloSchool").hide();
+		$("#school_close_others").hide();
 	}else  if(school_condition==1){
 		$("#cloSchool").hide();
+		$("#school_close_others").hide();
 	}else{
 		$("#cloSchool").show();
 	}		
@@ -425,8 +427,10 @@ function condition_school_second(){
 	var school_condition_second=$("#school_condition_second").val();
 	if(school_condition_second==0){
 		$("#cloSchoolSecond").hide();
+		$("#school_close_sesond_others").hide();
 	}else  if(school_condition_second==1){
 		$("#cloSchoolSecond").hide();
+		$("#school_close_sesond_others").hide();
 	}else{
 		$("#cloSchoolSecond").show();
 	}		
@@ -524,8 +528,12 @@ function ruralData2Next(){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৮");
 		}else if(classroom_aayaton_hight==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ দৈর্ঘ্য ");	
+		}else if(classroom_aayaton_hight.length >3){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ দৈর্ঘ্য সর্বাধিক ৩ সংখ্যা");	
 		}else if(classroom_aayaton_width==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ প্রস্থ");	
+		}else if(classroom_aayaton_width.length >3){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ প্রস্থ সর্বাধিক ৩ সংখ্যা");		
 		}else if(huse_light_air=="" || huse_light_air==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-১০");	
 		}else if(classroom_windows==""){
@@ -697,7 +705,7 @@ function ruralData3Next(){
 		var others_month5=$("#others_month5").val().replace(/\./g, '');
 		var others_month6=$("#others_month6").val().replace(/\./g, '');
 		
-		//var decimal=/^[-+]?[0-9]+\.[0-9]+$/;
+		var deci=/^[-+]?[0-9]+\.[0-9]+$/;
 		var decimal=/^\.[0-9]+$/;
 				
 		if(education_allowance_receipt==""|| education_allowance_receipt==0){
@@ -706,21 +714,28 @@ function ruralData3Next(){
 			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা হ্যাঁ হলে, প্রাপ্তির তারিখ");
 		}else if(education_allowance_receipt==2 && education_allowance_not_receipt==0){
 			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা না হলে, কেন পাওয়া যায়নি ");	
-		}else if(education_allowance_receipt_delay==""){
-			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে");
+		/*}else if(education_allowance_receipt_delay==""){
+			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে");*/
+		}else if(education_allowance_receipt_delay.length >2 ){
+			$(".errorChk").text("শিক্ষা ভাতা প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে সর্বাধিক ২ সংখ্যা");		
 		}else if(education_allowance_receipt_delay.match(decimal)){
-			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে প্লিজ কারেক্ট ভালু");	
-				
+			$(".errorChk").text("শিক্ষা ভাতা প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে প্লিজ কারেক্ট ভালু");	
+		}else if(education_allowance_receipt_delay.match(deci)){
+			$(".errorChk").text("শিক্ষা ভাতা প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে প্লিজ কারেক্ট ভালু");		
 		}else if(education_aundan_receipt=="" || education_aundan_receipt==0){
 			$(".errorChk").text("অবশ্যক শিক্ষা অনুদান");		
 		}else if(education_aundan_receipt==1 && education_aundan_receipt_date=="" ){
 			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান হ্যাঁ হলে, প্রাপ্তির তারিখ");	
 		}else if(education_aundan_receipt==2 && education_aundan_not_receipt==0 ){
 			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান না হলে, কেন পাওয়া যায়নি ");	
-		}else if(education_aundan_receipt_delay=="" ){
-			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে");	
+		/*}else if(education_aundan_receipt_delay=="" ){
+			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে");	*/
+		}else if(education_aundan_receipt_delay.length >2 ){
+			$(".errorChk").text("শিক্ষা অনুদান প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে সর্বাধিক ২ সংখ্যা");	
 		}else if(education_aundan_receipt_delay.match(decimal)){
-			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে প্লিজ কারেক্ট ভালু");		
+			$(".errorChk").text("শিক্ষা অনুদান প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে প্লিজ কারেক্ট ভালু");	
+		}else if(education_aundan_receipt_delay.match(deci)){
+			$(".errorChk").text("শিক্ষা অনুদান প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে প্লিজ কারেক্ট ভালু");	
 		}else if(school_necessary_rec_conservation_trank==""|| school_necessary_rec_conservation_trank==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৭");
 			
@@ -910,16 +925,18 @@ function ruralData4Next(){
 		
 		if(v_LC_reg_tea_pre=="" || v_LC_reg_tea_pre==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩১");			
-		}else if(reg_tea_inst_tea_name==""){
+		}else if(v_LC_reg_tea_pre!=1 && reg_tea_inst_tea_name=="" ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩২.১");	
-		}else if(reg_tea_inst_tea_type=="" || reg_tea_inst_tea_type==0){
+		}else if(v_LC_reg_tea_pre!=1 && reg_tea_inst_tea_type==0 && tea_rep_appo_office==0 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩২.২");		
-		}else if(tea_rep_appo_office=="" || tea_rep_appo_office==0){
+		}else if(v_LC_reg_tea_pre!=1 && reg_tea_inst_tea_type==1 && tea_rep_appo_office==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩২.৩");		
 		}else if(v_dis_id_card_tea=="" || v_dis_id_card_tea==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৩");		
 		}else if(dis_tea_house_to_sch==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৪");	
+		}else if(dis_tea_house_to_sch.length >3){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৪ সর্বাধিক ৩ সংখ্যা");	
 		}else if(pre_semr_schl_tea_trai=="" || pre_semr_schl_tea_trai==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৫");	
 		}else if(cls_atte_stu=="" ){
@@ -974,6 +991,34 @@ function ruralData4Next(){
 		}	
 	
 }
+
+
+function vLCReTeaPre(){
+	var v_LC_reg_tea_pre=$("#visit_LC_regu_teacher_present").val();
+	if(v_LC_reg_tea_pre==0){
+		$("#regTeaInsTeaNam").hide();
+		$("#regTeaInsTeaTyp").hide();
+		$("#teaRepAppOff").hide();
+	}else if(v_LC_reg_tea_pre==1){
+		$("#regTeaInsTeaNam").hide();
+		$("#regTeaInsTeaTyp").hide();
+		$("#teaRepAppOff").hide();
+	}else{
+		$("#regTeaInsTeaNam").show();
+		$("#regTeaInsTeaTyp").show();
+		//$("#teaRepAppOff").show();	
+	}
+}
+
+function regTInsTeaTyp(){
+	var reg_tea_inst_tea_type=$("#regu_tea_instead_teacher_type").val();
+	if(reg_tea_inst_tea_type==1){
+		$("#teaRepAppOff").show();
+	}else{
+		$("#teaRepAppOff").hide();
+	}	
+}
+
 
 function total_student(){	  
 	var visit_day_attendence_students_boys=$("#visit_day_attendence_students_boys").val();
@@ -1648,7 +1693,7 @@ function ruralDataSubmit(){
 			longitude=0;
 			}
 			
-		if(picType1==0){
+		/*if(picType1==0){
 			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ১");	
 		}else if(picType2==0){
 			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ২");	
@@ -1658,7 +1703,7 @@ function ruralDataSubmit(){
 			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৪");	
 		}else if(picType5==0){
 			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৫");	
-		}else{
+		}else{*/
 		//---------------
 		//image1 start	
 		//------------------------------------image 1					
@@ -1671,7 +1716,7 @@ function ruralDataSubmit(){
 	
 		//syncData();	
 		}
-	}
+	//}
 
 function getAchivementImage1() {
 	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 50,
@@ -2725,7 +2770,6 @@ ruralData5C="||lc_name_ot_match_stu=0||lc_image_not_match_st=0||pre_semi_exam_go
 
 
 ruralData6="||headmaster_name=0||headmaster_mobileNo=0||headmaster_opinion=0||mobile_pool_teacher_name=0||mobile_pool_teacher_mobileNo=0||mobile_pool_teacher_opinion=0||school_teacher_name=0||school_teacher_mobileNo=0||school_teacher_opinion=0||VisitOfficierName=0||VisitOfficierContact=0||VisitOfficerComments=0";
-
 }
 
 
