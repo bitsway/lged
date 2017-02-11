@@ -230,14 +230,16 @@ function schoolSearch(){
 					  var dist_name=schoolNameStr[1];
 					  var up_name=schoolNameStr[2];		
 					  localStorage.school_code=schoolNameStr[3];
-					  localStorage.school_name=schoolNameStr[4];
-					  var cohort=schoolNameStr[5];
-					 // alert(cohort);
+					  var school_code_short=schoolNameStr[4];
+					  localStorage.school_name=schoolNameStr[5];
+					  var cohort=schoolNameStr[6];
+					  
 					  $("#division").val(div_name);
 					  $("#district").val(dist_name);
 					  $("#upzila").val(up_name);
 					  $("#ff_id").val(localStorage.ffID);
 					  $("#school_id").val(localStorage.school_code);
+					  $("#school_id_short").val(school_code_short);
 					  $("#school_name").val(localStorage.school_name);
 					  $("#school_installation_year").val(cohort);
 					  
@@ -317,6 +319,7 @@ function ruralData1Next(){
 		var ff_id=$("#ff_id").val();
 		var semister=$("#semister").val();
 		var school_id=$("#school_id").val();
+		var school_id_short=$("#school_id_short").val();
 		var school_name=$("#school_name").val();
 		var daily_from_time=$("#daily_from_time").val();
 		var daily_to_time=$("#daily_to_time").val();
@@ -373,7 +376,7 @@ function ruralData1Next(){
 				
 		}else{
 						
-			ruralData1="||division="+division+"||district="+district+"||upzila="+upzila+"||ff_id="+ff_id+"||semister="+semister+"||LCVisitYr="+localStorage.date+"||school_id="+school_id+"||school_name="+school_name+"||daily_from_time="+daily_from_time+"||daily_to_time="+daily_to_time+"||total_hour="+total_hour+"||visit_date="+visit_date+"||school_condition="+school_condition+"||close_school="+close_school+"||close_school_others="+close_school_others+"||next_visit="+next_visit+"||visit_date_second="+visit_date_second+"||school_condition_second="+school_condition_second+"||close_school_second="+close_school_second+"||close_school_others_second="+close_school_others_second;
+			ruralData1="||division="+division+"||district="+district+"||upzila="+upzila+"||ff_id="+ff_id+"||semister="+semister+"||LCVisitYr="+localStorage.date+"||school_id="+school_id+"||school_id_short="+school_id_short+"||school_name="+school_name+"||daily_from_time="+daily_from_time+"||daily_to_time="+daily_to_time+"||total_hour="+total_hour+"||visit_date="+visit_date+"||school_condition="+school_condition+"||close_school="+close_school+"||close_school_others="+close_school_others+"||next_visit="+next_visit+"||visit_date_second="+visit_date_second+"||school_condition_second="+school_condition_second+"||close_school_second="+close_school_second+"||close_school_others_second="+close_school_others_second;
 		
 		//alert(ruralData1);
 		$(".errorChk").text("");
@@ -402,11 +405,11 @@ function ruralData1Next(){
 function depend_semister(){
 	var semister=$("#semister").val();
 	if(semister==1){
-		$("#depends_on_semister1").show();
-		$("#depends_on_semister2").hide();
-	}else{
 		$("#depends_on_semister2").show();
 		$("#depends_on_semister1").hide();
+	}else{		
+		$("#depends_on_semister1").show();
+		$("#depends_on_semister2").hide();
 	}	
 }
 
@@ -512,6 +515,8 @@ function ruralData2Next(){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-১");
 		}else if(distance_school_near_GPS==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩");
+		}else if(distance_school_near_GPS.length >5){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩ সর্বাধিক ৫ সংখ্যা");
 		}else if(school_signboard=="" || school_signboard==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৪");
 		}else if(international_flag_size=="" || international_flag_size==0){
@@ -528,12 +533,12 @@ function ruralData2Next(){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৮");
 		}else if(classroom_aayaton_hight==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ দৈর্ঘ্য ");	
-		}else if(classroom_aayaton_hight.length >3){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ দৈর্ঘ্য সর্বাধিক ৩ সংখ্যা");	
+		}else if(classroom_aayaton_hight.length >5){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ দৈর্ঘ্য সর্বাধিক ৫ সংখ্যা");	
 		}else if(classroom_aayaton_width==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ প্রস্থ");	
-		}else if(classroom_aayaton_width.length >3){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ প্রস্থ সর্বাধিক ৩ সংখ্যা");		
+		}else if(classroom_aayaton_width.length >6){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৯ প্রস্থ সর্বাধিক ৫ সংখ্যা");		
 		}else if(huse_light_air=="" || huse_light_air==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-১০");	
 		}else if(classroom_windows==""){
@@ -652,7 +657,18 @@ function ruralData3Next(){
 		var check_book=$("#check_book").val();
 		var previous_semister_ACF=$("#previous_semister_ACF").val();
 		var student_attendence_register=$("#student_attendence_register").val();
-		var repair_expense=$("#repair_expense").val();
+		//var repair_expense=$("#repair_expense").val();
+		
+		var repair_expense="";
+		if ($("input[name='repair_expense1']:checked").val()=="1"){repair_expense = "1"} else {repair_expense="0"}
+		if ($("input[name='repair_expense2']:checked").val()=="1"){repair_expense = repair_expense + "1"} else {repair_expense=repair_expense +"0"}
+		if ($("input[name='repair_expense3']:checked").val()=="1"){repair_expense = repair_expense + "1"} else {repair_expense=repair_expense +"0"}
+		if ($("input[name='repair_expense4']:checked").val()=="1"){repair_expense = repair_expense + "1"} else {repair_expense=repair_expense +"0"}
+		
+		repair_expense="1"+repair_expense
+		
+		//alert(repair_expense);
+		
 		var repair_expense_others=$("#repair_expense_others").val();
 		var expense_prove=$("#expense_prove").val();
 		
@@ -753,9 +769,9 @@ function ruralData3Next(){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৮ (চ)");	
 		}else if(student_attendence_register==""|| student_attendence_register==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৮ (ছ)");	
-		}else if(repair_expense==""|| repair_expense==0){
+		}else if(repair_expense==10000 ){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৯");	
-		}else if(repair_expense==4 && repair_expense_others==""){
+		}else if(repair_expense==10001 && repair_expense_others==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৯ উল্লেখ করুন");
 		}else if(expense_prove=="" || expense_prove==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-২৯.১");	
@@ -897,8 +913,8 @@ function edu_aundan(){
 
 
 function expense_repair(){
-	var repair_expense=$("#repair_expense").val();
-	if(repair_expense==4){
+	var repair_expense4=$("input[name='repair_expense4']:checked").val();
+	if(repair_expense4==1){
 		$('#expense_repair_others').show();
 	}else{
 		$('#expense_repair_others').hide();
@@ -935,8 +951,8 @@ function ruralData4Next(){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৩");		
 		}else if(dis_tea_house_to_sch==""){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৪");	
-		}else if(dis_tea_house_to_sch.length >3){
-			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৪ সর্বাধিক ৩ সংখ্যা");	
+		}else if(dis_tea_house_to_sch.length >5){
+			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৪ সর্বাধিক ৫ সংখ্যা");	
 		}else if(pre_semr_schl_tea_trai=="" || pre_semr_schl_tea_trai==0){
 			$(".errorChk").text("অবশ্যক- প্রশ্ন-৩৫");	
 		}else if(cls_atte_stu=="" ){
@@ -1659,7 +1675,49 @@ function ruralData6Next(){
 	};	
 	
 	
-	
+function imageUpload(){
+	//alert(picture_upload);
+	var d = new Date();	
+	var get_time=d.getTime();
+	picture_upload=1;		
+	if(picture_upload==1){				
+		if (imagePath1A!=""){							
+			$(".errorChk").text("Syncing photo 1..");
+			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
+			uploadPhotoAch(imagePath1A, imageName);
+		}			
+	}else if(picture_upload==2){
+		if (imagePath2A!=""){							
+			$(".errorChk").text("Syncing photo 2..");
+			imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+					
+			uploadPhoto2Ach(imagePath2A, imageName2);		
+		}			
+	}else if(picture_upload==3){
+		if (imagePath3A!=""){							
+			$(".errorChk").text("Syncing photo 3..");
+			imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+					
+			uploadPhoto3Ach(imagePath3A, imageName3);	
+		}
+	}else if(picture_upload==4){
+		if (imagePath4A!=""){							
+			$(".errorChk").text("Syncing photo 4..");
+			imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+					
+			uploadPhoto4Ach(imagePath4A, imageName4);	
+		}
+	}else if(picture_upload==5){
+		if (imagePath5A!=""){							
+			$(".errorChk").text("Syncing photo 5..");
+			imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+			uploadPhoto5Ach(imagePath5A, imageName5);
+		}
+	}else{
+				
+		syncData()
+	}
+}	
 		
 
 function ruralDataSubmit(){
@@ -1672,20 +1730,18 @@ function ruralDataSubmit(){
 		latitude=$("#ach_lat").val();
 		longitude=$("#ach_long").val();
 		
-		 image1=$("#image1").val();
-		 image2=$("#image2").val();
-		 image3=$("#image3").val();
-		 image4=$("#image4").val();
-		 image5=$("#image5").val();
-		 
-		 picType1=$("#picType1").val();
-		 picType2=$("#picType2").val();
-		 picType3=$("#picType3").val();
-		 picType4=$("#picType4").val();
-		 picType5=$("#picType5").val();
-		 
+		image1=$("#image1").val();
+		image2=$("#image2").val();
+		image3=$("#image3").val();
+		image4=$("#image4").val();
+		image5=$("#image5").val();
 		
-		
+		picType1=$("#picType1").val();
+		picType2=$("#picType2").val();
+		picType3=$("#picType3").val();
+		picType4=$("#picType4").val();
+		picType5=$("#picType5").val();
+		 		
 		if (latitude==undefined || latitude==''){
 			latitude=0;
 			}
@@ -1708,12 +1764,13 @@ function ruralDataSubmit(){
 		//image1 start	
 		//------------------------------------image 1					
 		//imagePath1A="test"					
-		if (imagePath1A!=""){							
+		/*if (imagePath1A!=""){							
 			$(".errorChk").text("Syncing photo 1..");
 			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 			uploadPhotoAch(imagePath1A, imageName);						
-		}
-	
+		}*/
+		picture_upload=1;
+		imageUpload();
 		//syncData();	
 		}
 	//}
@@ -1760,8 +1817,9 @@ function uploadPhotoAch(imageURI, imageName) {
 //-----------------------image 2
 function winAchInfo(r) {	
 	//$(".errorChk").text('Image 1 upload Successful. Syncing image 2...');
-	
-	var d = new Date();	
+	picture_upload=2;
+	imageUpload();
+	/*var d = new Date();	
 	var get_time=d.getTime();
 		
 	if (imagePath2A!=""){							
@@ -1769,12 +1827,14 @@ function winAchInfo(r) {
 		imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 				
 		uploadPhoto2Ach(imagePath2A, imageName2);	
-	}
+	}*/
 	
 }
 
 function onfail(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	picture_upload=2;
+	imageUpload();
+	/*$(".errorChk").text('File upload Failed. Please check internet connection.');
 	
 	var d = new Date();	
 	var get_time=d.getTime();
@@ -1783,7 +1843,7 @@ function onfail(r) {
 		$(".errorChk").text("Syncing photo 2..");
 		imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
 		uploadPhoto2Ach(imagePath2A, imageName2);	
-	}
+	}*/
 	
 	$("#btn_rural_submit").show();
 }
@@ -1831,8 +1891,9 @@ function uploadPhoto2Ach(imageURI, imageName2) {
 //-----------------------image 3
 function winComInfo2(r) {	
 	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');
-	
-	var d = new Date();	
+	picture_upload=3;
+	imageUpload();
+	/*var d = new Date();	
 	var get_time=d.getTime();
 		
 	//imagePath3A="test3"
@@ -1842,12 +1903,14 @@ function winComInfo2(r) {
 				
 		uploadPhoto3Ach(imagePath3A, imageName3);
 		//$("#btn_rural_submit").show();		
-	}
+	}*/
 	
 }
 
 function onfail2(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	picture_upload=3;
+	imageUpload();
+	/*$(".errorChk").text('File upload Failed. Please check internet connection.');
 	
 	var d = new Date();	
 	var get_time=d.getTime();
@@ -1856,7 +1919,7 @@ function onfail2(r) {
 		$(".errorChk").text("Syncing photo 3..");
 		imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";			
 		uploadPhoto3Ach(imagePath3A, imageName3);		
-	}
+	}*/
 	
 	$("#btn_rural_submit").show();
 }
@@ -1904,8 +1967,9 @@ function uploadPhoto3Ach(imageURI, imageName3) {
 //-----------------------image 4
 function winComInfo3(r) {	
 	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');
-	
-	var d = new Date();	
+	picture_upload=4;
+	imageUpload();
+	/*var d = new Date();	
 	var get_time=d.getTime();
 		
 	//imagePath4A="test4"
@@ -1915,12 +1979,14 @@ function winComInfo3(r) {
 				
 		uploadPhoto4Ach(imagePath4A, imageName4);
 		//$("#btn_rural_submit").show();		
-	}
+	}*/
 	
 }
 
 function onfail3(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	picture_upload=4;
+	imageUpload();
+	/*$(".errorChk").text('File upload Failed. Please check internet connection.');
 	
 	var d = new Date();	
 	var get_time=d.getTime();
@@ -1929,7 +1995,7 @@ function onfail3(r) {
 		$(".errorChk").text("Syncing photo 4..");
 		imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 		uploadPhoto4Ach(imagePath4A, imageName4);	
-	}
+	}*/
 	
 	$("#btn_rural_submit").show();
 }
@@ -1977,8 +2043,9 @@ function uploadPhoto4Ach(imageURI, imageName4) {
 //-----------------------image 5
 function winComInfo4(r) {	
 	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');
-	
-	var d = new Date();	
+	picture_upload=5;
+	imageUpload();
+	/*var d = new Date();	
 	var get_time=d.getTime();
 		
 	//imagePath5A="test5"
@@ -1988,12 +2055,14 @@ function winComInfo4(r) {
 				
 		uploadPhoto5Ach(imagePath5A, imageName5);
 		//$("#btn_rural_submit").show();		
-	}
+	}*/
 	
 }
 
 function onfail4(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
+	picture_upload=5;
+	imageUpload();
+	/*$(".errorChk").text('File upload Failed. Please check internet connection.');
 	
 	var d = new Date();	
 	var get_time=d.getTime();
@@ -2002,7 +2071,7 @@ function onfail4(r) {
 		$(".errorChk").text("Syncing photo 5..");
 		imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 		uploadPhoto5Ach(imagePath5A, imageName5);	
-	}
+	}*/
 	
 	$("#btn_rural_submit").show();
 }
@@ -2048,13 +2117,17 @@ function uploadPhoto5Ach(imageURI, imageName5) {
 }
 
 function winComInfo5(r) {
-	$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');
-	syncData();
+	/*$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');
+	syncData();*/
+	picture_upload=6;
+	imageUpload();
 }
 
 function onfail5(r) {
-	$("#errorChk").text('File upload Failed. Syncing Data...');
-	syncData();
+	/*$("#errorChk").text('Image upload Failed. Syncing Data...');
+	syncData();*/
+	picture_upload=6;
+	imageUpload();
 }
 
 
@@ -2110,6 +2183,7 @@ function syncData_3(sl){
 							$("#ff_id").val("");
 							$("#semister").val(0);
 							$("#school_id").val("");
+							$("#school_id_short").val("");
 							$("#school_name").val("");
 							$("#daily_from_time").val("");
 							$("#daily_to_time").val("");
@@ -2725,9 +2799,9 @@ function syncData_3(sl){
 							$(".errorChk").text("");
 							$("#btn_rural_submit").hide();
 							
-							setTimeout(function(){
+							/*setTimeout(function(){
 								window.location.reload(1);	
-							},5000);
+							},8000);*/
 												
 						}else{
 							$(".errorChk").text('Unauthorized Access');																	
@@ -2770,6 +2844,7 @@ ruralData5C="||lc_name_ot_match_stu=0||lc_image_not_match_st=0||pre_semi_exam_go
 
 
 ruralData6="||headmaster_name=0||headmaster_mobileNo=0||headmaster_opinion=0||mobile_pool_teacher_name=0||mobile_pool_teacher_mobileNo=0||mobile_pool_teacher_opinion=0||school_teacher_name=0||school_teacher_mobileNo=0||school_teacher_opinion=0||VisitOfficierName=0||VisitOfficierContact=0||VisitOfficerComments=0";
+
 }
 
 
