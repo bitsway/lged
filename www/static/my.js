@@ -1413,17 +1413,28 @@ function ruralData6Next(){
 	
 	
 function imageUpload(){
+<<<<<<< HEAD
 	var d = new Date();	
 	var get_time=d.getTime();			
 	if(picture_upload==1){
 		//winAchInfo();					
+=======
+	//alert(picture_upload);
+	var d = new Date();	
+	var get_time=d.getTime();
+	picture_upload=1;		
+	if(picture_upload==1){				
+>>>>>>> origin/master
 		if (imagePath1A!=""){							
 			$(".errorChk").text("Syncing photo 1..");
 			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 			uploadPhotoAch(imagePath1A, imageName);
 		}			
 	}else if(picture_upload==2){
+<<<<<<< HEAD
 		//winAchInfo2();		
+=======
+>>>>>>> origin/master
 		if (imagePath2A!=""){							
 			$(".errorChk").text("Syncing photo 2..");
 			imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
@@ -1431,7 +1442,10 @@ function imageUpload(){
 			uploadPhoto2Ach(imagePath2A, imageName2);		
 		}			
 	}else if(picture_upload==3){
+<<<<<<< HEAD
 		//winAchInfo3();
+=======
+>>>>>>> origin/master
 		if (imagePath3A!=""){							
 			$(".errorChk").text("Syncing photo 3..");
 			imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
@@ -1439,7 +1453,10 @@ function imageUpload(){
 			uploadPhoto3Ach(imagePath3A, imageName3);	
 		}
 	}else if(picture_upload==4){
+<<<<<<< HEAD
 		//winAchInfo4();	
+=======
+>>>>>>> origin/master
 		if (imagePath4A!=""){							
 			$(".errorChk").text("Syncing photo 4..");
 			imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
@@ -1447,15 +1464,22 @@ function imageUpload(){
 			uploadPhoto4Ach(imagePath4A, imageName4);	
 		}
 	}else if(picture_upload==5){
+<<<<<<< HEAD
 		//winAchInfo5();		
+=======
+>>>>>>> origin/master
 		if (imagePath5A!=""){							
 			$(".errorChk").text("Syncing photo 5..");
 			imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 			uploadPhoto5Ach(imagePath5A, imageName5);
 		}
 	}else{
+<<<<<<< HEAD
 		
 			//alert('6');		
+=======
+				
+>>>>>>> origin/master
 		syncData()
 	}
 }	
@@ -1512,7 +1536,10 @@ function ruralDataSubmit(){
 		}*/
 		picture_upload=1;
 		imageUpload();
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/master
 		//syncData();	
 		}
 	//}
@@ -1858,7 +1885,11 @@ function uploadPhoto5Ach(imageURI, imageName5) {
 	
 }
 
+<<<<<<< HEAD
 function winAchInfo5(r) {
+=======
+function winComInfo5(r) {
+>>>>>>> origin/master
 	/*$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');
 	syncData();*/
 	picture_upload=6;
@@ -2071,9 +2102,9 @@ function syncData_2(sl){
 							$(".errorChk").text("");
 							$("#btn_rural_submit").hide();
 							
-							setTimeout(function(){
+							/*setTimeout(function(){
 								window.location.reload(1);	
-							},5000);
+							},8000);*/
 												
 						}else{
 							$(".errorChk").text('Unauthorized Access');																	
