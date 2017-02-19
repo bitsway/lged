@@ -41,161 +41,181 @@ var apipath="http://a006.yeapps.com/lged/syncmobile/";
 //--- local
 //var apipath="http://127.0.0.1:8000/lged/syncmobile/";
 
- url ="";
+url ="";
 
 var stuList='';
+var stuIDList='';
 var stuCount=1;
 $(document).ready(function(){
 	if (localStorage.synced!='YES'){
 			 url = "#pagesync";						
 		}else{			
-			url = "#homePage";
-				
-		var p='';
-		var a='';
-		var b='';
-		var stuPre=''
-		var pre='';
-		var abc='';
-		var ap='';
-				
-		$("#btnAdd").click(function(){				
-		var stu3Id=$("#stu3Id").val();
-		stuPre=$("#stuPre").val();
-		lcProSt=$("#lcProSt").val();
-				
-		var pre_for_student ="";
-		if ($("input[name='preForStu1']:checked").val()=="1"){pre_for_student = "1"} else {pre_for_student="0"}
-		//alert(pre_for_student);
-		if ($("input[name='preForStu2']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
-		if ($("input[name='preForStu3']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
-		if ($("input[name='preForStu4']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
-		
-		preForStu="1"+pre_for_student;
-		
-		
-		var abs_for_student ="";
-		if ($("input[name='absForStu1']:checked").val()=="1"){abs_for_student = "1"} else {abs_for_student="0"}
-		if ($("input[name='absForStu2']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
-		if ($("input[name='absForStu3']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
-		if ($("input[name='absForStu4']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
-		if ($("input[name='absForStu5']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
-		if ($("input[name='absForStu6']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
-		
-		absForStu="1"+abs_for_student;
-		
-		if(stuPre==1){
-			pre=preForStu
-		}else{
-			abc=absForStu
-		}
-		//present
-		if (pre.substring(1,2)=='1'){
-			p ='১-ছবির সাথে মিল আছে কি , '
-		}else{
-			p=''
-		}	
-		if(pre.substring(2,3)=='1'){
-			p +='২-পোষাক পরিহিত আছে কি , '
-		}else{
-			p +=''
-		}	
-		if(pre.substring(3,4)=='1'){
-			p +='৩-শিক্ষাভাতা পেয়েছে কি , '
-		}else{
-			p +=''
-		}
-		if(pre.substring(4,5)=='1'){
-			p +='৪-অন্য স্কুলে পরে কি , '
-		}else{
-			p +=''
-		}
-		
-		//absent
-		if (abc.substring(1,2)=='1'){
-			a ='১-বাতিল , '
-		}else{
-			a=''
-		}	
-		if (abc.substring(2,3)=='1'){
-			a +='২-অন্যত্র চলে গেছে , '
-		}else{
-			a +=''
-		}
-		if (abc.substring(3,4)=='1'){
-			a +='৩-অসুস্থ , '
-		}else{
-			a +=''
-		}
-		if (abc.substring(4,5)=='1'){
-			a +='৪-অন্য স্কুলে পরে , '
-		}else{
-			a +=''
-		}
-		if (abc.substring(5,6)=='1'){
-			a +='৫-শিক্ষক অবগত নয় , '
-		}else{
-			a +=''
-		}
-		if (abc.substring(6,7)=='1'){
-			a +='৬-অন্যান্য , '
-		}else{
-			a +=''
-		}
-		
-		
-		var stuAP='';
-		if(stuPre==1){
-			stuAP='১-শিক্ষার্থী উপস্থিত'
-			ap=p
-		}else{
-			stuAP='২-শিক্ষার্থী অনুপস্থিত'
-			ap=a
-		}
-		
-		
-		var i="<tr id='"+stu3Id+"'><td>"+stu3Id+"</td><td>"+stuAP+"</td><td>"+ap+"</td><td>"+'<input style="background-color:#99dfff;" type="button" onclick="stuRemove('+stu3Id+')" value="X">'+"</td></tr>"
-		//alert(stuList);
-		if( stuList.indexOf(stu3Id) >-1 ){
-			$(".errorChk").text("শিক্ষার্থীর আইডি আগে থেকেই আছে");
-		}else{
-			if(stuCount > lcProSt){
-				$(".errorChk").text(" প্রশ্ন ৩৬.১. অনুযায়ী শিক্ষার্থী সংখ্যা ");
+			
+			var p='';
+			var a='';
+			var b='';
+			var stuPre=''
+			var pre='';
+			var abc='';
+			var ap='';
+			
+					
+			$("#btnAdd").click(function(){				
+			var stu3Id=$("#stu3Id").val();
+			stuPre=$("#stuPre").val();
+			lcProSt=$("#lcProSt").val();
+					
+			var pre_for_student ="";
+			if ($("input[name='preForStu1']:checked").val()=="1"){pre_for_student = "1"} else {pre_for_student="0"}
+			//alert(pre_for_student);
+			if ($("input[name='preForStu2']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
+			if ($("input[name='preForStu3']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
+			if ($("input[name='preForStu4']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
+			
+			preForStu="1"+pre_for_student;
+			
+			
+			var abs_for_student ="";
+			if ($("input[name='absForStu1']:checked").val()=="1"){abs_for_student = "1"} else {abs_for_student="0"}
+			if ($("input[name='absForStu2']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
+			if ($("input[name='absForStu3']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
+			if ($("input[name='absForStu4']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
+			if ($("input[name='absForStu5']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
+			if ($("input[name='absForStu6']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
+			
+			absForStu="1"+abs_for_student;
+			
+			if(stuPre==1){
+				pre=preForStu
 			}else{
-				$("#stuTable").append(i);
-				stuCount+=1;
-				//alert(stuCount);
-				$(".errorChk").text("");
-				
-				var stuPreAbs='';
-				if(stuPre==1){
-					stuPreAbs=preForStu
+				abc=absForStu
+			}
+			//present
+			if (pre.substring(1,2)=='1'){
+				p ='১-ছবির সাথে মিল আছে কি , '
+			}else{
+				p=''
+			}	
+			if(pre.substring(2,3)=='1'){
+				p +='২-পোষাক পরিহিত আছে কি , '
+			}else{
+				p +=''
+			}	
+			if(pre.substring(3,4)=='1'){
+				p +='৩-শিক্ষাভাতা পেয়েছে কি , '
+			}else{
+				p +=''
+			}
+			if(pre.substring(4,5)=='1'){
+				p +='৪-অন্য স্কুলে পরে কি , '
+			}else{
+				p +=''
+			}
+			
+			//absent
+			if (abc.substring(1,2)=='1'){
+				a ='১-বাতিল , '
+			}else{
+				a=''
+			}	
+			if (abc.substring(2,3)=='1'){
+				a +='২-অন্যত্র চলে গেছে , '
+			}else{
+				a +=''
+			}
+			if (abc.substring(3,4)=='1'){
+				a +='৩-অসুস্থ , '
+			}else{
+				a +=''
+			}
+			if (abc.substring(4,5)=='1'){
+				a +='৪-অন্য স্কুলে পরে , '
+			}else{
+				a +=''
+			}
+			if (abc.substring(5,6)=='1'){
+				a +='৫-শিক্ষক অবগত নয় , '
+			}else{
+				a +=''
+			}
+			if (abc.substring(6,7)=='1'){
+				a +='৬-অন্যান্য , '
+			}else{
+				a +=''
+			}
+			
+			
+			var stuAP='';
+			if(stuPre==1){
+				stuAP='১-শিক্ষার্থী উপস্থিত'
+				ap=p
+			}else{
+				stuAP='২-শিক্ষার্থী অনুপস্থিত'
+				ap=a
+			}
+			
+			if (stu3Id.length==1){
+				stu3Id='00'+stu3Id;
+			}else if(stu3Id.length==2){
+				stu3Id='0'+stu3Id;
+			}else{
+				stu3Id=stu3Id
+			}			
+			
+			var i="<tr id='"+stu3Id+"'><td>"+stu3Id+"</td><td>"+stuAP+"</td><td>"+ap+"</td><td>"+'<input style="background-color:#99dfff;" type="button" onclick="stuRemove(\''+stu3Id+'\')" value="X">'+"</td></tr>"
+			
+			
+			//if( stuList.indexOf(stu3Id) >0 ){
+			if( stuIDList.indexOf(stu3Id) >-1 ){
+				$(".errorChk").text("শিক্ষার্থীর আইডি আগে থেকেই আছে");
+			}else{
+				if(stuCount > lcProSt){
+					$(".errorChk").text(" প্রশ্ন ৩৬.১. অনুযায়ী শিক্ষার্থী সংখ্যা ");
 				}else{
-					stuPreAbs=absForStu
-				}
-				
-				if(stuList=="" ){
-					stuList=stu3Id+","+stuPre+","+stuPreAbs;
-				}else{
-					stuList +="||"+stu3Id+","+stuPre+","+stuPreAbs;
+					$("#stuTable").append(i);
+					stuCount+=1;
+					$(".errorChk").text("");
+					
+					var stuPreAbs='';
+					if(stuPre==1){
+						stuPreAbs=preForStu
+					}else{
+						stuPreAbs=absForStu
+					}
+					
+					if(stuList=="" ){
+						stuList=stu3Id+","+stuPre+","+stuPreAbs;
+					}else{
+						stuList +="||"+stu3Id+","+stuPre+","+stuPreAbs;
+					}
+					if(stuIDList=="" ){
+						stuIDList=stu3Id;
+					}else{
+						stuIDList +="||"+stu3Id;
+					}
+					
+									
+					
 				}
 				
 			}
 			
+						
+		  });	
+		  
+			url = "#homePage";		
 		}
-					
-	  });	
-	  			
-	}
 	$.mobile.navigate(url);
 	
 });
 
-function stuRemove(stu3Id){	
+function stuRemove(stu3Id){
+	
+	//alert(stu3Id)	
 	$("#"+stu3Id).remove();	
 	stuCount-=1;
 	var repl1='';
-	iStr=stuList.split('||');
+	iStr=stuIDList.split('||');
 	iLen=iStr.length
 	for(i=0;i<iLen;i++){
 		iStrD=iStr[i].split(',');
@@ -209,7 +229,7 @@ function stuRemove(stu3Id){
 		}		
 	}
 	
-	stuList=repl1
+	stuIDList=repl1
 	
 }
 /*function stuRemove(stu3Id){	
