@@ -13,7 +13,6 @@ var imagePath5A="";
 
 var latitude="";
 var longitude="";
-var upListFlag=0;
 
 
 
@@ -61,7 +60,7 @@ $(document).ready(function(){
 			
 					
 			$("#btnAdd").click(function(){				
-			var stu3Id=$("#stu3Id").val();
+			var stu3Id=$("#stu3Id").val().replace(/\./g, '');
 			stuPre=$("#stuPre").val();
 			lcProSt=$("#lcProSt").val();
 					
@@ -106,11 +105,11 @@ $(document).ready(function(){
 			}else{
 				p +=''
 			}
-			if(pre.substring(4,5)=='1'){
+			/*if(pre.substring(4,5)=='1'){
 				p +='৪-অন্য স্কুলে পরে কি , '
 			}else{
 				p +=''
-			}
+			}*/
 			
 			//absent
 			if (abc.substring(1,2)=='1'){
@@ -2111,7 +2110,7 @@ function syncData_2(sl){
 
 }
 
-
+schCount=0;
 saveSchList="";
 function ruralDataSave(){
 	var school_id=$("#school_id").val();
@@ -2148,7 +2147,7 @@ function ruralDataSave(){
 		}
 	
 	if(localStorage.sSchList==eval(undefined)){
-		localStorage.sSchList +="<rd>"+school_id+"-"+school_name+"-"+latitude+"-"+longitude+"-"+image1+"-"+image2+"-"+image3+"-"+image4+"-"+image5+"-"+picType1+"-"+picType2+"-"+picType3+"-"+picType4+"-"+picType5+"-"+ruralData1+"-"+ruralData2+"-"+ruralData3+"-"+ruralData4+"-"+ruralData5+"-"+ruralData6+"-"+stuList;
+		localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+image1+"<fdfd>"+image2+"<fdfd>"+image3+"<fdfd>"+image4+"<fdfd>"+image5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
 		
 		<!---->
 			$("#division").val("");
@@ -2333,7 +2332,7 @@ function ruralDataSave(){
 		SlenC=sStrClk.length
 		
 		if(SlenC<6){
-			localStorage.sSchList +="<rd>"+school_id+"-"+school_name+"-"+latitude+"-"+longitude+"-"+image1+"-"+image2+"-"+image3+"-"+image4+"-"+image5+"-"+picType1+"-"+picType2+"-"+picType3+"-"+picType4+"-"+picType5+"-"+ruralData1+"-"+ruralData2+"-"+ruralData3+"-"+ruralData4+"-"+ruralData5+"-"+ruralData6+"-"+stuList;
+			localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+image1+"<fdfd>"+image2+"<fdfd>"+image3+"<fdfd>"+image4+"<fdfd>"+image5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
 			
 			<!---->
 			$("#division").val("");
@@ -2529,7 +2528,7 @@ function saveDataSubmit(sSchLi){
 	sStr=localStorage.sSchList.split('<rd>');
 	iLen=sStr.length
 	for(i=0;i<iLen;i++){
-		sStrD=sStr[i].split('-');
+		sStrD=sStr[i].split('<fdfd>');
 		if(sStrD[0]==sSchLi){
 			schoolID=sStrD[0]
 			school_name=sStrD[1]
@@ -2556,10 +2555,10 @@ function saveDataSubmit(sSchLi){
 	}
 	
 
-	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+"&school_id="+schoolID+"&school_name="+school_name+"&latitude="+latitude+"&longitude="+longitude+"&image1="+image1+"&image2="+image2+"&image3="+image3+"&image4="+image4+"&image5="+image5+"&picType1="+picType1+"&picType2="+picType2+"&picType3="+picType3+"&picType4="+picType4+"&picType5="+picType5+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6));
+	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolID+'&picType1='+picType1+'&image1='+image1+'&picType2='+picType2+'&image2='+image2+'&picType3='+picType3+'&image3='+image3+'&picType4='+picType4+'&image4='+image4+'&picType5='+picType5+'&image5='+image5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6));
 	$.ajax({
 		type: 'POST',
-		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+"&school_id="+schoolID+"&school_name="+school_name+"&latitude="+latitude+"&longitude="+longitude+"&image1="+image1+"&image2="+image2+"&image3="+image3+"&image4="+image4+"&image5="+image5+"&picType1="+picType1+"&picType2="+picType2+"&picType3="+picType3+"&picType4="+picType4+"&picType5="+picType5+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6),
+		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolID+'&picType1='+picType1+'&image1='+image1+'&picType2='+picType2+'&image2='+image2+'&picType3='+picType3+'&image3='+image3+'&picType4='+picType4+'&image4='+image4+'&picType5='+picType5+'&image5='+image5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6),
 		
 		success: function(res) {
 		   if(res!=''){
@@ -2582,7 +2581,7 @@ function saveDataSubmit_2(sl){
 						iLenS=sStrS.length
 						var rSsch='';
 						for(i=0;i<iLenS;i++){
-							sStrDS=sStrS[i].split('-');
+							sStrDS=sStrS[i].split('<fdfd>');
 							if(parseInt(sStrDS[0])!=parseInt(schoolID)){
 								if (rSsch==''){
 									rSsch=sStrS[i]
@@ -2617,7 +2616,7 @@ function review(){
 	var sSchStr=localStorage.sSchList.split('<rd>');
 	sSchDataList='';
 	for (i=1;i<sSchStr.length;i++){
-		sSchLi=sSchStr[i].split('-');
+		sSchLi=sSchStr[i].split('<fdfd>');
 		sSchDataList+='<tr><td><a>'+sSchLi[0]+'-'+sSchLi[1]+'</a></td><td><input class="ui-btn ui-input-btn ui-corner-all ui-shadow" type="submit" id="" name="" value="Submit" onclick="saveDataSubmit(\''+sSchLi[0]+'\')" /></td><td><input class="ui-btn ui-input-btn ui-corner-all ui-shadow" type="Submit" id="" name="" value="X" onclick="saveDataRemove(\''+sSchLi[0]+'\')" /></td></tr>' 
 	}
 	
@@ -2635,7 +2634,7 @@ function saveDataRemove(sSchLi){
 	iLenSR=sStrR.length
 	var srSR='';
 	for(i=0;i<iLenSR;i++){
-		sStrDR=sStrR[i].split('-');
+		sStrDR=sStrR[i].split('<fdfd>');
 		if(parseInt(sStrDR[0])!=parseInt(sSchLi)){
 			if (srSR==''){
 				srSR=sStrR[i]
