@@ -20,19 +20,19 @@ var upListFlag=0;
 function getLocationInfoAch() {		
 	var options = { enableHighAccuracy: false};	
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, options);				
-	$(".errorChk").html("Confirming location. Please wait.");
+	$(".errorChk").html("অবস্হান নিশ্চিত করা হচ্ছে । অপেক্ষা করুন..");
 }
 // onSuccess Geolocation
 function onSuccess(position) {	
 	$("#ach_lat").val(position.coords.latitude);
 	$("#ach_long").val(position.coords.longitude);
-	$(".errorChk").html("Location Confirmed");
+	$(".errorChk").html("অবস্হান নিশ্চিত করা হয়েছে ।");
 }
 // onError Callback receives a PositionError object
 function onError(error) {
    $("#ach_lat").val(0);
    $("#ach_long").val(0);
-   $(".errorChk").html("Failed to Confirmed Location.");
+   $(".errorChk").html("অবস্হান নিশ্চিত করা যায়নি ।");
 }
 
 //---- online 
@@ -70,7 +70,7 @@ $(document).ready(function(){
 			//alert(pre_for_student);
 			if ($("input[name='preForStu2']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
 			if ($("input[name='preForStu3']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
-			if ($("input[name='preForStu4']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
+			/*if ($("input[name='preForStu4']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}*/
 			
 			preForStu="1"+pre_for_student;
 			
@@ -160,7 +160,7 @@ $(document).ready(function(){
 				stu3Id='0'+stu3Id;
 			}else{
 				stu3Id=stu3Id
-			}			
+			}
 			
 			var i="<tr id='"+stu3Id+"'><td>"+stu3Id+"</td><td>"+stuAP+"</td><td>"+ap+"</td><td>"+'<input style="background-color:#99dfff;" type="button" onclick="stuRemove(\''+stu3Id+'\')" value="X">'+"</td></tr>"
 			
@@ -269,10 +269,10 @@ function syncBasic() {
 	 	var password=$("#password").val() ;
 		
 		if (mobile=="" || password==""){
-			 $(".errorMsg").html("Required mobile no and password");	
+			 $(".errorMsg").html("অবশ্যক মোবাইল নম্বর এবং পাসওয়ার্ড");	
 		 }else{	
 			 $('#syncBasic').hide();			 
-			 $(".errorMsg").html("Sync in progress. Please wait...");
+			 $(".errorMsg").html("অপেক্ষা করুন ...");
 			if(localStorage.sync_code==undefined || localStorage.sync_code==""){
 					localStorage.sync_code=0
 				}
@@ -322,7 +322,7 @@ function syncBasic() {
 						
 																	
 						
-						$(".errorMsg").html("Sync Successful");						
+						$(".errorMsg").html("সফল ভাবে প্রবেশ করেছেন ।");						
 						$('#syncBasic').show();
 						
 						url = "#homePage";
@@ -330,7 +330,7 @@ function syncBasic() {
 
 					}else{
 						
-						$(".errorMsg").html("Sync Failed. Authorization or Network Error.");
+						$(".errorMsg").html("প্রবেশ করতে ব্যর্থ হয়েছেন নেটওয়ার্ক সমস্যা ।");
 						$('#syncBasic').show();
 					}
 				
@@ -410,7 +410,8 @@ function ruralV(){
 					 									  
 				  }		  
 			});	 		
-		
+		$(".sucChk").text("");
+		$(".error").text("");
 		url="#page1";					
 		$.mobile.navigate(url);	
 		}
@@ -423,7 +424,7 @@ function schoolSearch(){
 	var school_list=$("#school_list").val();
 
 	if(school_list==""){
-		$(".error").text("Required School");
+		$(".error").text("অবশ্যক স্কুল ");
 	}else{		
 		//alert(apipath+'search_school?cid=LGED&school='+school_list);
 		$.ajax({
@@ -513,6 +514,8 @@ function schoolSelect(){
 	//}
 		
 }
+
+
 
 
 function ruralData1Next(){	
@@ -1538,7 +1541,7 @@ function ruralDataSubmit(){
 	//}
 
 function getAchivementImage1() {
-	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 50,
+	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 60,
 	targetWidth: 300,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true});		
 }
@@ -1612,7 +1615,7 @@ function onfail(r) {
 
 
 function getAchivementImage2() { 
-	navigator.camera.getPicture(onSuccess2A, onFail2A, { quality: 50,
+	navigator.camera.getPicture(onSuccess2A, onFail2A, { quality: 60,
 	targetWidth: 300,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
@@ -1688,7 +1691,7 @@ function onfail2(r) {
 
 
 function getAchivementImage3() { 
-	navigator.camera.getPicture(onSuccess3A, onFail3A, { quality: 50,
+	navigator.camera.getPicture(onSuccess3A, onFail3A, { quality: 60,
 	targetWidth: 300,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
@@ -1764,7 +1767,7 @@ function onfail3(r) {
 
 
 function getAchivementImage4() { 
-	navigator.camera.getPicture(onSuccess4A, onFail4A, { quality: 50,
+	navigator.camera.getPicture(onSuccess4A, onFail4A, { quality: 60,
 	targetWidth: 300,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
@@ -1840,7 +1843,7 @@ function onfail4(r) {
 
 
 function getAchivementImage5() { 
-	navigator.camera.getPicture(onSuccess5A, onFail5A, { quality: 50,
+	navigator.camera.getPicture(onSuccess5A, onFail5A, { quality: 60,
 	targetWidth: 300,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
@@ -2086,9 +2089,10 @@ function syncData_2(sl){
 							$("#picType4").val(0);
 							$("#picType5").val(0);
 							
-							$(".sucChk").text('Successfully Submitted');
+							$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 							stuList="";
 							$(".errorChk").text("");
+							$("#btn_rural_save").hide();
 							$("#btn_rural_submit").hide();
 							
 							setTimeout(function(){
@@ -2096,8 +2100,9 @@ function syncData_2(sl){
 							},5000);
 												
 						}else{
-							$(".errorChk").text('Unauthorized Access');																	
+							$(".errorChk").text('অসম্পন হয়েছে');																	
 							$("#btn_rural_submit").show();
+							$("#btn_rural_save").show();
 							}
 							
 					 }//end result
@@ -2107,18 +2112,545 @@ function syncData_2(sl){
 }
 
 
+saveSchList="";
+function ruralDataSave(){
+	var school_id=$("#school_id").val();
+	var school_name=$("#school_name").val();
+	
+	ruralData1=ruralData1
+	ruralData2=ruralData2
+	ruralData3=ruralData3
+	ruralData4=ruralData4
+	ruralData5=ruralData5
+	ruralData6=ruralData6
+	stuList=stuList
+	
+	latitude=$("#ach_lat").val();
+	longitude=$("#ach_long").val();
+	
+	image1=$("#image1").val();
+	image2=$("#image2").val();
+	image3=$("#image3").val();
+	image4=$("#image4").val();
+	image5=$("#image5").val();
+	
+	picType1=$("#picType1").val();
+	picType2=$("#picType2").val();
+	picType3=$("#picType3").val();
+	picType4=$("#picType4").val();
+	picType5=$("#picType5").val();
+			
+	if (latitude==undefined || latitude==''){
+		latitude=0;
+		}
+	if (longitude==undefined || longitude==''){
+		longitude=0;
+		}
+	
+	if(localStorage.sSchList==eval(undefined)){
+		localStorage.sSchList +="<rd>"+school_id+"-"+school_name+"-"+latitude+"-"+longitude+"-"+image1+"-"+image2+"-"+image3+"-"+image4+"-"+image5+"-"+picType1+"-"+picType2+"-"+picType3+"-"+picType4+"-"+picType5+"-"+ruralData1+"-"+ruralData2+"-"+ruralData3+"-"+ruralData4+"-"+ruralData5+"-"+ruralData6+"-"+stuList;
+		
+		<!---->
+			$("#division").val("");
+			$("#district").val("");
+			$("#upzila").val("");
+			$("#ff_id").val("");
+			$("#semister").val(0);
+			$("#school_id").val("");
+			$("#school_id_short").val("");
+			$("#school_name").val("");
+			$("#daily_from_time").val("");
+			$("#daily_to_time").val("");
+			$("#total_hour").val("");
+			$("#visit_date").val("");
+			$("#school_condition").val(0);
+			$("#close_school").val(0);
+			$("#close_school_others").val("");							
+			$("#next_visit").val(0);
+			$("#visit_date_second").val("");
+			$("#school_condition_second").val(0);
+			$("#close_school_second").val(0);
+			$("#close_school_others_second").val("");
+			
+			$("#school_installation_year").val("");
+			$("#school_address_house").val("");
+			$("#school_address_vill").val("");				
+			$("#school_address_unionName").val("");
+			$("#distance_school_near_GPS").val("");
+			$("#school_signboard").val(0);
+			$("#international_flag_size").val(0);
+			$("#school_house").val(0);
+			$("#school_house_others").val("");
+			$("#school_type").val(0);
+			$("#school_type_others").val("");
+			$("#singing_national_anthem_before_cls_start").val(0);		
+			$("#classroom_aayaton_hight").val("");
+			$("#classroom_aayaton_width").val("");							
+			$("#huse_light_air").val(0);
+			$("#classroom_windows").val("");
+			$("#classroom_doors").val("");
+			$("#arsenic_free_water").val(0);
+			$("#water_distance").val(0);
+			$("#student_useable_toilate").val(0);
+			$("#benefit_electricity_cls").val(0);
+			$("#seat_arragement_cls").val(0);
+			$("#cls_usable_board_draster").val(0);
+			$("#all_student_textbook").val(0);
+			$("#all_student_pen").val(0);
+			$("#management_school_calender").val(0);
+			$("#management_school_cls_routin").val(0);
+			$("#cmc_metting_previous_semister").val("");
+			$("#last_cmc_metting_present_cmc_member").val("");
+			$("#cmc_selebrate_exchange_gardagin").val(0);
+			$("#previous_semister_school_anudan_time").val(0);
+			
+			$("#education_allowance_receipt").val(0);		
+			$("#education_allowance_receipt_date").val("");
+			$("#education_allowance_not_receipt").val(0);
+			$("#education_allowance_receipt_delay").val("");							
+			$("#education_aundan_receipt").val(0);
+			$("#education_aundan_receipt_date").val("");
+			$("#education_aundan_not_receipt").val(0);
+			$("#education_aundan_receipt_delay").val("");
+			$("#school_necessary_rec_conservation_trank").val(0);							
+			$("#cmc_metting_log_register").val(0);		
+			$("#cash_register").val(0);
+			$("#school_visit_register").val(0);
+			$("#school_aundan_expense_cashMemo").val(0);
+			$("#check_book").val(0);
+			$("#previous_semister_ACF").val(0);
+			$("#student_attendence_register").val(0);
+			$("#repair_expense").val(0);
+			$("#repair_expense_others").val("");
+			$("#expense_prove").val(0);							
+			$("#chief_executive_officer_month1").val("");
+			$("#chief_executive_officer_month2").val("");
+			$("#chief_executive_officer_month3").val("");
+			$("#chief_executive_officer_month4").val("");
+			$("#chief_executive_officer_month5").val("");
+			$("#chief_executive_officer_month6").val("");
+			$("#up_education_officer_month1").val("");
+			$("#up_education_officer_month2").val("");
+			$("#up_education_officer_month3").val("");
+			$("#up_education_officer_month4").val("");
+			$("#up_education_officer_month5").val("");
+			$("#up_education_officer_month6").val("");
+			$("#training_co_ordinator_month1").val("");
+			$("#training_co_ordinator_month2").val("");
+			$("#training_co_ordinator_month3").val("");
+			$("#training_co_ordinator_month4").val("");
+			$("#training_co_ordinator_month5").val("");
+			$("#training_co_ordinator_month6").val("");
+			$("#assistant_up_education_officer_month1").val("");
+			$("#assistant_up_education_officer_month2").val("");
+			$("#assistant_up_education_officer_month3").val("");
+			$("#assistant_up_education_officer_month4").val("");
+			$("#assistant_up_education_officer_month5").val("");
+			$("#assistant_up_education_officer_month6").val("");
+			$("#assistant_teacher_month1").val("");
+			$("#assistant_teacher_month2").val("");
+			$("#assistant_teacher_month3").val("");
+			$("#assistant_teacher_month4").val("");
+			$("#assistant_teacher_month5").val("");
+			$("#assistant_teacher_month6").val("");
+			$("#mobile_pool_teacher_month1").val("");
+			$("#mobile_pool_teacher_month2").val("");
+			$("#mobile_pool_teacher_month3").val("");
+			$("#mobile_pool_teacher_month4").val("");
+			$("#mobile_pool_teacher_month5").val("");
+			$("#mobile_pool_teacher_month6").val("");
+			$("#others_month1").val("");
+			$("#others_month2").val("");
+			$("#others_month3").val("");
+			$("#others_month4").val("");
+			$("#others_month5").val("");
+			$("#others_month6").val("");
+			
+			$("#visit_LC_regu_teacher_present").val(0);
+			$("#regu_tea_instead_teacher_name").val("");
+			$("#regu_tea_instead_teacher_type").val(0);
+			$("#teacher_replaced_appointment_office").val(0);
+			$("#visit_display_id_card_teacher").val(0);
+			$("#distance_teacher_house_to_school").val("");
+			$("#previous_semister_school_teacher_training").val(0);
+			$("#class_attendence_students").val("");
+			$("#visit_day_attendence_students_boys").val("");
+			$("#visit_day_attendence_students_girls").val("");
+			$("#visit_day_attendence_students_total").val("");
+			$("#previous_semister_total_school_dibos").val("");
+			
+			$("#stu3Id").val("");	
+			$("#stuPre").val(0);			
+			
+			$("#lc_profile_name_not_match_student").val("");
+			$("#lc_profile_image_not_match_student").val("");
+			$("#previous_semister_exam_gov_primary_school").val(0);
+			$("#previous_semister_exam_register_student").val("");
+			$("#marriage_abandonment_boys").val("");
+			$("#marriage_abandonment_girls").val("");
+			$("#marriage_abandonment_total").val("");
+			
+			
+			$("#headmaster_name").val("");
+			$("#headmaster_mobileNo").val("");
+			$("#headmaster_opinion").val("");
+			$("#mobile_pool_teacher_name").val("");
+			$("#mobile_pool_teacher_mobileNo").val("");
+			$("#mobile_pool_teacher_opinion").val("");
+			$("#school_teacher_name").val("");
+			$("#school_teacher_mobileNo").val("");
+			$("#school_teacher_opinion").val("");		
+			$("#VisitOfficierName").val("");
+			$("#VisitOfficierContact").val("");
+			$("#VisitOfficerComments").val("");
+			
+			$("#image1").val("");
+			$("#image2").val("");
+			$("#image3").val("");
+			$("#image4").val("");
+			$("#image5").val("");
+			
+			$("#picType1").val(0);
+			$("#picType2").val(0);
+			$("#picType3").val(0);
+			$("#picType4").val(0);
+			$("#picType5").val(0);
+			
+			stuList="";
+			<!---->
+			
+			$(".sucChk").text('সফল ভাবে সংরক্ষণ করা হয়েছে');
+			$("#btn_rural_save").hide();
+			$("#btn_rural_submit").hide();
+			
+			setTimeout(function(){
+				window.location.reload(1);	
+			},5000);
+		
+	}else{
+		
+		sStrClk=localStorage.sSchList.split('<rd>');
+		SlenC=sStrClk.length
+		
+		if(SlenC<6){
+			localStorage.sSchList +="<rd>"+school_id+"-"+school_name+"-"+latitude+"-"+longitude+"-"+image1+"-"+image2+"-"+image3+"-"+image4+"-"+image5+"-"+picType1+"-"+picType2+"-"+picType3+"-"+picType4+"-"+picType5+"-"+ruralData1+"-"+ruralData2+"-"+ruralData3+"-"+ruralData4+"-"+ruralData5+"-"+ruralData6+"-"+stuList;
+			
+			<!---->
+			$("#division").val("");
+			$("#district").val("");
+			$("#upzila").val("");
+			$("#ff_id").val("");
+			$("#semister").val(0);
+			$("#school_id").val("");
+			$("#school_id_short").val("");
+			$("#school_name").val("");
+			$("#daily_from_time").val("");
+			$("#daily_to_time").val("");
+			$("#total_hour").val("");
+			$("#visit_date").val("");
+			$("#school_condition").val(0);
+			$("#close_school").val(0);
+			$("#close_school_others").val("");							
+			$("#next_visit").val(0);
+			$("#visit_date_second").val("");
+			$("#school_condition_second").val(0);
+			$("#close_school_second").val(0);
+			$("#close_school_others_second").val("");
+			
+			$("#school_installation_year").val("");
+			$("#school_address_house").val("");
+			$("#school_address_vill").val("");				
+			$("#school_address_unionName").val("");
+			$("#distance_school_near_GPS").val("");
+			$("#school_signboard").val(0);
+			$("#international_flag_size").val(0);
+			$("#school_house").val(0);
+			$("#school_house_others").val("");
+			$("#school_type").val(0);
+			$("#school_type_others").val("");
+			$("#singing_national_anthem_before_cls_start").val(0);		
+			$("#classroom_aayaton_hight").val("");
+			$("#classroom_aayaton_width").val("");							
+			$("#huse_light_air").val(0);
+			$("#classroom_windows").val("");
+			$("#classroom_doors").val("");
+			$("#arsenic_free_water").val(0);
+			$("#water_distance").val(0);
+			$("#student_useable_toilate").val(0);
+			$("#benefit_electricity_cls").val(0);
+			$("#seat_arragement_cls").val(0);
+			$("#cls_usable_board_draster").val(0);
+			$("#all_student_textbook").val(0);
+			$("#all_student_pen").val(0);
+			$("#management_school_calender").val(0);
+			$("#management_school_cls_routin").val(0);
+			$("#cmc_metting_previous_semister").val("");
+			$("#last_cmc_metting_present_cmc_member").val("");
+			$("#cmc_selebrate_exchange_gardagin").val(0);
+			$("#previous_semister_school_anudan_time").val(0);
+			
+			$("#education_allowance_receipt").val(0);		
+			$("#education_allowance_receipt_date").val("");
+			$("#education_allowance_not_receipt").val(0);
+			$("#education_allowance_receipt_delay").val("");							
+			$("#education_aundan_receipt").val(0);
+			$("#education_aundan_receipt_date").val("");
+			$("#education_aundan_not_receipt").val(0);
+			$("#education_aundan_receipt_delay").val("");
+			$("#school_necessary_rec_conservation_trank").val(0);							
+			$("#cmc_metting_log_register").val(0);		
+			$("#cash_register").val(0);
+			$("#school_visit_register").val(0);
+			$("#school_aundan_expense_cashMemo").val(0);
+			$("#check_book").val(0);
+			$("#previous_semister_ACF").val(0);
+			$("#student_attendence_register").val(0);
+			$("#repair_expense").val(0);
+			$("#repair_expense_others").val("");
+			$("#expense_prove").val(0);							
+			$("#chief_executive_officer_month1").val("");
+			$("#chief_executive_officer_month2").val("");
+			$("#chief_executive_officer_month3").val("");
+			$("#chief_executive_officer_month4").val("");
+			$("#chief_executive_officer_month5").val("");
+			$("#chief_executive_officer_month6").val("");
+			$("#up_education_officer_month1").val("");
+			$("#up_education_officer_month2").val("");
+			$("#up_education_officer_month3").val("");
+			$("#up_education_officer_month4").val("");
+			$("#up_education_officer_month5").val("");
+			$("#up_education_officer_month6").val("");
+			$("#training_co_ordinator_month1").val("");
+			$("#training_co_ordinator_month2").val("");
+			$("#training_co_ordinator_month3").val("");
+			$("#training_co_ordinator_month4").val("");
+			$("#training_co_ordinator_month5").val("");
+			$("#training_co_ordinator_month6").val("");
+			$("#assistant_up_education_officer_month1").val("");
+			$("#assistant_up_education_officer_month2").val("");
+			$("#assistant_up_education_officer_month3").val("");
+			$("#assistant_up_education_officer_month4").val("");
+			$("#assistant_up_education_officer_month5").val("");
+			$("#assistant_up_education_officer_month6").val("");
+			$("#assistant_teacher_month1").val("");
+			$("#assistant_teacher_month2").val("");
+			$("#assistant_teacher_month3").val("");
+			$("#assistant_teacher_month4").val("");
+			$("#assistant_teacher_month5").val("");
+			$("#assistant_teacher_month6").val("");
+			$("#mobile_pool_teacher_month1").val("");
+			$("#mobile_pool_teacher_month2").val("");
+			$("#mobile_pool_teacher_month3").val("");
+			$("#mobile_pool_teacher_month4").val("");
+			$("#mobile_pool_teacher_month5").val("");
+			$("#mobile_pool_teacher_month6").val("");
+			$("#others_month1").val("");
+			$("#others_month2").val("");
+			$("#others_month3").val("");
+			$("#others_month4").val("");
+			$("#others_month5").val("");
+			$("#others_month6").val("");
+			
+			$("#visit_LC_regu_teacher_present").val(0);
+			$("#regu_tea_instead_teacher_name").val("");
+			$("#regu_tea_instead_teacher_type").val(0);
+			$("#teacher_replaced_appointment_office").val(0);
+			$("#visit_display_id_card_teacher").val(0);
+			$("#distance_teacher_house_to_school").val("");
+			$("#previous_semister_school_teacher_training").val(0);
+			$("#class_attendence_students").val("");
+			$("#visit_day_attendence_students_boys").val("");
+			$("#visit_day_attendence_students_girls").val("");
+			$("#visit_day_attendence_students_total").val("");
+			$("#previous_semister_total_school_dibos").val("");
+			
+			$("#stu3Id").val("");	
+			$("#stuPre").val(0);			
+			
+			$("#lc_profile_name_not_match_student").val("");
+			$("#lc_profile_image_not_match_student").val("");
+			$("#previous_semister_exam_gov_primary_school").val(0);
+			$("#previous_semister_exam_register_student").val("");
+			$("#marriage_abandonment_boys").val("");
+			$("#marriage_abandonment_girls").val("");
+			$("#marriage_abandonment_total").val("");
+			
+			
+			$("#headmaster_name").val("");
+			$("#headmaster_mobileNo").val("");
+			$("#headmaster_opinion").val("");
+			$("#mobile_pool_teacher_name").val("");
+			$("#mobile_pool_teacher_mobileNo").val("");
+			$("#mobile_pool_teacher_opinion").val("");
+			$("#school_teacher_name").val("");
+			$("#school_teacher_mobileNo").val("");
+			$("#school_teacher_opinion").val("");		
+			$("#VisitOfficierName").val("");
+			$("#VisitOfficierContact").val("");
+			$("#VisitOfficerComments").val("");
+			
+			$("#image1").val("");
+			$("#image2").val("");
+			$("#image3").val("");
+			$("#image4").val("");
+			$("#image5").val("");
+			
+			$("#picType1").val(0);
+			$("#picType2").val(0);
+			$("#picType3").val(0);
+			$("#picType4").val(0);
+			$("#picType5").val(0);
+			
+			stuList="";
+			<!---->
+			
+			$(".sucChk").text('সফল ভাবে সংরক্ষণ করা হয়েছে');
+			$("#btn_rural_save").hide();
+			$("#btn_rural_submit").hide();
+			
+			setTimeout(function(){
+				window.location.reload(1);	
+			},5000);
+			
+		}else{
+			$(".errorChk").text('সর্বাধিক ৫ স্কুল সংরক্ষণ করা যাবে');			
+		}
+	}
+	
+	
+	
+	
+}
 
 
+schoolID='';
+saveStuList='';
+function saveDataSubmit(sSchLi){
+	sStr=localStorage.sSchList.split('<rd>');
+	iLen=sStr.length
+	for(i=0;i<iLen;i++){
+		sStrD=sStr[i].split('-');
+		if(sStrD[0]==sSchLi){
+			schoolID=sStrD[0]
+			school_name=sStrD[1]
+			latitude=sStrD[2]
+			longitude=sStrD[3]
+			image1=sStrD[4]
+			image2=sStrD[5]
+			image3=sStrD[6]
+			image4=sStrD[7]
+			image5=sStrD[8]
+			picType1=sStrD[9]
+			picType2=sStrD[10]
+			picType3=sStrD[11]
+			picType4=sStrD[12]
+			picType5=sStrD[13]
+			ruralData1=sStrD[14]
+			ruralData2=sStrD[15]
+			ruralData3=sStrD[16]
+			ruralData4=sStrD[17]
+			ruralData5=sStrD[18]
+			ruralData6=sStrD[19]
+			saveStuList=sStrD[20]
+		}
+	}
+	
 
+	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+"&school_id="+schoolID+"&school_name="+school_name+"&latitude="+latitude+"&longitude="+longitude+"&image1="+image1+"&image2="+image2+"&image3="+image3+"&image4="+image4+"&image5="+image5+"&picType1="+picType1+"&picType2="+picType2+"&picType3="+picType3+"&picType4="+picType4+"&picType5="+picType5+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6));
+	$.ajax({
+		type: 'POST',
+		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+"&school_id="+schoolID+"&school_name="+school_name+"&latitude="+latitude+"&longitude="+longitude+"&image1="+image1+"&image2="+image2+"&image3="+image3+"&image4="+image4+"&image5="+image5+"&picType1="+picType1+"&picType2="+picType2+"&picType3="+picType3+"&picType4="+picType4+"&picType5="+picType5+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6),
+		
+		success: function(res) {
+		   if(res!=''){
+			   saveDataSubmit_2(res)
+			   }
+		   
+		   }});
+				
+	}
+
+function saveDataSubmit_2(sl){	
+		//alert(apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+schoolID+'&tempText1='+encodeURIComponent(saveStuList));
+		$.ajax({
+				type: 'POST',
+				url:apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+schoolID+'&tempText1='+encodeURIComponent(saveStuList),
+				   
+				   success: function(res) {
+				   if(res=='Success'){
+					    sStrS=localStorage.sSchList.split('<rd>');
+						iLenS=sStrS.length
+						var rSsch='';
+						for(i=0;i<iLenS;i++){
+							sStrDS=sStrS[i].split('-');
+							if(parseInt(sStrDS[0])!=parseInt(schoolID)){
+								if (rSsch==''){
+									rSsch=sStrS[i]
+								}else{
+									rSsch+='<rd>'+sStrS[i]
+								}				
+						}
+					}
+					localStorage.sSchList=rSsch;
+					review();
+					
+						
+						
+						$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
+						$(".errorChk").text("");
+																
+					}else{
+						$(".errorChk").text('অসম্পন হয়েছে');																	
+						$("#btn_rural_submit").show();
+						}
+						
+				 }//end result
+					   
+			});
+	
+	
+}
+
+
+function review(){
+	$(".sucChk").text("");
+	var sSchStr=localStorage.sSchList.split('<rd>');
+	sSchDataList='';
+	for (i=1;i<sSchStr.length;i++){
+		sSchLi=sSchStr[i].split('-');
+		sSchDataList+='<tr><td><a>'+sSchLi[0]+'-'+sSchLi[1]+'</a></td><td><input class="ui-btn ui-input-btn ui-corner-all ui-shadow" type="submit" id="" name="" value="Submit" onclick="saveDataSubmit(\''+sSchLi[0]+'\')" /></td><td><input class="ui-btn ui-input-btn ui-corner-all ui-shadow" type="Submit" id="" name="" value="X" onclick="saveDataRemove(\''+sSchLi[0]+'\')" /></td></tr>' 
+	}
+	
+	$("#sRuralData").empty();
+	$("#sRuralData").append(sSchDataList);
+	
+	url="#review_page";
+	$.mobile.navigate(url);	
+}
+
+
+function saveDataRemove(sSchLi){
+	//$("#"+sSchLi).remove();			
+	sStrR=localStorage.sSchList.split('<rd>');
+	iLenSR=sStrR.length
+	var srSR='';
+	for(i=0;i<iLenSR;i++){
+		sStrDR=sStrR[i].split('-');
+		if(parseInt(sStrDR[0])!=parseInt(sSchLi)){
+			if (srSR==''){
+				srSR=sStrR[i]
+			}else{
+				srSR+='<rd>'+sStrR[i]
+			}				
+	}
+}
+localStorage.sSchList=srSR;
+	review()
+}	
 
 
 
 function blank_data() {
-
-/*ruralData1=
-"||visit_date_second=0||school_condition_second=0||close_school_second=0||close_school_others_second=0";*/
-
-
 
 ruralData2="||school_installation_year=0||school_address_house=0||school_address_vill=0||school_address_unionName=0||distance_school_near_GPS=0||school_signboard=0||international_flag_size=0||school_house=0||school_house_others=0||school_type=0||school_type_others=0||singing_national_anthem_before_cls_start=0||classroom_aayaton_hight=0||classroom_aayaton_width=0||huse_light_air=0||classroom_windows=0||classroom_doors=0||arsenic_free_water=0||water_distance=0||student_useable_toilate=0||benefit_electricity_cls=0||seat_arragement_cls=0||cls_usable_board_draster=0||all_student_textbook=0||all_student_pen=0||management_school_calender=0||management_school_cls_routin=0||cmc_metting_previous_semister=0||last_cmc_metting_present_cmc_member=0||cmc_selebrate_exchange_gardagin=0||previous_semister_school_anudan_time=0";	
 
@@ -2134,10 +2666,6 @@ ruralData5="||lc_name_ot_match_stu=0||lc_image_not_match_st=0||pre_semi_exam_gov
 ruralData6="||headmaster_name=0||headmaster_mobileNo=0||headmaster_opinion=0||mobile_pool_teacher_name=0||mobile_pool_teacher_mobileNo=0||mobile_pool_teacher_opinion=0||school_teacher_name=0||school_teacher_mobileNo=0||school_teacher_opinion=0||VisitOfficierName=0||VisitOfficierContact=0||VisitOfficerComments=0";
 
 }
-
-
-
-
 
 
 function exit() {
