@@ -69,7 +69,7 @@ $(document).ready(function(){
 			//alert(pre_for_student);
 			if ($("input[name='preForStu2']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
 			if ($("input[name='preForStu3']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
-			/*if ($("input[name='preForStu4']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}*/
+			if ($("input[name='preForStu4']:checked").val()=="1"){pre_for_student = pre_for_student + "1"} else {pre_for_student=pre_for_student +"0"}
 			
 			preForStu="1"+pre_for_student;
 			
@@ -105,11 +105,11 @@ $(document).ready(function(){
 			}else{
 				p +=''
 			}
-			/*if(pre.substring(4,5)=='1'){
+			if(pre.substring(4,5)=='1'){
 				p +='৪-অন্য স্কুলে পরে কি , '
 			}else{
 				p +=''
-			}*/
+			}
 			
 			//absent
 			if (abc.substring(1,2)=='1'){
