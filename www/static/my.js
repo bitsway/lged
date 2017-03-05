@@ -1540,8 +1540,8 @@ function ruralDataSubmit(){
 	//}
 
 function getAchivementImage1() {
-	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 60,
-	targetWidth: 300,
+	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 90,
+	targetWidth: 600,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true});		
 }
 
@@ -1614,8 +1614,8 @@ function onfail(r) {
 
 
 function getAchivementImage2() { 
-	navigator.camera.getPicture(onSuccess2A, onFail2A, { quality: 60,
-	targetWidth: 300,
+	navigator.camera.getPicture(onSuccess2A, onFail2A, { quality: 90,
+	targetWidth: 600,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1690,8 +1690,8 @@ function onfail2(r) {
 
 
 function getAchivementImage3() { 
-	navigator.camera.getPicture(onSuccess3A, onFail3A, { quality: 60,
-	targetWidth: 300,
+	navigator.camera.getPicture(onSuccess3A, onFail3A, { quality: 90,
+	targetWidth: 600,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1766,8 +1766,8 @@ function onfail3(r) {
 
 
 function getAchivementImage4() { 
-	navigator.camera.getPicture(onSuccess4A, onFail4A, { quality: 60,
-	targetWidth: 300,
+	navigator.camera.getPicture(onSuccess4A, onFail4A, { quality: 90,
+	targetWidth: 600,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1842,8 +1842,8 @@ function onfail4(r) {
 
 
 function getAchivementImage5() { 
-	navigator.camera.getPicture(onSuccess5A, onFail5A, { quality: 60,
-	targetWidth: 300,
+	navigator.camera.getPicture(onSuccess5A, onFail5A, { quality: 90,
+	targetWidth: 600,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
