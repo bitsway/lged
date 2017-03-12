@@ -2102,20 +2102,20 @@ function ruralDataSave(){
 	ruralData6=ruralData6
 	stuList=stuList
 	
-	picType1=$("#picType1").val();
-	picType2=$("#picType2").val();
-	picType3=$("#picType3").val();
-	picType4=$("#picType4").val();
-	picType5=$("#picType5").val();
-		
-	image1=imageName
-	image2=imageName2
-	image3=imageName3
-	image4=imageName4
-	image5=imageName5
+	latitude=latitude
+	longitude=longitude
 	
-	latitude=$("#ach_lat").val();
-	longitude=$("#ach_long").val();
+	image1=image1
+	image2=image2
+	image3=image3
+	image4=image4
+	image5=image5
+	
+	picType1=picType1
+	picType2=picType2
+	picType3=picType3
+	picType4=picType4
+	picType5=picType5
 			
 	if (latitude==undefined || latitude==''){
 		latitude=0;
@@ -2532,7 +2532,7 @@ function saveDataSubmit(sSchLi){
 		}
 	}
 	
-	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+image1S+'&picType2='+picType2S+'&image2='+image2S+'&picType3='+picType3S+'&image3='+image3S+'&picType4='+picType4S+'&image4='+image4S+'&picType5='+picType5S+'&image5='+image5S+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S));
+
 
 	$.ajax({
 		type: 'POST',
