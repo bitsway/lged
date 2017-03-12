@@ -88,7 +88,7 @@ $(document).ready(function(){
 			preForStu="1"+pre_for_student;
 			
 			
-			var abs_for_student ="";
+			/*var abs_for_student ="";
 			if ($("input[name='absForStu1']:checked").val()=="1"){abs_for_student = "1"} else {abs_for_student="0"}
 			if ($("input[name='absForStu2']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
 			if ($("input[name='absForStu3']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
@@ -96,7 +96,11 @@ $(document).ready(function(){
 			if ($("input[name='absForStu5']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
 			if ($("input[name='absForStu6']:checked").val()=="1"){abs_for_student = abs_for_student + "1"} else {abs_for_student=abs_for_student +"0"}
 			
-			absForStu="1"+abs_for_student;
+			absForStu="1"+abs_for_student;*/
+			
+			absForStu=$("#absForStu1").val();
+			//alert(absForStu);
+			
 			
 			if(stuPre==1){
 				pre=preForStu
@@ -126,7 +130,20 @@ $(document).ready(function(){
 			}
 			
 			//absent
-			if (abc.substring(1,2)=='1'){
+			if(absForStu==1){
+				a ='১-বাতিল '
+			}else if(absForStu==2){
+				a ='২-অন্যত্র চলে গেছে '
+			}else if(absForStu==3){
+				a ='৩-অসুস্থ '
+			}else if(absForStu==4){
+				a ='৪-অন্য স্কুলে পরে '
+			}else if(absForStu==5){
+				a ='৫-শিক্ষক অবগত নয় '
+			}else{
+				a ='৬-অন্যান্য '
+			}
+			/*if (abc.substring(1,2)=='1'){
 				a ='১-বাতিল , '
 			}else{
 				a=''
@@ -155,7 +172,7 @@ $(document).ready(function(){
 				a +='৬-অন্যান্য , '
 			}else{
 				a +=''
-			}
+			}*/
 			
 			
 			var stuAP='';
@@ -1526,26 +1543,9 @@ function ruralDataSubmit(){
 			longitude=0;
 			}
 			
-		/*if(picType1==0){
-			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ১");	
-		}else if(picType2==0){
-			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ২");	
-		}else if(picType3==0){
-			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৩");	
-		}else if(picType4==0){
-			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৪");	
-		}else if(picType5==0){
-			$(".errorChk").text("অবশ্যক- সিলেক্ট ইমেজ টাইপ ৫");	
-		}else{*/
-		//---------------
-		//image1 start	
-		//------------------------------------image 1					
-		//imagePath1A="test"					
-		/*if (imagePath1A!=""){							
-			$(".errorChk").text("Syncing photo 1..");
-			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-			uploadPhotoAch(imagePath1A, imageName);						
-		}*/
+		
+		//------------image 1					
+		
 		picture_upload=1;
 		imageUpload();
 		
@@ -1598,16 +1598,7 @@ function winAchInfo(r) {
 	//$(".errorChk").text('Image 1 upload Successful. Syncing image 2...');
 	picture_upload=2;
 	imageUpload();
-	/*var d = new Date();	
-	var get_time=d.getTime();
 		
-	if (imagePath2A!=""){							
-		$(".errorChk").text("Syncing photo 2..");
-		imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
-				
-		uploadPhoto2Ach(imagePath2A, imageName2);	
-	}*/
-	
 }
 
 function onfail(r) {
@@ -1664,18 +1655,7 @@ function winAchInfo2(r) {
 	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');
 	picture_upload=3;
 	imageUpload();
-	/*var d = new Date();	
-	var get_time=d.getTime();
 		
-	//imagePath3A="test3"
-	if (imagePath3A!=""){							
-		$(".errorChk").text("Syncing photo 3..");
-		imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
-				
-		uploadPhoto3Ach(imagePath3A, imageName3);
-		//$("#btn_rural_submit").show();		
-	}*/
-	
 }
 
 function onfail2(r) {
@@ -1730,17 +1710,6 @@ function winAchInfo3(r) {
 	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');
 	picture_upload=4;
 	imageUpload();
-	/*var d = new Date();	
-	var get_time=d.getTime();
-		
-	//imagePath4A="test4"
-	if (imagePath4A!=""){							
-		$(".errorChk").text("Syncing photo 4..");
-		imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
-				
-		uploadPhoto4Ach(imagePath4A, imageName4);
-		//$("#btn_rural_submit").show();		
-	}*/
 	
 }
 
@@ -1796,18 +1765,7 @@ function winAchInfo4(r) {
 	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');
 	picture_upload=5;
 	imageUpload();
-	/*var d = new Date();	
-	var get_time=d.getTime();
 		
-	//imagePath5A="test5"
-	if (imagePath5A!=""){							
-		$(".errorChk").text("Syncing photo 5..");
-		imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
-				
-		uploadPhoto5Ach(imagePath5A, imageName5);
-		//$("#btn_rural_submit").show();		
-	}*/
-	
 }
 
 function onfail4(r) {
