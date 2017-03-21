@@ -1558,10 +1558,10 @@ function saveImageUpload(){
 			saveUploadPhoto4Ach(image4, imageName4);	
 		}
 	
-		if (image5!=""){
+		if (image5!=""){	
 			var d = new Date();	
-			var get_time=d.getTime();
-										
+			var get_time=d.getTime();	
+									
 			//$(".errorChk").text("Syncing photo 5..");
 			imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 			saveUploadPhoto5Ach(image5, imageName5);
@@ -2221,11 +2221,7 @@ function ruralDataSave(){
 	longitude=$("#ach_long").val();
 	
 	image1=$("#image1").val();
-	//$("#saveImage1").val(image1);	
-	
-	image2=$("#image2").val();
-	//$("#saveImage2").val(image2);
-	
+	image2=$("#image2").val();	
 	image3=$("#image3").val();
 	image4=$("#image4").val();
 	image5=$("#image5").val();
@@ -2244,7 +2240,7 @@ function ruralDataSave(){
 		}
 	
 	if(localStorage.sSchList==eval(undefined)){
-		localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+imageName+"<fdfd>"+imageName2+"<fdfd>"+imageName3+"<fdfd>"+imageName4+"<fdfd>"+imageName5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
+		localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+image1+"<fdfd>"+image2+"<fdfd>"+image3+"<fdfd>"+image4+"<fdfd>"+image5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
 		
 		<!---->
 			$("#division").val("");
@@ -2429,7 +2425,7 @@ function ruralDataSave(){
 		SlenC=sStrClk.length
 		
 		if(SlenC<21){
-			localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+imageName+"<fdfd>"+imageName2+"<fdfd>"+imageName3+"<fdfd>"+imageName4+"<fdfd>"+imageName5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
+			localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+image1+"<fdfd>"+image2+"<fdfd>"+image3+"<fdfd>"+image4+"<fdfd>"+image5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
 			
 			<!---->
 			$("#division").val("");
@@ -2637,11 +2633,13 @@ function saveDataSubmit(sSchLi){
 			schoolNameS=sStrD[1]
 			latitudeS=sStrD[2]
 			longitudeS=sStrD[3]
-			image1S=sStrD[4]
-			image2S=sStrD[5]
-			image3S=sStrD[6]
-			image4S=sStrD[7]
-			image5S=sStrD[8]
+			
+			$("#image1").val(sStrD[4]);
+			$("#image2").val(sStrD[5]);
+			$("#image3").val(sStrD[6]);
+			$("#image4").val(sStrD[7]);
+			$("#image5").val(sStrD[8]);
+			
 			picType1S=sStrD[9]
 			picType2S=sStrD[10]
 			picType3S=sStrD[11]
@@ -2657,15 +2655,20 @@ function saveDataSubmit(sSchLi){
 		}
 	}
 	
+		image1=$("#image1").val();
+		image2=$("#image2").val();
+		image3=$("#image3").val();
+		image3=$("#image4").val();
+		image4=$("#image5").val();
 	
 	 
 	 saveImageUpload();
 	
 	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+image1S+'&picType2='+picType2S+'&image2='+image2S+'&picType3='+picType3S+'&image3='+image3S+'&picType4='+picType4S+'&image4='+image4S+'&picType5='+picType5S+'&image5='+image5S+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S));
-
+	alert(image1);
 	$.ajax({
 		type: 'POST',
-		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+image1S+'&picType2='+picType2S+'&image2='+image2S+'&picType3='+picType3S+'&image3='+image3S+'&picType4='+picType4S+'&image4='+image4S+'&picType5='+picType5S+'&image5='+image5S+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S),
+		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+image1+'&picType2='+picType2S+'&image2='+image2+'&picType3='+picType3S+'&image3='+image3+'&picType4='+picType4S+'&image4='+image4+'&picType5='+picType5S+'&image5='+image5+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S),
 		
 		success: function(res) {
 		   if(res!=''){
