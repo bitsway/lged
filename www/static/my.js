@@ -1524,7 +1524,7 @@ function saveImageUpload(){
 		image3=$("#image3").val();
 		image3=$("#image4").val();
 		image4=$("#image5").val();
-		alert(image1);			
+		
 		if (image1!=""){	
 			var d = new Date();	
 			var get_time=d.getTime();	
@@ -1666,7 +1666,7 @@ function saveDataSubmit(sSchLi){
 
 function syncSaveData(){
 	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+imageName+'&picType2='+picType2S+'&image2='+imageName2+'&picType3='+picType3S+'&image3='+imageName3+'&picType4='+picType4S+'&image4='+imageName4+'&picType5='+picType5S+'&image5='+imageName5+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S));
-	alert(imageName);
+	
 	$.ajax({
 		type: 'POST',
 		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+imageName+'&picType2='+picType2S+'&image2='+imageName2+'&picType3='+picType3S+'&image3='+imageName3+'&picType4='+picType4S+'&image4='+imageName4+'&picType5='+picType5S+'&image5='+imageName5+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S),
@@ -1763,7 +1763,7 @@ function uploadPhotoAch(imageURI, imageName) {
 
 //------------------image 2
 function winAchInfo(r) {	
-	$(".errorChk").text('Image 1 upload Successful. Syncing image 2...');	
+	$(".errorChk").text('Image upload Successful. Syncing image 2...');	
 }
 
 function onfail(r) {
@@ -1990,8 +1990,9 @@ function saveUploadPhotoAch(imageURI, imageName) {
 	
 }
 
-function winAchSave(r) {	
-	$(".errorChk").text('Save Image 1 upload Successful. Syncing image 2...');			
+function winAchSave(r) {
+	$(".errorChk").text('');	
+	//$(".errorChk").text('Save Image 1 upload Successful. Syncing image 2...');			
 }
 
 function onfailSave(r) {
@@ -2018,7 +2019,8 @@ function saveUploadPhoto2Ach(imageURI, imageName2) {
 }
 
 function winAchSave2(r) {	
-	$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');		
+	$(".errorChk").text('');	
+	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');		
 }
 
 function onfailSave2(r) {
@@ -2045,7 +2047,8 @@ function saveUploadPhoto3Ach(imageURI, imageName3) {
 }
 
 function winAchSave3(r) {	
-	$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
+	$(".errorChk").text('');	
+	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
 }
 
 function onfailSave3(r) {
@@ -2071,8 +2074,9 @@ function saveUploadPhoto4Ach(imageURI, imageName4) {
 	
 }
 
-function winAchSave4(r) {	
-	$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');		
+function winAchSave4(r) {
+	$(".errorChk").text('');		
+	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');		
 }
 
 function onfailSave4(r) {
@@ -2099,7 +2103,8 @@ function saveUploadPhoto5Ach(imageURI, imageName5) {
 }
 
 function winAchSave5(r) {
-	$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
+	$(".errorChk").text('Image Upload Successfully');	
+	//$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
 }
 
 function onfailSave5(r) {
@@ -2136,7 +2141,7 @@ function syncData_2(sl){
 					   if(result=='Success'){
 						   
 						   //--------------
-							/*$("#division").val("");
+							$("#division").val("");
 							$("#district").val("");
 							$("#upzila").val("");
 							$("#ff_id").val("");
@@ -2299,7 +2304,7 @@ function syncData_2(sl){
 							$("#picType2").val(0);
 							$("#picType3").val(0);
 							$("#picType4").val(0);
-							$("#picType5").val(0);*/
+							$("#picType5").val(0);
 							
 							$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 							stuList="";
@@ -2359,7 +2364,7 @@ function ruralDataSave(){
 	if (longitude==undefined || longitude==''){
 		longitude=0;
 		}
-	alert(image1);
+	
 	if(localStorage.sSchList==eval(undefined)){
 		localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+image1+"<fdfd>"+image2+"<fdfd>"+image3+"<fdfd>"+image4+"<fdfd>"+image5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
 		
