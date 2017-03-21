@@ -47,13 +47,12 @@ function onError(error) {
    $("#ach_long").val(0);
    $(".errorChk").html("অবস্হান নিশ্চিত করা যায়নি ।");
 }
-/*********************************/
+
 //---- online 
 var apipath="http://a006.yeapps.com/lged/syncmobile/";
 
 //--- local
 //var apipath="http://127.0.0.1:8000/lged/syncmobile/";
-/*********************************/
 
 url ="";
 
@@ -1467,108 +1466,60 @@ function ruralData6Next(){
 	
 	
 function imageUpload(){
-					
-	if (imagePath1A!=""){	
-		var d = new Date();	
-		var get_time=d.getTime();
-							
-		$(".errorChk").text("Syncing photo 1..");
-		imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-		uploadPhotoAch(imagePath1A, imageName);
-	}			
-			
-	if (imagePath2A!=""){
-		var d = new Date();	
-		var get_time=d.getTime();	
-								
-		$(".errorChk").text("Syncing photo 2..");
-		imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
-		uploadPhoto2Ach(imagePath2A, imageName2);		
-	}			
-	
-	if (imagePath3A!=""){	
-		var d = new Date();	
-		var get_time=d.getTime();		
-								
-		$(".errorChk").text("Syncing photo 3..");
-		imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
-		uploadPhoto3Ach(imagePath3A, imageName3);	
-	}
-	
-	if (imagePath4A!=""){
-		var d = new Date();	
-		var get_time=d.getTime();		
-									
-		$(".errorChk").text("Syncing photo 4..");
-		imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
-		uploadPhoto4Ach(imagePath4A, imageName4);	
-	}
-		
-	if (imagePath5A!=""){
-		var d = new Date();	
-		var get_time=d.getTime();		
-									
-		$(".errorChk").text("Syncing photo 5..");
-		imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
-		uploadPhoto5Ach(imagePath5A, imageName5);
-	}
-				
-	syncData()
-	
-}	
-
-
-function saveImageUpload(){
-					
-		if (image1!=""){	
-			var d = new Date();	
-			var get_time=d.getTime();			
-							
+	var d = new Date();	
+	var get_time=d.getTime();			
+	if(picture_upload==1){
+		//winAchInfo();					
+		if (imagePath1A!=""){							
 			$(".errorChk").text("Syncing photo 1..");
 			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-			saveUploadPhotoAch(image1, imageName);
+			uploadPhotoAch(imagePath1A, imageName);
 		}			
-	
-		if (image2!=""){
-			var d = new Date();	
-			var get_time=d.getTime();	
-										
+	}else if(picture_upload==2){
+		//winAchInfo2();		
+		if (imagePath2A!=""){							
 			$(".errorChk").text("Syncing photo 2..");
-			imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-			saveUploadPhoto2Ach(image2, imageName2);		
+			imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+					
+			uploadPhoto2Ach(imagePath2A, imageName2);		
 		}			
-
-		if (image3!=""){
-			var d = new Date();	
-			var get_time=d.getTime();	
-										
+	}else if(picture_upload==3){
+		//winAchInfo3();
+		if (imagePath3A!=""){							
 			$(".errorChk").text("Syncing photo 3..");
-			imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-			saveUploadPhoto3Ach(image3, imageName3);	
+			imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+					
+			uploadPhoto3Ach(imagePath3A, imageName3);	
 		}
-
-		if (image4!=""){	
-			var d = new Date();	
-			var get_time=d.getTime();	
-									
+	}else if(picture_upload==4){
+		//winAchInfo4();	
+		if (imagePath4A!=""){							
 			$(".errorChk").text("Syncing photo 4..");
-			imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-			saveUploadPhoto4Ach(image4, imageName4);	
+			imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+					
+			uploadPhoto4Ach(imagePath4A, imageName4);	
 		}
-	
-		if (image5!=""){							
+	}else if(picture_upload==5){
+		//winAchInfo5();		
+		if (imagePath5A!=""){							
 			$(".errorChk").text("Syncing photo 5..");
 			imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
-			saveUploadPhoto5Ach(image5, imageName5);
+			uploadPhoto5Ach(imagePath5A, imageName5);
 		}
-				
+	}else{
+		
+			//alert('6');		
 		syncData()
+	}
 }	
 		
 
-function ruralDataSubmit(){		
+function ruralDataSubmit(){
+		//$("#btn_rural_submit").hide();
+		
 		var d = new Date();	
-		var get_time=d.getTime();	
+		var get_time=d.getTime();		
+
 		
 		latitude=$("#ach_lat").val();
 		longitude=$("#ach_long").val();
@@ -1592,16 +1543,20 @@ function ruralDataSubmit(){
 			longitude=0;
 			}
 			
-		//=====image 1	
+		
+		//------------image 1					
+		
+		picture_upload=1;
 		imageUpload();
 		
 		//syncData();	
-	}
+		}
+	//}
 
 function getAchivementImage1() {
 	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true});		
 }
 
@@ -1619,6 +1574,7 @@ function onFailA(message) {
 }
 
 function uploadPhotoAch(imageURI, imageName) { 	
+	//winAchInfoPmt();
 	var options = new FileUploadOptions();
     options.fileKey="upload";
     options.fileName=imageName;
@@ -1635,22 +1591,29 @@ function uploadPhotoAch(imageURI, imageName) {
 	ft.upload(imageURI, encodeURI("http://107.167.187.177/lged_image/syncmobile_lged/fileUploaderLged/"),winAchInfo,onfail,options);
 	
 }
+//image1 end
 
-//------------------image 2
+//-----------------------image 2
 function winAchInfo(r) {	
-	$(".errorChk").text('Image 1 upload Successful. Syncing image 2...');	
+	//$(".errorChk").text('Image 1 upload Successful. Syncing image 2...');
+	picture_upload=2;
+	imageUpload();
+		
 }
 
 function onfail(r) {
+	picture_upload=2;
+
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
 	$("#btn_rural_submit").show();
+
 }
 
 
 function getAchivementImage2() { 
 	navigator.camera.getPicture(onSuccess2A, onFail2A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1658,7 +1621,8 @@ function onSuccess2A(imageURI) {
     var image = document.getElementById('myImageB');
     image.src = imageURI;
 	imagePath2A = imageURI;	
-	$("#image2").val(imagePath2A);	
+	$("#image2").val(imagePath2A);
+	
 }
 
 function onFail2A(message) { 
@@ -1668,6 +1632,7 @@ function onFail2A(message) {
 
 
 function uploadPhoto2Ach(imageURI, imageName2) { 	
+	//winComInfo2();
 	var options = new FileUploadOptions();
     options.fileKey="upload";
     options.fileName=imageName2;
@@ -1687,10 +1652,14 @@ function uploadPhoto2Ach(imageURI, imageName2) {
 
 //-----------------------image 3
 function winAchInfo2(r) {	
-	$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');	
+	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');
+	picture_upload=3;
+	imageUpload();
+		
 }
 
 function onfail2(r) {
+	picture_upload=3;
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
 	$("#btn_rural_submit").show();
 }
@@ -1699,7 +1668,7 @@ function onfail2(r) {
 function getAchivementImage3() { 
 	navigator.camera.getPicture(onSuccess3A, onFail3A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1718,6 +1687,7 @@ function onFail3A(message) {
 
 
 function uploadPhoto3Ach(imageURI, imageName3) { 	
+	//winComInfo2();
 	var options = new FileUploadOptions();
     options.fileKey="upload";
     options.fileName=imageName3;
@@ -1735,12 +1705,16 @@ function uploadPhoto3Ach(imageURI, imageName3) {
 	
 }
 
-//-----------------image 4
+//-----------------------image 4
 function winAchInfo3(r) {	
-	$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
+	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');
+	picture_upload=4;
+	imageUpload();
+	
 }
 
 function onfail3(r) {
+	picture_upload=4;
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
 	$("#btn_rural_submit").show();
 }
@@ -1749,7 +1723,7 @@ function onfail3(r) {
 function getAchivementImage4() { 
 	navigator.camera.getPicture(onSuccess4A, onFail4A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1768,6 +1742,7 @@ function onFail4A(message) {
 
 
 function uploadPhoto4Ach(imageURI, imageName4) { 	
+	//winComInfo2();
 	var options = new FileUploadOptions();
     options.fileKey="upload";
     options.fileName=imageName4;
@@ -1787,10 +1762,14 @@ function uploadPhoto4Ach(imageURI, imageName4) {
 
 //-----------------------image 5
 function winAchInfo4(r) {	
-	$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');			
+	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');
+	picture_upload=5;
+	imageUpload();
+		
 }
 
 function onfail4(r) {
+	picture_upload=5;
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
 	$("#btn_rural_submit").show();
 }
@@ -1799,7 +1778,7 @@ function onfail4(r) {
 function getAchivementImage5() { 
 	navigator.camera.getPicture(onSuccess5A, onFail5A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1818,6 +1797,7 @@ function onFail5A(message) {
 
 
 function uploadPhoto5Ach(imageURI, imageName5) { 	
+	//winComInfo2();
 	var options = new FileUploadOptions();
     options.fileKey="upload";
     options.fileName=imageName5;
@@ -1836,152 +1816,20 @@ function uploadPhoto5Ach(imageURI, imageName5) {
 }
 
 function winAchInfo5(r) {
-	$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
+	/*$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');
+	syncData();*/
+	picture_upload=6;
+	imageUpload();
 }
 
-function onfail5(r) {	
+function onfail5(r) {
+	/*$("#errorChk").text('Image upload Failed. Syncing Data...');
+	syncData();*/
+	picture_upload=6;
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
 	$("#btn_rural_submit").show();
 }
 
-
-/***********Save to Upload Image*****************/
-//===========S Image1
-function saveUploadPhotoAch(imageURI, imageName) { 	
-	var options = new FileUploadOptions();
-    options.fileKey="upload";
-    options.fileName=imageName;
-    options.mimeType="image/jpeg";
-
-    var params = {};
-    params.value1 = "test";
-    params.value2 = "param";
-    options.params = params;
-	
-	options.chunkedMode = false;
-
-    var ft = new FileTransfer();
-	ft.upload(imageURI, encodeURI("http://107.167.187.177/lged_image/syncmobile_lged/fileUploaderLged/"),winAchSave,onfailSave,options);
-	
-}
-
-function winAchSave(r) {	
-	$(".errorChk").text('Save Image 1 upload Successful. Syncing image 2...');			
-}
-
-function onfailSave(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
-}
-
-//===========S Image2
-function saveUploadPhoto2Ach(imageURI, imageName2) { 	
-	var options = new FileUploadOptions();
-    options.fileKey="upload";
-    options.fileName=imageName2;
-    options.mimeType="image/jpeg";
-
-    var params = {};
-    params.value1 = "test";
-    params.value2 = "param";
-    options.params = params;
-	
-	options.chunkedMode = false;
-
-    var ft = new FileTransfer();
-	ft.upload(imageURI, encodeURI("http://107.167.187.177/lged_image/syncmobile_lged/fileUploaderLged/"),winAchSave2,onfailSave2,options);
-	
-}
-
-function winAchSave2(r) {	
-	$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');		
-}
-
-function onfailSave2(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
-}
-
-//===========S Image3
-function saveUploadPhoto3Ach(imageURI, imageName3) { 	
-	var options = new FileUploadOptions();
-    options.fileKey="upload";
-    options.fileName=imageName3;
-    options.mimeType="image/jpeg";
-
-    var params = {};
-    params.value1 = "test";
-    params.value2 = "param";
-    options.params = params;
-	
-	options.chunkedMode = false;
-
-    var ft = new FileTransfer();
-	ft.upload(imageURI, encodeURI("http://107.167.187.177/lged_image/syncmobile_lged/fileUploaderLged/"),winAchSave3,onfailSave3,options);
-	
-}
-
-function winAchSave3(r) {	
-	$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
-}
-
-function onfailSave3(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
-}
-
-//===========S Image4
-function saveUploadPhoto4Ach(imageURI, imageName4) { 	
-	var options = new FileUploadOptions();
-    options.fileKey="upload";
-    options.fileName=imageName4;
-    options.mimeType="image/jpeg";
-
-    var params = {};
-    params.value1 = "test";
-    params.value2 = "param";
-    options.params = params;
-	
-	options.chunkedMode = false;
-
-    var ft = new FileTransfer();
-	ft.upload(imageURI, encodeURI("http://107.167.187.177/lged_image/syncmobile_lged/fileUploaderLged/"),winAchSave4,onfailSave4,options);
-	
-}
-
-function winAchSave4(r) {	
-	$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');		
-}
-
-function onfailSave4(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
-}
-
-//===========S Image5
-function saveUploadPhoto5Ach(imageURI, imageName5) { 	
-	var options = new FileUploadOptions();
-    options.fileKey="upload";
-    options.fileName=imageName5;
-    options.mimeType="image/jpeg";
-
-    var params = {};
-    params.value1 = "test";
-    params.value2 = "param";
-    options.params = params;
-	
-	options.chunkedMode = false;
-
-    var ft = new FileTransfer();
-	ft.upload(imageURI, encodeURI("http://107.167.187.177/lged_image/syncmobile_lged/fileUploaderLged/"),winAchSave5,onfailSave5,options);
-	
-}
-
-function winAchSave5(r) {
-	$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
-}
-
-function onfailSave5(r) {
-	$(".errorChk").text('File upload Failed. Please check internet connection.');
-}
-
-/***********Save to Submit Image End*****************/
 
 function syncData(){	
 			var school_id=$("#school_id").val();
@@ -2212,21 +2060,21 @@ function ruralDataSave(){
 	ruralData6=ruralData6
 	stuList=stuList
 	
-	latitude=$("#ach_lat").val();
-	longitude=$("#ach_long").val();
+	latitude=latitude
+	longitude=longitude
 	
-	image1=$("#image1").val();
-	image2=$("#image2").val();
-	image3=$("#image3").val();
-	image4=$("#image4").val();
-	image5=$("#image5").val();
+	image1=image1
+	image2=image2
+	image3=image3
+	image4=image4
+	image5=image5
 	
-	picType1=$("#picType1").val();
-	picType2=$("#picType2").val();
-	picType3=$("#picType3").val();
-	picType4=$("#picType4").val();
-	picType5=$("#picType5").val();
-				
+	picType1=picType1
+	picType2=picType2
+	picType3=picType3
+	picType4=picType4
+	picType5=picType5
+			
 	if (latitude==undefined || latitude==''){
 		latitude=0;
 		}
@@ -2613,12 +2461,6 @@ function ruralDataSave(){
 schoolID='';
 saveStuList='';
 function saveDataSubmit(sSchLi){
-	image1='';
-	image2='';
-	image3='';
-	image4='';
-	image5='';
-	
 	sStr=localStorage.sSchList.split('<rd>');
 	iLen=sStr.length
 	for(i=0;i<iLen;i++){
@@ -2648,11 +2490,7 @@ function saveDataSubmit(sSchLi){
 		}
 	}
 	
-	
-	 
-	 saveImageUpload();
-	
-	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+image1S+'&picType2='+picType2S+'&image2='+image2S+'&picType3='+picType3S+'&image3='+image3S+'&picType4='+picType4S+'&image4='+image4S+'&picType5='+picType5S+'&image5='+image5S+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S));
+
 
 	$.ajax({
 		type: 'POST',
@@ -2660,7 +2498,6 @@ function saveDataSubmit(sSchLi){
 		
 		success: function(res) {
 		   if(res!=''){
-			  
 			   saveDataSubmit_2(res)
 			   }
 		   
