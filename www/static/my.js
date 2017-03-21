@@ -1472,7 +1472,7 @@ function imageUpload(){
 		var d = new Date();	
 		var get_time=d.getTime();
 							
-		$(".errorChk").text("Syncing photo 1..");
+		//$(".errorChk").text("Syncing photo 1..");
 		imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 		uploadPhotoAch(imagePath1A, imageName);
 	}			
@@ -1481,7 +1481,7 @@ function imageUpload(){
 		var d = new Date();	
 		var get_time=d.getTime();	
 								
-		$(".errorChk").text("Syncing photo 2..");
+		//$(".errorChk").text("Syncing photo 2..");
 		imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
 		uploadPhoto2Ach(imagePath2A, imageName2);		
 	}			
@@ -1490,7 +1490,7 @@ function imageUpload(){
 		var d = new Date();	
 		var get_time=d.getTime();		
 								
-		$(".errorChk").text("Syncing photo 3..");
+		//$(".errorChk").text("Syncing photo 3..");
 		imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
 		uploadPhoto3Ach(imagePath3A, imageName3);	
 	}
@@ -1499,7 +1499,7 @@ function imageUpload(){
 		var d = new Date();	
 		var get_time=d.getTime();		
 									
-		$(".errorChk").text("Syncing photo 4..");
+		//$(".errorChk").text("Syncing photo 4..");
 		imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";				
 		uploadPhoto4Ach(imagePath4A, imageName4);	
 	}
@@ -1508,7 +1508,7 @@ function imageUpload(){
 		var d = new Date();	
 		var get_time=d.getTime();		
 									
-		$(".errorChk").text("Syncing photo 5..");
+		//$(".errorChk").text("Syncing photo 5..");
 		imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 		uploadPhoto5Ach(imagePath5A, imageName5);
 	}
@@ -1520,12 +1520,12 @@ function imageUpload(){
 
 function saveImageUpload(){
 					
-		if (image1==""){	
+		if (image1!=""){	
 			var d = new Date();	
 			var get_time=d.getTime();	
 			//saveImage1=$("#saveImage1").val();		
 					
-			$(".errorChk").text("Syncing photo 1..");
+			//$(".errorChk").text("Syncing photo 1..");
 			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 			saveUploadPhotoAch(image1, imageName);
 		}			
@@ -1535,7 +1535,7 @@ function saveImageUpload(){
 			var get_time=d.getTime();
 			//saveImage2=$("#saveImage2").val();	
 										
-			$(".errorChk").text("Syncing photo 2..");
+			//$(".errorChk").text("Syncing photo 2..");
 			imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 			saveUploadPhoto2Ach(image2, imageName2);		
 		}			
@@ -1544,7 +1544,7 @@ function saveImageUpload(){
 			var d = new Date();	
 			var get_time=d.getTime();	
 										
-			$(".errorChk").text("Syncing photo 3..");
+			//$(".errorChk").text("Syncing photo 3..");
 			imageName3 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 			saveUploadPhoto3Ach(image3, imageName3);	
 		}
@@ -1553,13 +1553,16 @@ function saveImageUpload(){
 			var d = new Date();	
 			var get_time=d.getTime();	
 									
-			$(".errorChk").text("Syncing photo 4..");
+			//$(".errorChk").text("Syncing photo 4..");
 			imageName4 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
 			saveUploadPhoto4Ach(image4, imageName4);	
 		}
 	
-		if (image5!=""){							
-			$(".errorChk").text("Syncing photo 5..");
+		if (image5!=""){
+			var d = new Date();	
+			var get_time=d.getTime();
+										
+			//$(".errorChk").text("Syncing photo 5..");
 			imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 			saveUploadPhoto5Ach(image5, imageName5);
 		}
