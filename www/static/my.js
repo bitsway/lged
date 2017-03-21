@@ -1522,20 +1522,22 @@ function saveImageUpload(){
 					
 		if (image1!=""){	
 			var d = new Date();	
-			var get_time=d.getTime();			
+			var get_time=d.getTime();	
+			saveImage1=$("#saveImage1").val();		
 							
 			$(".errorChk").text("Syncing photo 1..");
 			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-			saveUploadPhotoAch(image1, imageName);
+			saveUploadPhotoAch(saveImage1, imageName);
 		}			
 	
 		if (image2!=""){
 			var d = new Date();	
-			var get_time=d.getTime();	
+			var get_time=d.getTime();
+			saveImage2=$("#saveImage2").val();	
 										
 			$(".errorChk").text("Syncing photo 2..");
 			imageName2 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
-			saveUploadPhoto2Ach(image2, imageName2);		
+			saveUploadPhoto2Ach(saveImage2, imageName2);		
 		}			
 
 		if (image3!=""){
@@ -2216,10 +2218,10 @@ function ruralDataSave(){
 	longitude=$("#ach_long").val();
 	
 	image1=$("#image1").val();
-	saveImage1=$("#saveImage1").val(image1);
+	$("#saveImage1").val(image1);	
 	
 	image2=$("#image2").val();
-	saveImage2=$("#saveImage2").val(image2);
+	$("#saveImage2").val(image2);
 	
 	image3=$("#image3").val();
 	image4=$("#image4").val();
