@@ -1519,7 +1519,12 @@ function imageUpload(){
 
 
 function saveImageUpload(){
-					
+		image1=$("#image1").val();
+		image2=$("#image2").val();
+		image3=$("#image3").val();
+		image3=$("#image4").val();
+		image4=$("#image5").val();
+		alert(image1);			
 		if (image1!=""){	
 			var d = new Date();	
 			var get_time=d.getTime();	
@@ -1527,6 +1532,7 @@ function saveImageUpload(){
 					
 			//$(".errorChk").text("Syncing photo 1..");
 			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
+			
 			saveUploadPhotoAch(image1, imageName);
 		}			
 	
@@ -2320,6 +2326,7 @@ function syncData_2(sl){
 schCount=0;
 saveSchList="";
 function ruralDataSave(){
+
 	var school_id=$("#school_id").val();
 	var school_name=$("#school_name").val();
 	
@@ -2352,7 +2359,7 @@ function ruralDataSave(){
 	if (longitude==undefined || longitude==''){
 		longitude=0;
 		}
-	
+	alert(image1);
 	if(localStorage.sSchList==eval(undefined)){
 		localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+image1+"<fdfd>"+image2+"<fdfd>"+image3+"<fdfd>"+image4+"<fdfd>"+image5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
 		
