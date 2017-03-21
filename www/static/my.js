@@ -1526,7 +1526,7 @@ function saveImageUpload(){
 			//saveImage1=$("#saveImage1").val();		
 					
 			//$(".errorChk").text("Syncing photo 1..");
-			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";					
+			imageName = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 			saveUploadPhotoAch(image1, imageName);
 		}			
 	
@@ -1567,7 +1567,7 @@ function saveImageUpload(){
 			saveUploadPhoto5Ach(image5, imageName5);
 		}
 				
-		//syncData()
+		syncSaveData()
 }	
 		
 
@@ -1602,6 +1602,120 @@ function ruralDataSubmit(){
 		
 		//syncData();	
 	}
+
+
+
+schoolID='';
+saveStuList='';
+function saveDataSubmit(sSchLi){
+	image1='';
+	image2='';
+	image3='';
+	image4='';
+	image5='';
+	
+	sStr=localStorage.sSchList.split('<rd>');
+	iLen=sStr.length
+	for(i=0;i<iLen;i++){
+		sStrD=sStr[i].split('<fdfd>');
+		if(sStrD[0]==sSchLi){
+			schoolIDS=sStrD[0]
+			schoolNameS=sStrD[1]
+			latitudeS=sStrD[2]
+			longitudeS=sStrD[3]
+			
+			$("#image1").val(sStrD[4]);
+			$("#image2").val(sStrD[5]);
+			$("#image3").val(sStrD[6]);
+			$("#image4").val(sStrD[7]);
+			$("#image5").val(sStrD[8]);
+			
+			picType1S=sStrD[9]
+			picType2S=sStrD[10]
+			picType3S=sStrD[11]
+			picType4S=sStrD[12]
+			picType5S=sStrD[13]
+			ruralData1S=sStrD[14]
+			ruralData2S=sStrD[15]
+			ruralData3S=sStrD[16]
+			ruralData4S=sStrD[17]
+			ruralData5S=sStrD[18]
+			ruralData6S=sStrD[19]
+			saveStuListS=sStrD[20]
+		}
+	}
+	
+		
+		
+		saveImageUpload()
+		
+	 	//syncSaveData()	
+	 
+	
+	
+				
+	}
+
+
+
+function syncSaveData(){
+	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+imageName+'&picType2='+picType2S+'&image2='+imageName2+'&picType3='+picType3S+'&image3='+imageName3+'&picType4='+picType4S+'&image4='+imageName4+'&picType5='+picType5S+'&image5='+imageName5+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S));
+	alert(imageName);
+	$.ajax({
+		type: 'POST',
+		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+imageName+'&picType2='+picType2S+'&image2='+imageName2+'&picType3='+picType3S+'&image3='+imageName3+'&picType4='+picType4S+'&image4='+imageName4+'&picType5='+picType5S+'&image5='+imageName5+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S),
+		
+		success: function(res) {
+		   if(res!=''){
+			  
+			   saveDataSubmit_2(res)
+			   }
+		   
+		   }});
+	
+	}
+
+function saveDataSubmit_2(sl){	
+		//alert(apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+schoolIDS+'&tempText1='+encodeURIComponent(saveStuListS));
+		$.ajax({
+				type: 'POST',
+				url:apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+schoolIDS+'&tempText1='+encodeURIComponent(saveStuListS),
+				   
+				   success: function(res) {
+				   if(res=='Success'){
+					    sStrS=localStorage.sSchList.split('<rd>');
+						iLenS=sStrS.length
+						var rSsch='';
+						for(i=0;i<iLenS;i++){
+							sStrDS=sStrS[i].split('<fdfd>');
+							if(parseInt(sStrDS[0])!=parseInt(schoolIDS)){
+								if (rSsch==''){
+									rSsch=sStrS[i]
+								}else{
+									rSsch+='<rd>'+sStrS[i]
+								}				
+						}
+					}
+					localStorage.sSchList=rSsch;
+					review();
+					
+						
+						
+						$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
+						$(".errorChk").text("");
+																
+					}else{
+						$(".errorChk").text('অসম্পন হয়েছে');																	
+						$("#btn_rural_submit").show();
+						}
+						
+				 }//end result
+					   
+			});
+	
+	
+}
+
 
 function getAchivementImage1() {
 	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 90,
@@ -2016,7 +2130,7 @@ function syncData_2(sl){
 					   if(result=='Success'){
 						   
 						   //--------------
-							$("#division").val("");
+							/*$("#division").val("");
 							$("#district").val("");
 							$("#upzila").val("");
 							$("#ff_id").val("");
@@ -2179,7 +2293,7 @@ function syncData_2(sl){
 							$("#picType2").val(0);
 							$("#picType3").val(0);
 							$("#picType4").val(0);
-							$("#picType5").val(0);
+							$("#picType5").val(0);*/
 							
 							$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 							stuList="";
@@ -2614,112 +2728,6 @@ function ruralDataSave(){
 	
 }
 
-
-schoolID='';
-saveStuList='';
-function saveDataSubmit(sSchLi){
-	image1='';
-	image2='';
-	image3='';
-	image4='';
-	image5='';
-	
-	sStr=localStorage.sSchList.split('<rd>');
-	iLen=sStr.length
-	for(i=0;i<iLen;i++){
-		sStrD=sStr[i].split('<fdfd>');
-		if(sStrD[0]==sSchLi){
-			schoolIDS=sStrD[0]
-			schoolNameS=sStrD[1]
-			latitudeS=sStrD[2]
-			longitudeS=sStrD[3]
-			
-			$("#image1").val(sStrD[4]);
-			$("#image2").val(sStrD[5]);
-			$("#image3").val(sStrD[6]);
-			$("#image4").val(sStrD[7]);
-			$("#image5").val(sStrD[8]);
-			
-			picType1S=sStrD[9]
-			picType2S=sStrD[10]
-			picType3S=sStrD[11]
-			picType4S=sStrD[12]
-			picType5S=sStrD[13]
-			ruralData1S=sStrD[14]
-			ruralData2S=sStrD[15]
-			ruralData3S=sStrD[16]
-			ruralData4S=sStrD[17]
-			ruralData5S=sStrD[18]
-			ruralData6S=sStrD[19]
-			saveStuListS=sStrD[20]
-		}
-	}
-	
-		image1=$("#image1").val();
-		image2=$("#image2").val();
-		image3=$("#image3").val();
-		image3=$("#image4").val();
-		image4=$("#image5").val();
-	
-	 
-	 saveImageUpload();
-	
-	//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+image1S+'&picType2='+picType2S+'&image2='+image2S+'&picType3='+picType3S+'&image3='+image3S+'&picType4='+picType4S+'&image4='+image4S+'&picType5='+picType5S+'&image5='+image5S+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S));
-	alert(image1);
-	$.ajax({
-		type: 'POST',
-		url:apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+schoolIDS+'&picType1='+picType1S+'&image1='+image1+'&picType2='+picType2S+'&image2='+image2+'&picType3='+picType3S+'&image3='+image3+'&picType4='+picType4S+'&image4='+image4+'&picType5='+picType5S+'&image5='+image5+'&latitude='+latitudeS+'&longitude='+longitudeS+"&ruralData1="+encodeURIComponent(ruralData1S)+"&ruralData2="+encodeURIComponent(ruralData2S)+"&ruralData3="+encodeURIComponent(ruralData3S)+"&ruralData4="+encodeURIComponent(ruralData4S)+"&ruralData5="+encodeURIComponent(ruralData5S)+"&ruralData6="+encodeURIComponent(ruralData6S),
-		
-		success: function(res) {
-		   if(res!=''){
-			  
-			   saveDataSubmit_2(res)
-			   }
-		   
-		   }});
-				
-	}
-
-function saveDataSubmit_2(sl){	
-		//alert(apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+schoolIDS+'&tempText1='+encodeURIComponent(saveStuListS));
-		$.ajax({
-				type: 'POST',
-				url:apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+schoolIDS+'&tempText1='+encodeURIComponent(saveStuListS),
-				   
-				   success: function(res) {
-				   if(res=='Success'){
-					    sStrS=localStorage.sSchList.split('<rd>');
-						iLenS=sStrS.length
-						var rSsch='';
-						for(i=0;i<iLenS;i++){
-							sStrDS=sStrS[i].split('<fdfd>');
-							if(parseInt(sStrDS[0])!=parseInt(schoolIDS)){
-								if (rSsch==''){
-									rSsch=sStrS[i]
-								}else{
-									rSsch+='<rd>'+sStrS[i]
-								}				
-						}
-					}
-					localStorage.sSchList=rSsch;
-					review();
-					
-						
-						
-						$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
-						$(".errorChk").text("");
-																
-					}else{
-						$(".errorChk").text('অসম্পন হয়েছে');																	
-						$("#btn_rural_submit").show();
-						}
-						
-				 }//end result
-					   
-			});
-	
-	
-}
 
 
 function review(){
