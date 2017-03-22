@@ -69,6 +69,7 @@ $(document).ready(function(){
 	if (localStorage.synced!='YES'){
 			 url = "#pagesync";						
 		}else{			
+			$("#suncTime").text(localStorage.syncTime);
 			
 			var p='';
 			var a='';
@@ -324,9 +325,12 @@ function syncBasic() {
 						localStorage.sync_code=syncResultArray[1];
 						localStorage.ffID=syncResultArray[2];
 						localStorage.schoolList=syncResultArray[3];	
+						localStorage.syncTime=syncResultArray[4];	
+						
 						localStorage.mobile_no=mobile;
 						
-						$(".errorMsg").html("সফল ভাবে প্রবেশ করেছেন ।");						
+						$(".errorMsg").html("সফল ভাবে প্রবেশ করেছেন ।");	
+																	
 						$('#syncBasic').show();
 						
 						url = "#homePage";
@@ -448,9 +452,10 @@ function schoolSearch(){
 
 function schoolSelect(){
 	$(".error").text("");	
-	
+		
 	url="#page2";					
-	$.mobile.navigate(url);			
+	$.mobile.navigate(url);		
+	
 }
 
 function attendance(){
@@ -531,7 +536,7 @@ function uploadPhotoAtt(imageURI, imageNameAtt) {
 
 function winAchInfoAtt(r) {	
 	$(".errorChk").text('Image upload Successfull.');
-	attData()		
+	//attData()		
 }
 
 function onfailAtt(r) {
@@ -540,6 +545,7 @@ function onfailAtt(r) {
 }
 
 function attData(){
+	
 	//alert(apipath+'att_data_submit?cid=LGED&mobile_no='+localStorage.mobile_no+'&mvoID='+localStorage.ffID+'&imageNameAtt='+imageNameAtt+'&latitude='+latitude_att+'&longitude='+longitude_att);	
 	$.ajax({
 		type: 'POST',
@@ -547,10 +553,6 @@ function attData(){
 		   
 		   success: function(result) {
 		   if(result=='Success'){
-				
-				$("#att_ach_lat").val("");
-				$("#att_ach_long").val("");
-				$("#imageAtt").val("");
 										
 				$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 				$(".errorChk").text("");
@@ -573,7 +575,7 @@ function attData(){
 
 
 function ruralData1Next(){	
-		
+				
 		var d = new Date();
 		localStorage.date= d.getFullYear();
 		
@@ -1680,7 +1682,6 @@ function saveDataSubmit(sSchLi){
 		
 	 	//syncSaveData()	
 	 
-	
 	}
 
 
@@ -1724,8 +1725,27 @@ function saveDataSubmit_2(sl){
 						}
 					}
 					localStorage.sSchList=rSsch;
-					review();
-					
+					review();					
+						
+					$("#image1").val("");
+					$("#image2").val("");	
+					$("#image3").val("");
+					$("#image4").val("");
+					$("#image5").val("");						
+					//school remove from list	
+					var schoolList=$("#school_list").val();
+					var totalSchoolList=localStorage.schoolList.split('||');
+					var sch_list_new='';	
+					for (i=0;i<totalSchoolList.length;i++){
+						if(i!=schoolList){			
+							if (sch_list_new==""){
+								sch_list_new=totalSchoolList[i]
+							}else{
+								sch_list_new+='||'+totalSchoolList[i]	
+							}			
+						}
+					}
+					localStorage.schoolList=sch_list_new;
 						
 						$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 						$(".errorChk").text("");
@@ -1790,7 +1810,7 @@ function uploadPhotoAch(imageURI, imageName) {
 
 //------------------image 2
 function winAchInfo(r) {	
-	$(".errorChk").text('Image upload Successful. Syncing image 2...');	
+	//$(".errorChk").text('Image upload Successful. Syncing image 2...');	
 }
 
 function onfail(r) {
@@ -1846,7 +1866,7 @@ function uploadPhoto2Ach(imageURI, imageName2) {
 
 //-----------------------image 3
 function winAchInfo2(r) {	
-	$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');	
+	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');	
 }
 
 function onfail2(r) {
@@ -1903,7 +1923,7 @@ function uploadPhoto3Ach(imageURI, imageName3) {
 
 //-----------------image 4
 function winAchInfo3(r) {	
-	$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
+	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
 }
 
 function onfail3(r) {
@@ -1959,7 +1979,7 @@ function uploadPhoto4Ach(imageURI, imageName4) {
 
 //-----------------------image 5
 function winAchInfo4(r) {	
-	$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');			
+	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');			
 }
 
 function onfail4(r) {
@@ -2015,7 +2035,7 @@ function uploadPhoto5Ach(imageURI, imageName5) {
 }
 
 function winAchInfo5(r) {
-	$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
+	$(".sucChk").text('Image upload Successfully.');	
 }
 
 function onfail5(r) {	
@@ -2157,7 +2177,7 @@ function saveUploadPhoto5Ach(imageURI, imageName5) {
 }
 
 function winAchSave5(r) {
-	$(".errorChk").text('Image Upload Successfully');	
+	$(".sucChk").text('Image Upload Successfully');	
 	//$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
 }
 
@@ -2168,8 +2188,7 @@ function onfailSave5(r) {
 /***********Save to Submit Image End*****************/
 
 function syncData(){	
-			var school_id=$("#school_id").val();
-			
+			var school_id=$("#school_id").val();			
 			//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&picType1='+picType1+'&image1='+imageName+'&picType2='+picType2+'&image2='+imageName2+'&picType3='+picType3+'&image3='+imageName3+'&picType4='+picType4+'&image4='+imageName4+'&picType5='+picType5+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6));
 			$.ajax({
 					type: 'POST',
@@ -2799,15 +2818,11 @@ function ruralDataSave(){
 			},5000);
 			
 		}else{
-			$(".errorChk").text('সর্বাধিক ৫ স্কুল সংরক্ষণ করা যাবে');			
+			$(".errorChk").text('সর্বাধিক ২০ স্কুল সংরক্ষণ করা যাবে');			
 		}
 	}
 	
-	
-	
-	
 }
-
 
 
 function review(){

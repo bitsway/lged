@@ -93,6 +93,8 @@
             <ul data-role="listview" data-inset="true">
                 <li><a href="#" onClick="ruralV();" data-transition="slide">Rural</a></li>
             </ul>
+            <br />
+            <div id="suncTime" style="color:#666; font-size:10px;"></div>
            
     </div>
     
@@ -162,16 +164,16 @@
             <ul data-role="listview" data-inset="true">
                 <li style="background-color:#F2F2F2;" class="auto_break"><strong>School List</strong> </li>
               	<li class="ui-field-contain auto_break" >
-                       <select name="school_list" id="school_list" data-native-menu="false">
+                       <select name="school_list" id="school_list" data-native-menu="false" class="ui-mini">
                             <option value="0">Select School</option>							 												
                         </select>
                        
                 </li>                 
               </ul>
                  
-  <a data-role="button" onclick="schoolSearch()" href="#" data-transition="slide" >Search</a>
+  <a data-role="button" onclick="schoolSearch()" href="#" data-transition="slide" class="ui-btn ui-mini">Search</a>
   <br /><br />
-  <a data-role="button" onclick="attendance()" href="#" data-transition="slide" >Attendance</a>
+  <a data-role="button" onclick="attendance()" href="#" data-transition="slide" class="ui-btn ui-mini" >Attendance</a>
   <br /><br />
   <a data-role="button" id="btn_renew" onClick="review();" class="ui-btn ui-mini" >Review</a>
         <div class="errorChk"></div>
