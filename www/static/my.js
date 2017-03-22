@@ -1,34 +1,35 @@
-
+//Image Name
+var imageNameAtt = "";
 var imageName = "";
 var imageName2 = "";
 var imageName3 = "";
 var imageName4 = "";
 var imageName5 = "";
-
+//Image Path
+var imagePathAtt="";
 var imagePath1A="";
 var imagePath2A="";
 var imagePath3A="";
 var imagePath4A="";
 var imagePath5A="";
-
-
+//Image Var
+var imageAtt="";
 var image1="";
 var image2="";
 var image3="";
 var image4="";
 var image5="";
-
+//pic Type
 var picType1="";
 var picType2="";
 var picType3="";
 var picType4="";
 var picType5="";
-
-
+//location
 var latitude="";
 var longitude="";
-
-
+var latitude_att="";
+var longitude_att="";
 
 function getLocationInfoAch() {		
 	var options = { enableHighAccuracy: false};	
@@ -39,20 +40,24 @@ function getLocationInfoAch() {
 function onSuccess(position) {	
 	$("#ach_lat").val(position.coords.latitude);
 	$("#ach_long").val(position.coords.longitude);
+	$("#att_ach_lat").val(position.coords.latitude);
+	$("#att_ach_long").val(position.coords.longitude);
 	$(".errorChk").html("অবস্হান নিশ্চিত করা হয়েছে ।");
 }
 // onError Callback receives a PositionError object
 function onError(error) {
    $("#ach_lat").val(0);
    $("#ach_long").val(0);
+   $("#att_ach_lat").val(0);
+   $("#att_ach_long").val(0);
    $(".errorChk").html("অবস্হান নিশ্চিত করা যায়নি ।");
 }
 /*********************************/
 //---- online 
-var apipath="http://a006.yeapps.com/lged/syncmobile/";
+var apipath="http://a006.yeapps.com/lged/syncmobile_new/";
 
 //--- local
-//var apipath="http://127.0.0.1:8000/lged/syncmobile/";
+//var apipath="http://127.0.0.1:8000/lged/syncmobile_new/";
 /*********************************/
 
 url ="";
@@ -321,38 +326,6 @@ function syncBasic() {
 						localStorage.schoolList=syncResultArray[3];	
 						localStorage.mobile_no=mobile;
 						
-						//alert(localStorage.schoolList);	
-					/*	var totalSchoolList=localStorage.schoolList.split('||');					
-						var sch_list=totalSchoolList[0].split('-');
-						var sc_name=sch_list[0];
-						var sc_code=sch_list[1];
-						var div_code=sch_list[2];
-						var div_name=sch_list[3];
-						var dis_code=sch_list[4];
-						var dis_name=sch_list[5];
-						var up_code=sch_list[6];
-						var up_name=sch_list[7];						
-						
-						$("#division").val(div_name);
-						$("#district").val(dis_name);
-						$("#upzila").val(up_name);
-						//$("#ff_id").val(localStorage.ffID);
-						$("#school_id").val(sc_code);
-						$("#school_name").val(sc_name);*/
-						
-						/*schList="";
-						for (i=0;i<totalSchoolList.length;i++){					
-							schListTotal=totalSchoolList[i].split(',');
-							schList+="<option value="+encodeURIComponent(schListTotal[1])+">"+schListTotal[0]+-+schListTotal[1]+"</option>";
-								
-						}				
-						var rpt_rep_ob=$("#school_list");						
-						rpt_rep_ob.empty();		
-						rpt_rep_ob.append(schList);
-						rpt_rep_ob.selectmenu("refresh");*/
-						
-																	
-						
 						$(".errorMsg").html("সফল ভাবে প্রবেশ করেছেন ।");						
 						$('#syncBasic').show();
 						
@@ -392,7 +365,6 @@ function backClick(){
 	$(".errorChk").text("");
 	}
 
-
 	
 //---------------------------lged data page 
 var ruralData1="";
@@ -403,153 +375,205 @@ var ruralData5=""
 var ruralData6="";
 
 
-function ruralV(){
+function ruralV(){	
 	if(localStorage.sync_code==undefined || localStorage.sync_code==""){
 		$(".errorChk").text("Required Sync");
 	}else{
-		/*						
+				
 		var totalSchoolList=localStorage.schoolList.split('||');
 		
-		schList=""	
-		for (i=0;i<totalSchoolList.length;i++){					
-			schListTotal=totalSchoolList[i].split(',')
-			schList+="<option value="+encodeURIComponent(schListTotal[1])+">"+schListTotal[0]+"</option>";
-		}							
-		var rpt_rep_ob=$("#school_list");						
-		rpt_rep_ob.empty();
-		rpt_rep_ob.append(schList);
-		rpt_rep_ob.selectmenu("refresh");
-		*/				
+		schList="";
+		for (i=0;i<totalSchoolList.length;i++){			
+			schListTotal=totalSchoolList[i].split(',');
+			
+			schList+="<option value="+i+">"+schListTotal[1]+"-"+schListTotal[0]+"</option>";
+				
+		}
 		
-		//alert(apipath+'get_school_list?cid=LGED&sync_code='+localStorage.sync_code);
-		$.ajax({
-			  url:apipath+'get_school_list?cid=LGED&sync_code='+localStorage.sync_code,
-			  success: function(schStr) {
-					  schoolList=schStr.split("||");
-					  schList="";
-					  for (i=0;i<schoolList.length;i++){					
-							schListTotal=schoolList[i].split(',')
-							schList+="<option value="+encodeURIComponent(schoolList[i])+">"+schListTotal[0]+"-"+schListTotal[1]+"</option>";
-							//schList+="<option value="+encodeURIComponent(schoolList[i])+">"+schListTotal[0].slice(-3)+"-"+schListTotal[1]+"</option>";
-						}							
-						var rpt_rep_ob=$("#school_list");						
-						rpt_rep_ob.empty();
-						rpt_rep_ob.append(schList);
-						rpt_rep_ob.selectmenu("refresh");
-						
-						//getLocationInfoAch();			  
-					 									  
-				  }		  
-			});	 		
 		$(".sucChk").text("");
 		$(".error").text("");
 		url="#page1";					
 		$.mobile.navigate(url);	
+				
+		var rpt_rep_ob=$("#school_list");						
+		rpt_rep_ob.empty();		
+		rpt_rep_ob.append(schList);
+		rpt_rep_ob.selectmenu("refresh");
+						
+				
 		}
 			
 }
 
 //-----------------
 function schoolSearch(){
+	$("#ff_id").val(localStorage.ffID);
 	
-	var school_list=$("#school_list").val();
-
-	if(school_list==""){
-		$(".error").text("অবশ্যক স্কুল ");
-	}else{		
-		//alert(apipath+'search_school?cid=LGED&school='+school_list);
-		$.ajax({
-			url:apipath+'search_school?cid=LGED&school='+school_list,
-			success: function(result) {				  
-				resultStr=result.split("<fd>");	  	
-				 if (resultStr[0]=="Success"){
-					  var schoolNameStr=resultStr[1].split("fdfd");	
-					  var div_name=schoolNameStr[0];
-					  var dist_name=schoolNameStr[1];
-					  var up_name=schoolNameStr[2];		
-					  localStorage.school_code=schoolNameStr[3];
-					  var school_code_short=schoolNameStr[4];
-					  localStorage.school_name=schoolNameStr[5];
-					  var cohort=schoolNameStr[6];
-					  
-					  $("#division").val(div_name);
-					  $("#district").val(dist_name);
-					  $("#upzila").val(up_name);
-					  $("#ff_id").val(localStorage.ffID);
-					  $("#school_id").val(localStorage.school_code);
-					  $("#school_id_short").val(school_code_short);
-					  $("#school_name").val(localStorage.school_name);
-					  $("#school_installation_year").val(cohort);
-					  
-					  $("#schoolSelected").html(localStorage.school_code+"-"+localStorage.school_name)
-					  
-					  url="#school_select_page";					
-					  $.mobile.navigate(url);
-					  
-					}else if (resultStr[0]=="Failed"){
-						$(".errorChk").text("Audit report already submitted for this school . Please contact with admin if you think this school in incorrectly flagged.");
-											
-					} 
-				
-			  }
-		});
+	var schoolList=$("#school_list").val();
+	var totalSchoolList=localStorage.schoolList.split('||');
+	sch_list='';	
+	for (i=0;i<totalSchoolList.length;i++){
+		if(i==schoolList){			
+			sch_list=totalSchoolList[i].split(',');			
+		}
+	}
 	
+	var sc_name=sch_list[0].toString();
+	var sc_code=sch_list[1].toString();
+	var div_code=sch_list[2].toString();
+	var div_name=sch_list[3].toString();
+	var dis_code=sch_list[4].toString();
+	var dis_name=sch_list[5].toString();
+	var up_code=sch_list[6].toString();
+	var up_name=sch_list[7].toString();
+	var school_code_short=sch_list[8].toString();
+	var cohort=sch_list[9].toString();	
+	
+	$("#school_id").val(sc_code);					
+	$("#school_name").val(sc_name);	
+	$("#district").val(dis_name);
+	
+	$("#school_id_short").val(school_code_short);
+	$("#school_installation_year").val(cohort);	
+	
+	$("#schoolSelected").text(sc_code+"-"+sc_name);
+	$("#division").val(div_name);
+	
+	$("#upzila").val(up_name)
 	
 	url="#school_select_page";					
 	$.mobile.navigate(url);	
-}
+//}
 }
 
 function schoolSelect(){
-	$(".error").text("");
-	/*var school_list=$("#school_list").val();
-
-	if(school_list==""){
-		$(".error").text("Required School");
-	}else{		
-		//alert(apipath+'search_school?cid=LGED&school='+school_list);
-		$.ajax({
-			url:apipath+'search_school?cid=LGED&school='+school_list,
-			success: function(result) {				  
-				resultStr=result.split("<fd>");	  	
-				 if (resultStr[0]=="Success"){
-					  var schoolNameStr=resultStr[1].split("fdfd");	
-					  var div_name=schoolNameStr[0];
-					  var dist_name=schoolNameStr[1];
-					  var up_name=schoolNameStr[2];		
-					  localStorage.school_code=schoolNameStr[3];
-					  localStorage.school_name=schoolNameStr[4];
-					  var cohort=schoolNameStr[5];
-					 // alert(cohort);
-					  $("#division").val(div_name);
-					  $("#district").val(dist_name);
-					  $("#upzila").val(up_name);
-					  $("#ff_id").val(localStorage.ffID);
-					  $("#school_id").val(localStorage.school_code);
-					  $("#school_name").val(localStorage.school_name);
-					  $("#school_installation_year").val(cohort);
-					  
-					  url="#page2";					
-					  $.mobile.navigate(url);
-					  
-					}else if (resultStr[0]=="Failed"){
-						$(".errorChk").text("Audit report already submitted for this school . Please contact with admin if you think this school in incorrectly flagged.");
-											
-					} 
-				
-			  }
-		});*/
-		
-		url="#page2";					
-		$.mobile.navigate(url);
-	//}
-		
+	$(".error").text("");	
+	
+	url="#page2";					
+	$.mobile.navigate(url);			
 }
 
+function attendance(){
+	$(".error").text("");	
+	
+	url="#attendance_page";					
+	$.mobile.navigate(url);
+}
+	
+	
+function attSubmit(){
+	
+	latitude_att=$("#att_ach_lat").val();
+	longitude_att=$("#att_ach_long").val();
+	imageAtt=$("#imageAtt").val();
+	
+	if (latitude_att==undefined || latitude_att==''){
+		latitude_att=0;
+	}
+	if (longitude_att==undefined || longitude_att==''){
+		longitude_att=0;
+	}
+	if(imageAtt=="" || imageAtt==undefined){
+		$(".errorChk").text("Please confirm Photo");
+	}else{
+		if (imagePathAtt!=""){	
+			var d = new Date();	
+			var get_time=d.getTime();
+								
+			imageNameAtt = localStorage.mobile_no+"_"+get_time+".jpg";					
+			uploadPhotoAtt(imagePathAtt, imageNameAtt);
+		}	
+	}
+	if (latitude_att==0 && longitude_att==0){
+		$(".errorChk").text('অবস্হান নিশ্চিত করা যায়নি ।');
+	}else{
+		attData()
+	}
+		
+}	
+
+function getAttImage() {
+	navigator.camera.getPicture(onSuccessAtt, onFailAtt, { quality: 90,
+	targetWidth: 600,
+	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true});		
+}
+
+function onSuccessAtt(imageURI) {		
+	var image = document.getElementById('myImageAtt');
+	image.src = imageURI;
+	imagePathAtt = imageURI;	
+	$("#imageAtt").val(imagePathAtt);
+	
+}
+
+function onFailAtt(message) {
+	imagePathAtt="";
+	alert('Failed because: ' + message);
+}
+
+function uploadPhotoAtt(imageURI, imageNameAtt) { 	
+	var options = new FileUploadOptions();
+	options.fileKey="upload";
+	options.fileName=imageNameAtt;
+	options.mimeType="image/jpeg";
+
+	var params = {};
+	params.value1 = "test";
+	params.value2 = "param";
+	options.params = params;
+	
+	options.chunkedMode = false;
+
+	var ft = new FileTransfer();
+	ft.upload(imageURI, encodeURI("http://107.167.187.177/lged_image/syncmobile_lged/fileUploaderLged/"),winAchInfoAtt,onfailAtt,options);
+	
+}
+
+function winAchInfoAtt(r) {	
+	$(".errorChk").text('Image upload Successfull.');
+	attData()		
+}
+
+function onfailAtt(r) {
+	$(".errorChk").text('Image upload Failed. Please check internet connection.');
+	$("#btn_att").show();
+}
+
+function attData(){
+	//alert(apipath+'att_data_submit?cid=LGED&mobile_no='+localStorage.mobile_no+'&mvoID='+localStorage.ffID+'&imageNameAtt='+imageNameAtt+'&latitude='+latitude_att+'&longitude='+longitude_att);	
+	$.ajax({
+		type: 'POST',
+		url:apipath+'att_data_submit?cid=LGED&mobile_no='+localStorage.mobile_no+'&mvoID='+localStorage.ffID+'&imageNameAtt='+imageNameAtt+'&latitude='+latitude_att+'&longitude='+longitude_att,
+		   
+		   success: function(result) {
+		   if(result=='Success'){
+				
+				$("#att_ach_lat").val("");
+				$("#att_ach_long").val("");
+				$("#imageAtt").val("");
+										
+				$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
+				$(".errorChk").text("");
+				$("#btn_att").hide();
+				
+				setTimeout(function(){
+					window.location.reload(1);	
+				},5000);
+									
+			}else{
+				$(".errorChk").text('অসম্পন হয়েছে');																	
+				$("#btn_att").show();
+				}
+				
+		 }//end result
+			   
+	});	
+}
 
 
 
 function ruralData1Next(){	
+		
 		var d = new Date();
 		localStorage.date= d.getFullYear();
 		
@@ -1522,8 +1546,8 @@ function saveImageUpload(){
 		image1=$("#image1").val();
 		image2=$("#image2").val();
 		image3=$("#image3").val();
-		image3=$("#image4").val();
-		image4=$("#image5").val();
+		image4=$("#image4").val();
+		image5=$("#image5").val();
 		
 		if (image1!=""){	
 			var d = new Date();	
@@ -1652,14 +1676,11 @@ function saveDataSubmit(sSchLi){
 	}
 	
 		
-		
 		saveImageUpload()
 		
 	 	//syncSaveData()	
 	 
 	
-	
-				
 	}
 
 
@@ -1706,7 +1727,6 @@ function saveDataSubmit_2(sl){
 					review();
 					
 						
-						
 						$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 						$(".errorChk").text("");
 																
@@ -1726,7 +1746,14 @@ function saveDataSubmit_2(sl){
 function getAchivementImage1() {
 	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true});		
+}
+
+//========Gallery From Image
+function getAchivementImageGallery1() {
+	navigator.camera.getPicture(onSuccessA, onFailA, { quality: 90,
+	targetWidth: 600,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true});		
 }
 
@@ -1775,7 +1802,14 @@ function onfail(r) {
 function getAchivementImage2() { 
 	navigator.camera.getPicture(onSuccess2A, onFail2A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
+}
+
+//========Gallery From Image
+function getAchivementImageGallery2() { 
+	navigator.camera.getPicture(onSuccess2A, onFail2A, { quality: 90,
+	targetWidth: 600,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1824,7 +1858,14 @@ function onfail2(r) {
 function getAchivementImage3() { 
 	navigator.camera.getPicture(onSuccess3A, onFail3A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
+}
+
+//========Gallery From Image
+function getAchivementImageGallery3() { 
+	navigator.camera.getPicture(onSuccess3A, onFail3A, { quality: 90,
+	targetWidth: 600,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1874,7 +1915,13 @@ function onfail3(r) {
 function getAchivementImage4() { 
 	navigator.camera.getPicture(onSuccess4A, onFail4A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
+}
+//========Gallery From Image
+function getAchivementImageGallery4() { 
+	navigator.camera.getPicture(onSuccess4A, onFail4A, { quality: 90,
+	targetWidth: 600,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -1924,7 +1971,14 @@ function onfail4(r) {
 function getAchivementImage5() { 
 	navigator.camera.getPicture(onSuccess5A, onFail5A, { quality: 90,
 	targetWidth: 600,
-	//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
+}
+
+//========Gallery From Image
+function getAchivementImageGallery5() { 
+	navigator.camera.getPicture(onSuccess5A, onFail5A, { quality: 90,
+	targetWidth: 600,
+	sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
 	destinationType: Camera.DestinationType.FILE_URI,correctOrientation: true });		
 }
 
@@ -2305,6 +2359,20 @@ function syncData_2(sl){
 							$("#picType3").val(0);
 							$("#picType4").val(0);
 							$("#picType5").val(0);
+							
+							var schoolList=$("#school_list").val();
+							var totalSchoolList=localStorage.schoolList.split('||');
+							var sch_list_new='';	
+							for (i=0;i<totalSchoolList.length;i++){
+								if(i!=schoolList){			
+									if (sch_list_new==""){
+										sch_list_new=totalSchoolList[i]
+									}else{
+										sch_list_new+='||'+totalSchoolList[i]	
+									}			
+								}
+							}
+							localStorage.schoolList=sch_list_new;
 							
 							$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 							stuList="";

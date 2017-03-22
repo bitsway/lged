@@ -165,17 +165,48 @@
                        <select name="school_list" id="school_list" data-native-menu="false">
                             <option value="0">Select School</option>							 												
                         </select>
+                       
                 </li>                 
               </ul>
                  
   <a data-role="button" onclick="schoolSearch()" href="#" data-transition="slide" >Search</a>
   <br /><br />
-  
+  <a data-role="button" onclick="attendance()" href="#" data-transition="slide" >Attendance</a>
+  <br /><br />
   <a data-role="button" id="btn_renew" onClick="review();" class="ui-btn ui-mini" >Review</a>
         <div class="errorChk"></div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
 </div>
+
+
+
+<div data-role="page" data-theme="c" id="attendance_page" style="overflow:scroll;">
+    <div data-theme="c" data-role="header" data-position="fixed" >
+        <a data-role="button" onClick="menuClick();" data-icon="bullets" data-iconpos="left" class="ui-btn ui-shadow ui-corner-all ui-icon-bullets " ><img src="menu.png" /></a>
+        <a data-role="button" onclick="backClick();" data-rel="back" class="ui-btn-right" data-transition="slide"><img src="back.png" /></a>
+        <h3>ROSC</h3>
+    </div>
+    
+    <div data-role="content" >    
+        <a data-role="button" id="btn_att_pic" onClick="getAttImage();" class="ui-btn ui-mini" >Attendance Picture</a>
+                           
+        <img src="" width="128" height="128" alt="Image" id="myImageAtt" />
+        <input name="imageAtt" id="imageAtt" value=""  type="hidden">
+        
+        <input name="att_ach_lat" id="att_ach_lat" value=""  type="hidden">
+        <input name="att_ach_long" id="att_ach_long" value=""  type="hidden">
+        <a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAch();" class="ui-btn ui-mini" >Confirm Location</a>        <br/>
+        <div class="errorChk"></div>
+		<br/>        
+        <a data-role="button" id="btn_att" onClick="attSubmit();" class="ui-btn ui-mini" >Submit</a> 
+            <br />
+            <div class="sucChk" style="color:#00CA00;"></div>     
+        
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </div>
+</div>
+
 
 
 <div data-role="page" data-theme="c" id="review_page" style="overflow:scroll;">
@@ -1275,7 +1306,7 @@
   </div>
     <div data-role="content">   
     	 
-        <select id="picType1" name="picType1" data-native-menu="false">
+        <select id="picType1" name="picType1" data-native-menu="false" class="ui-mini">
             <option value="0">0-Select Type</option>
             <option value="1">1-Lc picture with signboard</option>
             <option value="2">2-Lc picture inside the school</option>
@@ -1286,11 +1317,18 @@
         </select>
           
        	<br />
-        <a data-role="button" id="btn_take_pic1" onClick="getAchivementImage1();" class="ui-btn" >Take Picture 1</a>       
+         
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_take_pic1" onClick="getAchivementImage1();" class="ui-btn ui-mini" >Take Picture 1</a></th>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_gallery_pic1" onClick="getAchivementImageGallery1();" class="ui-btn ui-mini" >Gallery Picture 1</a>  </th>
+          </tr>
+        </table>
+     
         <img src="" width="128" height="128" alt="Image1" id="myImageA" />        
         <input name="image1" id="image1" value=""  type="hidden">
         
-        <select id="picType2" name="picType2" data-native-menu="false">
+        <select id="picType2" name="picType2" data-native-menu="false" class="ui-mini">
             <option value="0">0-Select Type</option>
             <option value="1">1-Lc picture with signboard</option>
             <option value="2">2-Lc picture inside the school</option>
@@ -1300,11 +1338,17 @@
             <!--<option value="6">Others</option>-->
         </select>
         <br />
-        <a data-role="button" id="btn_take_pic2" onClick="getAchivementImage2();" class="ui-btn" >Take Picture 2</a>       
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_take_pic2" onClick="getAchivementImage2();" class="ui-btn ui-mini" >Take Picture 2</a></th>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_gallery_pic2" onClick="getAchivementImageGallery2();" class="ui-btn ui-mini" >Gallery Picture 2</a></th>
+          </tr>
+        </table>
+        
         <img src="" width="128" height="128" alt="Image2" id="myImageB" />
         <input name="image2" id="image2" value=""  type="hidden">
         
-        <select id="picType3" name="picType3" data-native-menu="false">
+        <select id="picType3" name="picType3" data-native-menu="false" class="ui-mini">
             <option value="0">0-Select Type</option>
             <option value="1">1-Lc picture with signboard</option>
             <option value="2">2-Lc picture inside the school</option>
@@ -1315,11 +1359,16 @@
         </select>
         <br />
         
-        <a data-role="button" id="btn_take_pic3" onClick="getAchivementImage3();" class="ui-btn" >Take Picture 3</a>       
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_take_pic3" onClick="getAchivementImage3();" class="ui-btn ui-mini" >Take Picture 3</a></th>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_gallery_pic3" onClick="getAchivementImageGallery3();" class="ui-btn ui-mini" >Gallery Picture 3</a></th>
+          </tr>
+        </table>
         <img src="" width="128" height="128" alt="Image3" id="myImageC" />
         <input name="image3" id="image3" value=""  type="hidden">
         
-        <select id="picType4" name="picType4" data-native-menu="false">
+        <select id="picType4" name="picType4" data-native-menu="false" class="ui-mini">
             <option value="0">0-Select Type</option>
             <option value="1">1-Lc picture with signboard</option>
             <option value="2">2-Lc picture inside the school</option>
@@ -1330,11 +1379,17 @@
         </select>
         <br />
         
-        <a data-role="button" id="btn_take_pic4" onClick="getAchivementImage4();" class="ui-btn" >Take Picture 4</a>       
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_take_pic4" onClick="getAchivementImage4();" class="ui-btn ui-mini" >Take Picture 4</a></th>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_gallery_pic4" onClick="getAchivementImageGallery4();" class="ui-btn ui-mini" >Gallery Picture 4</a></th>
+          </tr>
+        </table>
+               
         <img src="" width="128" height="128" alt="Image4" id="myImageD" />
         <input name="image4" id="image4" value=""  type="hidden">
         
-        <select id="picType5" name="picType5" data-native-menu="false">
+        <select id="picType5" name="picType5" data-native-menu="false" class="ui-mini">
             <option value="0">0-Select Type</option>
             <option value="1">1-Lc picture with signboard</option>
             <option value="2">2-Lc picture inside the school</option>
@@ -1345,7 +1400,13 @@
         </select>
         <br />
         
-        <a data-role="button" id="btn_take_pic5" onClick="getAchivementImage5();" class="ui-btn" >Take Picture 5</a>       
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_take_pic5" onClick="getAchivementImage5();" class="ui-btn ui-mini" >Take Picture 5</a></th>
+            <th width="50%" scope="col" style="padding:1px;"><a data-role="button" id="btn_gallery_pic5" onClick="getAchivementImageGallery5();" class="ui-btn ui-mini" >Gallery Picture 5</a></th>
+          </tr>
+        </table>
+               
         <img src="" width="128" height="128" alt="Image5" id="myImageE" />
         <input name="image5" id="image5" value=""  type="hidden">
         
@@ -1353,13 +1414,13 @@
         <input name="ach_long" id="ach_long" value=""  type="hidden">
         <a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAch();" class="ui-btn ui-mini" >Confirm Location</a>        <br/>
 		<br/>        
-        <a data-role="button" id="btn_rural_save" onClick="ruralDataSave();" class="ui-btn" >Save</a> 
+        <a data-role="button" id="btn_rural_save" onClick="ruralDataSave();" class="ui-btn ui-mini" >Save</a> 
         
         <div class="errorChk" style="color:#F00;"></div>
         <div class="sucChk" style="color:#00CA00;"></div>        
         <br/>
 		<br/>        
-        <a data-role="button" id="btn_rural_submit" onClick="ruralDataSubmit();" class="ui-btn" >Submit</a> 
+        <a data-role="button" id="btn_rural_submit" onClick="ruralDataSubmit();" class="ui-btn ui-mini" >Submit</a> 
 		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         
     </div>
