@@ -34,7 +34,7 @@ var longitude_att="";
 function getLocationInfoAch() {		
 	var options = { enableHighAccuracy: false};	
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, options);				
-	$(".errorChk").html("অবস্হান নিশ্চিত করা হচ্ছে । অপেক্ষা করুন..");
+	$(".errorLocChk").html("অবস্হান নিশ্চিত করা হচ্ছে । অপেক্ষা করুন..");
 }
 // onSuccess Geolocation
 function onSuccess(position) {	
@@ -42,7 +42,7 @@ function onSuccess(position) {
 	$("#ach_long").val(position.coords.longitude);
 	$("#att_ach_lat").val(position.coords.latitude);
 	$("#att_ach_long").val(position.coords.longitude);
-	$(".errorChk").html("অবস্হান নিশ্চিত করা হয়েছে ।");
+	$(".errorLocChk").html("অবস্হান নিশ্চিত করা হয়েছে ।");
 }
 // onError Callback receives a PositionError object
 function onError(error) {
@@ -50,7 +50,7 @@ function onError(error) {
    $("#ach_long").val(0);
    $("#att_ach_lat").val(0);
    $("#att_ach_long").val(0);
-   $(".errorChk").html("অবস্হান নিশ্চিত করা যায়নি ।");
+   $(".errorLocChk").html("অবস্হান নিশ্চিত করা যায়নি ।");
 }
 /*********************************/
 //---- online 
@@ -67,10 +67,13 @@ var stuIDList='';
 var stuCount=1;
 $(document).ready(function(){
 	if (localStorage.synced!='YES'){
+			
 			 url = "#pagesync";						
 		}else{			
 			$("#suncTime").text(localStorage.syncTime);
-			
+			$("#mobile").val(localStorage.mobile_no) ;
+	 		$("#password").val(localStorage.password) ;
+			$(".errorLocChk").html("অবস্হান নিশ্চিত করা যায়নি ।");
 			var p='';
 			var a='';
 			var b='';
@@ -326,13 +329,17 @@ function syncBasic() {
 						localStorage.ffID=syncResultArray[2];
 						localStorage.schoolList=syncResultArray[3];	
 						localStorage.syncTime=syncResultArray[4];	
-						
+						localStorage.password=syncResultArray[5];
+							
 						localStorage.mobile_no=mobile;
 						
 						$(".errorMsg").html("সফল ভাবে প্রবেশ করেছেন ।");	
 																	
 						$('#syncBasic').show();
-						
+						$("#suncTime").text(localStorage.syncTime);
+						$("#mobile").val(localStorage.mobile_no) ;
+						$("#password").val(localStorage.password) ;
+			
 						url = "#homePage";
 						$.mobile.navigate(url);
 
@@ -380,6 +387,12 @@ var ruralData6="";
 
 
 function ruralV(){	
+	$("#image1").val("");
+	$("#image2").val("");
+	$("#image3").val("");
+	$("#image4").val("");
+	$("#image5").val("");
+	
 	if(localStorage.sync_code==undefined || localStorage.sync_code==""){
 		$(".errorChk").text("Required Sync");
 	}else{
@@ -441,9 +454,10 @@ function schoolSearch(){
 	$("#school_installation_year").val(cohort);	
 	
 	$("#schoolSelected").text(sc_code+"-"+sc_name);
-	$("#division").val(div_name);
-	
+	$("#division").val(div_name);	
 	$("#upzila").val(up_name)
+	
+	localStorage.school_code=sc_code;
 	
 	url="#school_select_page";					
 	$.mobile.navigate(url);	
@@ -455,7 +469,7 @@ function schoolSelect(){
 		
 	url="#page2";					
 	$.mobile.navigate(url);		
-	
+		
 }
 
 function attendance(){
@@ -535,7 +549,7 @@ function uploadPhotoAtt(imageURI, imageNameAtt) {
 }
 
 function winAchInfoAtt(r) {	
-	$(".errorChk").text('Image upload Successfull.');
+	//$(".errorChk").text('Image upload Successfull.');
 	//attData()		
 }
 
@@ -575,7 +589,7 @@ function attData(){
 
 
 function ruralData1Next(){	
-				
+		
 		var d = new Date();
 		localStorage.date= d.getFullYear();
 		
@@ -650,7 +664,7 @@ function ruralData1Next(){
 		if(school_condition==1 || school_condition_second==1){
 			url="#page3";
 		}else{
-			url="#page8";
+			url="#page7";
 			blank_data();		
 		}
 		$.mobile.navigate(url);	
@@ -1629,8 +1643,29 @@ function ruralDataSubmit(){
 			longitude=0;
 			}
 			
-		//------------image 1	
-		imageUpload();
+		//------------image 1
+		imageCount=0;
+		if(image1!=""){
+			imageCount+=1;
+		}
+		if(image2!=""){
+			imageCount+=1;
+		}
+		if(image3!=""){
+			imageCount+=1;
+		} 
+		if(image4!=""){
+			imageCount+=1;
+		}
+		if(image5!=""){
+			imageCount+=1;
+		}
+		if(imageCount<2){
+			$(".errorChk").text('দুইটি ছবি আবশ্যক ।');		
+		}else{
+			imageUpload();
+			
+		}	
 		
 		//syncData();	
 	}
@@ -1678,10 +1713,14 @@ function saveDataSubmit(sSchLi){
 	}
 	
 		
+		
 		saveImageUpload()
 		
 	 	//syncSaveData()	
 	 
+	
+	
+				
 	}
 
 
@@ -2188,7 +2227,8 @@ function onfailSave5(r) {
 /***********Save to Submit Image End*****************/
 
 function syncData(){	
-			var school_id=$("#school_id").val();			
+			var school_id=$("#school_id").val();
+			
 			//alert(apipath+"rural_data_submit?cid=LGED&mobile_no="+localStorage.mobile_no+"&syncCode="+localStorage.sync_code+'&school_id='+school_id+'&picType1='+picType1+'&image1='+imageName+'&picType2='+picType2+'&image2='+imageName2+'&picType3='+picType3+'&image3='+imageName3+'&picType4='+picType4+'&image4='+imageName4+'&picType5='+picType5+'&image5='+imageName5+'&latitude='+latitude+'&longitude='+longitude+"&ruralData1="+encodeURIComponent(ruralData1)+"&ruralData2="+encodeURIComponent(ruralData2)+"&ruralData3="+encodeURIComponent(ruralData3)+"&ruralData4="+encodeURIComponent(ruralData4)+"&ruralData5="+encodeURIComponent(ruralData5)+"&ruralData6="+encodeURIComponent(ruralData6));
 			$.ajax({
 					type: 'POST',
@@ -2393,6 +2433,8 @@ function syncData_2(sl){
 							}
 							localStorage.schoolList=sch_list_new;
 							
+							
+							
 							$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 							stuList="";
 							$(".errorChk").text("");
@@ -2451,7 +2493,27 @@ function ruralDataSave(){
 	if (longitude==undefined || longitude==''){
 		longitude=0;
 		}
-	
+		
+	imageCount=0;
+	if(image1!=""){
+		imageCount+=1;
+	}
+	if(image2!=""){
+		imageCount+=1;
+	}
+	if(image3!=""){
+		imageCount+=1;
+	} 
+	if(image4!=""){
+		imageCount+=1;
+	}
+	if(image5!=""){
+		imageCount+=1;
+	}
+	if(imageCount<2){
+		$(".errorChk").text('দুইটি ছবি আবশ্যক ।');		
+	}else{
+				
 	if(localStorage.sSchList==eval(undefined)){
 		localStorage.sSchList +="<rd>"+school_id+"<fdfd>"+school_name+"<fdfd>"+latitude+"<fdfd>"+longitude+"<fdfd>"+image1+"<fdfd>"+image2+"<fdfd>"+image3+"<fdfd>"+image4+"<fdfd>"+image5+"<fdfd>"+picType1+"<fdfd>"+picType2+"<fdfd>"+picType3+"<fdfd>"+picType4+"<fdfd>"+picType5+"<fdfd>"+ruralData1+"<fdfd>"+ruralData2+"<fdfd>"+ruralData3+"<fdfd>"+ruralData4+"<fdfd>"+ruralData5+"<fdfd>"+ruralData6+"<fdfd>"+stuList;
 		
@@ -2822,7 +2884,11 @@ function ruralDataSave(){
 		}
 	}
 	
+	
+	}
+	
 }
+
 
 
 function review(){

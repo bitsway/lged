@@ -94,11 +94,12 @@
                 <li><a href="#" onClick="ruralV();" data-transition="slide">Rural</a></li>
             </ul>
             <br />
+            <label style="color:#666; font-size:11px;">School List Updated On:</label>
             <div id="suncTime" style="color:#666; font-size:10px;"></div>
            
     </div>
     
-    <div data-theme="c" data-role="footer" data-position="fixed" style="font-size:12px;background-color:#CCC;" align="center" >m-Reporting 20170322</div><!------/footer  -->
+    <div data-theme="c" data-role="footer" data-position="fixed" style="font-size:12px;background-color:#CCC;" align="center" >m-Reporting 20170323</div><!------/footer  -->
     
     <div data-role="panel" id="leftpanel" data-position="left" data-display="overlay" data-theme="c">
         <div align="center"></div>
@@ -196,10 +197,10 @@
         <img src="" width="128" height="128" alt="Image" id="myImageAtt" />
         <input name="imageAtt" id="imageAtt" value=""  type="hidden">
         
-        <input name="att_ach_lat" id="att_ach_lat" value=""  type="hidden">
+        <input name="att_ach_lat" id="att_ach_lat" value=""  type="hidden" >
         <input name="att_ach_long" id="att_ach_long" value=""  type="hidden">
         <a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAch();" class="ui-btn ui-mini" >Confirm Location</a>        <br/>
-        <div class="errorChk"></div>
+        <div class="errorLocChk" style="color:#C00"></div>
 		<br/>        
         <a data-role="button" id="btn_att" onClick="attSubmit();" class="ui-btn ui-mini" >Submit</a> 
             <br />
@@ -1095,7 +1096,7 @@
                         </select>
                 </li>
                 <li class="ui-field-contain auto_break">
-                	<label for="">উপস্থিত শিক্ষারথীদের জন্য পূরণ করুন</label>
+                	<label for=""> শিক্ষারথীদের জন্য পূরণ করুন</label>
                 		<div id="stuPresent">
                         <fieldset data-role="controlgroup">
                             <input name="preForStu1" id="checkbox-v-2a" value="1" type="checkbox">
@@ -1415,6 +1416,7 @@
         <input name="ach_lat" id="ach_lat" value=""  type="hidden">
         <input name="ach_long" id="ach_long" value=""  type="hidden">
         <a data-role="button" id="btn_ach_lat_long" onClick="getLocationInfoAch();" class="ui-btn ui-mini" >Confirm Location</a>        <br/>
+        <div class="errorLocChk" style="color:#F00;"></div>
 		<br/>        
         <a data-role="button" id="btn_rural_save" onClick="ruralDataSave();" class="ui-btn ui-mini" >Save</a> 
         
