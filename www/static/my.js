@@ -31,6 +31,8 @@ var longitude="";
 var latitude_att="";
 var longitude_att="";
 
+var imageUploadFalg=0;
+
 function getLocationInfoAch() {		
 	var options = { enableHighAccuracy: false};	
 	navigator.geolocation.getCurrentPosition(onSuccess, onError, options);				
@@ -54,16 +56,16 @@ function onError(error) {
 }
 /*********************************/
 //---- online 
-var apipath="http://a006.yeapps.com/lged/syncmobile_new/";
+var apipath="http://a006.yeapps.com/lged/syncmobile_new-2017-03-30/";
 
 //--- local
-//var apipath="http://127.0.0.1:8000/lged/syncmobile_new/";
+//var apipath="http://127.0.0.1:8000/lged/syncmobile_new-2017-03-30/";
 /*********************************/
 
 url ="";
 
 var stuList='';
-var stuIDList='';
+//var stuIDList='';
 var stuCount=1;
 $(document).ready(function(){
 	if (localStorage.synced!='YES'){
@@ -204,9 +206,9 @@ $(document).ready(function(){
 			
 			var i="<tr id='"+stu3Id+"'><td>"+stu3Id+"</td><td>"+stuAP+"</td><td>"+ap+"</td><td>"+'<input style="background-color:#99dfff;" type="button" onclick="stuRemove(\''+stu3Id+'\')" value="X">'+"</td></tr>"
 			
-			
-			//if( stuList.indexOf(stu3Id) >0 ){
-			if( stuIDList.indexOf(stu3Id) >-1 ){
+			//alert(stuList.indexOf(stu3Id) >-1);
+			if( stuList.indexOf(stu3Id) >-1){
+			//if( stuIDList.indexOf(stu3Id) >-1 ){
 				$(".errorChk").text("শিক্ষার্থীর আইডি আগে থেকেই আছে");
 			}else{
 				if(stuCount > lcProSt){
@@ -228,11 +230,11 @@ $(document).ready(function(){
 					}else{
 						stuList +="||"+stu3Id+","+stuPre+","+stuPreAbs;
 					}
-					if(stuIDList=="" ){
+					/*if(stuIDList=="" ){
 						stuIDList=stu3Id;
 					}else{
 						stuIDList +="||"+stu3Id;
-					}
+					}*/
 					
 									
 					
@@ -255,22 +257,26 @@ function stuRemove(stu3Id){
 	$("#"+stu3Id).remove();	
 	stuCount-=1;
 	var repl1='';
-	iStr=stuIDList.split('||');
+	iStr=stuList.split('||');
 	iLen=iStr.length
 	for(i=0;i<iLen;i++){
 		iStrD=iStr[i].split(',');
 		
-		if(iStrD[0]!=stu3Id){
+		if(iStrD[0]==stu3Id){
+			
+		}else{
+			
 			if (repl1==''){
 				repl1=iStr[i]
 			}else{
 				repl1+='||'+iStr[i]
 			}	
+			
+			
 		}		
 	}
 	
-	stuIDList=repl1
-	
+	stuList=repl1
 }
 /*function stuRemove(stu3Id){	
 	$("#"+stu3Id).remove();	
@@ -387,6 +393,8 @@ var ruralData6="";
 
 
 function ruralV(){	
+	imageUploadFalg=0;
+	
 	$("#image1").val("");
 	$("#image2").val("");
 	$("#image3").val("");
@@ -469,7 +477,6 @@ function schoolSelect(){
 		
 	url="#page2";					
 	$.mobile.navigate(url);		
-		
 }
 
 function attendance(){
@@ -492,18 +499,18 @@ function attSubmit(){
 	if (longitude_att==undefined || longitude_att==''){
 		longitude_att=0;
 	}
-	if(imageAtt=="" || imageAtt==undefined){
-		$(".errorChk").text("Please confirm Photo");
-	}else{
-		if (imagePathAtt!=""){	
-			var d = new Date();	
-			var get_time=d.getTime();
-								
-			imageNameAtt = localStorage.mobile_no+"_"+get_time+".jpg";					
-			uploadPhotoAtt(imagePathAtt, imageNameAtt);
-		}	
+	
+	if (imagePathAtt!=""){	
+		var d = new Date();	
+		var get_time=d.getTime();
+							
+		imageNameAtt = localStorage.mobile_no+"_"+get_time+".jpg";					
+		uploadPhotoAtt(imagePathAtt, imageNameAtt);
 	}
-	if (latitude_att==0 && longitude_att==0){
+		
+	if(imageAtt=="" || imageAtt==undefined){
+		$(".errorChk").text("প্লিজ ইমেজ নিশ্চিত করুন ।");
+	}else if (latitude_att==0 && longitude_att==0){
 		$(".errorChk").text('অবস্হান নিশ্চিত করা যায়নি ।');
 	}else{
 		attData()
@@ -589,7 +596,7 @@ function attData(){
 
 
 function ruralData1Next(){	
-		
+				
 		var d = new Date();
 		localStorage.date= d.getFullYear();
 		
@@ -1552,8 +1559,13 @@ function imageUpload(){
 		imageName5 = localStorage.mobile_no+"_"+localStorage.school_code+"_"+get_time+".jpg";
 		uploadPhoto5Ach(imagePath5A, imageName5);
 	}
+	
 				
-	syncData()
+	if(imageUploadFalg < 2){
+		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
+	}else{
+		syncData();	
+	}	
 	
 }	
 
@@ -1613,7 +1625,13 @@ function saveImageUpload(){
 			saveUploadPhoto5Ach(image5, imageName5);
 		}
 				
-		syncSaveData()
+		
+		if(imageUploadFalg < 2){
+			$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
+		}else{
+			syncSaveData();
+		}	
+		
 }	
 		
 
@@ -1665,9 +1683,10 @@ function ruralDataSubmit(){
 		}else{
 			imageUpload();
 			
-		}	
+		}
 		
 		//syncData();	
+					
 	}
 
 
@@ -1849,10 +1868,12 @@ function uploadPhotoAch(imageURI, imageName) {
 
 //------------------image 2
 function winAchInfo(r) {	
+	imageUploadFalg +=1;
 	//$(".errorChk").text('Image upload Successful. Syncing image 2...');	
 }
 
 function onfail(r) {
+	
 	$(".errorChk").text('File upload Failed. Please check internet connection.');
 	$("#btn_rural_submit").show();
 }
@@ -1905,6 +1926,7 @@ function uploadPhoto2Ach(imageURI, imageName2) {
 
 //-----------------------image 3
 function winAchInfo2(r) {	
+	imageUploadFalg +=1;
 	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');	
 }
 
@@ -1962,6 +1984,7 @@ function uploadPhoto3Ach(imageURI, imageName3) {
 
 //-----------------image 4
 function winAchInfo3(r) {	
+	imageUploadFalg +=1;
 	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
 }
 
@@ -2017,7 +2040,8 @@ function uploadPhoto4Ach(imageURI, imageName4) {
 }
 
 //-----------------------image 5
-function winAchInfo4(r) {	
+function winAchInfo4(r) {
+	imageUploadFalg +=1;
 	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');			
 }
 
@@ -2074,6 +2098,7 @@ function uploadPhoto5Ach(imageURI, imageName5) {
 }
 
 function winAchInfo5(r) {
+	imageUploadFalg +=1;
 	$(".sucChk").text('Image upload Successfully.');	
 }
 
@@ -2104,7 +2129,8 @@ function saveUploadPhotoAch(imageURI, imageName) {
 }
 
 function winAchSave(r) {
-	$(".errorChk").text('');	
+	$(".errorChk").text('');
+	imageUploadFalg +=1;	
 	//$(".errorChk").text('Save Image 1 upload Successful. Syncing image 2...');			
 }
 
@@ -2133,6 +2159,7 @@ function saveUploadPhoto2Ach(imageURI, imageName2) {
 
 function winAchSave2(r) {	
 	$(".errorChk").text('');	
+	imageUploadFalg +=1;
 	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');		
 }
 
@@ -2161,6 +2188,7 @@ function saveUploadPhoto3Ach(imageURI, imageName3) {
 
 function winAchSave3(r) {	
 	$(".errorChk").text('');	
+	imageUploadFalg +=1;
 	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
 }
 
@@ -2188,7 +2216,8 @@ function saveUploadPhoto4Ach(imageURI, imageName4) {
 }
 
 function winAchSave4(r) {
-	$(".errorChk").text('');		
+	$(".errorChk").text('');
+	imageUploadFalg +=1;		
 	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');		
 }
 
@@ -2216,6 +2245,7 @@ function saveUploadPhoto5Ach(imageURI, imageName5) {
 }
 
 function winAchSave5(r) {
+	imageUploadFalg +=1;
 	$(".sucChk").text('Image Upload Successfully');	
 	//$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
 }
@@ -2244,6 +2274,7 @@ function syncData(){
 		}
 
 function syncData_2(sl){	
+		
 			var school_id=$("#school_id").val();
 			//alert(apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+school_id+'&tempText1='+encodeURIComponent(stuList));
 			$.ajax({
@@ -2892,6 +2923,7 @@ function ruralDataSave(){
 
 
 function review(){
+	imageUploadFalg=0;
 	$(".sucChk").text("");
 	var sSchStr=localStorage.sSchList.split('<rd>');
 	sSchDataList='';
