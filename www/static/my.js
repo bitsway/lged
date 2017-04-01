@@ -488,7 +488,7 @@ function attendance(){
 	
 	
 function attSubmit(){
-	
+	$("#imageAtt").val("");
 	latitude_att=$("#att_ach_lat").val();
 	longitude_att=$("#att_ach_long").val();
 	imageAtt=$("#imageAtt").val();
@@ -1560,16 +1560,15 @@ function imageUpload(){
 		uploadPhoto5Ach(imagePath5A, imageName5);
 	}
 	
-				
+}	
+
+function uploadImage(){
 	if(imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
 		syncData();	
 	}	
-	
-}	
-
-
+}
 function saveImageUpload(){
 		image1=$("#image1").val();
 		image2=$("#image2").val();
@@ -1869,6 +1868,7 @@ function uploadPhotoAch(imageURI, imageName) {
 //------------------image 2
 function winAchInfo(r) {	
 	imageUploadFalg +=1;
+	uploadImage()
 	//$(".errorChk").text('Image upload Successful. Syncing image 2...');	
 }
 
@@ -1927,6 +1927,7 @@ function uploadPhoto2Ach(imageURI, imageName2) {
 //-----------------------image 3
 function winAchInfo2(r) {	
 	imageUploadFalg +=1;
+	uploadImage()
 	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');	
 }
 
@@ -1985,6 +1986,7 @@ function uploadPhoto3Ach(imageURI, imageName3) {
 //-----------------image 4
 function winAchInfo3(r) {	
 	imageUploadFalg +=1;
+	uploadImage()
 	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
 }
 
@@ -2042,6 +2044,7 @@ function uploadPhoto4Ach(imageURI, imageName4) {
 //-----------------------image 5
 function winAchInfo4(r) {
 	imageUploadFalg +=1;
+	uploadImage()
 	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');			
 }
 
@@ -2099,7 +2102,8 @@ function uploadPhoto5Ach(imageURI, imageName5) {
 
 function winAchInfo5(r) {
 	imageUploadFalg +=1;
-	$(".sucChk").text('Image upload Successfully.');	
+	uploadImage()
+	//$(".sucChk").text('Image upload Successfully.');	
 }
 
 function onfail5(r) {	
@@ -2274,7 +2278,7 @@ function syncData(){
 		}
 
 function syncData_2(sl){	
-		
+			
 			var school_id=$("#school_id").val();
 			//alert(apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+school_id+'&tempText1='+encodeURIComponent(stuList));
 			$.ajax({
