@@ -56,10 +56,10 @@ function onError(error) {
 }
 /*********************************/
 //---- online 
-var apipath="http://a006.yeapps.com/lged/syncmobile_new-2017-03-30/";
+var apipath="http://a006.yeapps.com/lged/syncmobile_20170401/";
 
 //--- local
-//var apipath="http://127.0.0.1:8000/lged/syncmobile_new-2017-03-30/";
+//var apipath="http://127.0.0.1:8000/lged/syncmobile_20170401/";
 /*********************************/
 
 url ="";
