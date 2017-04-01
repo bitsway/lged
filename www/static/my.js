@@ -507,7 +507,7 @@ function attSubmit(){
 		imageNameAtt = localStorage.mobile_no+"_"+get_time+".jpg";					
 		uploadPhotoAtt(imagePathAtt, imageNameAtt);
 	}
-		
+	
 	if(imageAtt=="" || imageAtt==undefined){
 		$(".errorChk").text("প্লিজ ইমেজ নিশ্চিত করুন ।");
 	}else if (latitude_att==0 && longitude_att==0){
@@ -1563,7 +1563,9 @@ function imageUpload(){
 }	
 
 function uploadImage(){
-	if(imageUploadFalg < 2){
+	if(imageUploadFalg ==1){
+		$(".errorChk").text('ইমেজ আপলোডিং...।');	
+	}else if(imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
 		syncData();	
@@ -1625,13 +1627,17 @@ function saveImageUpload(){
 		}
 				
 		
-		if(imageUploadFalg < 2){
-			$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
-		}else{
-			syncSaveData();
-		}	
-		
 }	
+
+function saveUploadImage(){
+	if(imageUploadFalg ==1){
+		$(".errorChk").text('ইমেজ আপলোডিং...।');	
+	}else if(imageUploadFalg < 2){
+		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
+	}else{
+		syncSaveData();
+	}	
+}
 		
 
 function ruralDataSubmit(){		
@@ -2135,6 +2141,7 @@ function saveUploadPhotoAch(imageURI, imageName) {
 function winAchSave(r) {
 	$(".errorChk").text('');
 	imageUploadFalg +=1;	
+	saveUploadImage()
 	//$(".errorChk").text('Save Image 1 upload Successful. Syncing image 2...');			
 }
 
@@ -2164,6 +2171,7 @@ function saveUploadPhoto2Ach(imageURI, imageName2) {
 function winAchSave2(r) {	
 	$(".errorChk").text('');	
 	imageUploadFalg +=1;
+	saveUploadImage()
 	//$(".errorChk").text('Image 2 upload successfull. Syncing image 3...');		
 }
 
@@ -2193,6 +2201,7 @@ function saveUploadPhoto3Ach(imageURI, imageName3) {
 function winAchSave3(r) {	
 	$(".errorChk").text('');	
 	imageUploadFalg +=1;
+	saveUploadImage()
 	//$(".errorChk").text('Image 3 upload successfull. Syncing image 4 ...');	
 }
 
@@ -2221,7 +2230,8 @@ function saveUploadPhoto4Ach(imageURI, imageName4) {
 
 function winAchSave4(r) {
 	$(".errorChk").text('');
-	imageUploadFalg +=1;		
+	imageUploadFalg +=1;
+	saveUploadImage()		
 	//$(".errorChk").text('Image 4 upload successfull. Syncing image 5 ...');		
 }
 
@@ -2250,7 +2260,8 @@ function saveUploadPhoto5Ach(imageURI, imageName5) {
 
 function winAchSave5(r) {
 	imageUploadFalg +=1;
-	$(".sucChk").text('Image Upload Successfully');	
+	saveUploadImage()
+	//$(".sucChk").text('Image Upload Successfully');	
 	//$(".errorChk").text('Image 5 upload successfull. Syncing Data ...');	
 }
 
