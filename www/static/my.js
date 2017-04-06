@@ -500,7 +500,6 @@ function attendance(){
 	
 	
 function attSubmit(){
-	$("#imageAtt").val("");
 	latitude_att=$("#att_ach_lat").val();
 	longitude_att=$("#att_ach_long").val();
 	imageAtt=$("#imageAtt").val();
@@ -1575,9 +1574,8 @@ function imageUpload(){
 }	
 
 function uploadImage(){
-	alert(imageUploadFalg);
 	if(imageUploadFalg ==1){
-		$(".errorChk").text('ইমেজ ইমেজ আপলোডিং...।');	
+		$(".errorChk").text('ইমেজ আপলোডিং...।');	
 	}else if(imageUploadFalg > 1 && imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
@@ -1644,8 +1642,8 @@ function saveImageUpload(){
 
 function saveUploadImage(){
 	if(imageUploadFalg ==1){
-		$(".errorChk").text('ইমেজ ইমেজ আপলোডিং...।');	
-	}else if(imageUploadFalg < 2){
+		$(".errorChk").text('ইমেজ আপলোডিং...।');	
+	}else if(imageUploadFalg > 1 && imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
 		syncSaveData();
