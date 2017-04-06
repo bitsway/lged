@@ -65,7 +65,7 @@ var apipath="http://a006.yeapps.com/lged/syncmobile_20170401/";
 url ="";
 
 var stuList='';
-//var stuIDList='';
+var stuIDList='';
 var stuCount=1;
 $(document).ready(function(){
 	if (localStorage.synced!='YES'){
@@ -207,8 +207,8 @@ $(document).ready(function(){
 			var i="<tr id='"+stu3Id+"'><td>"+stu3Id+"</td><td>"+stuAP+"</td><td>"+ap+"</td><td>"+'<input style="background-color:#99dfff;" type="button" onclick="stuRemove(\''+stu3Id+'\')" value="X">'+"</td></tr>"
 			
 			//alert(stuList.indexOf(stu3Id) >-1);
-			if( stuList.indexOf(stu3Id) >-1){
-			//if( stuIDList.indexOf(stu3Id) >-1 ){
+			//if( stuList.indexOf(stu3Id) >-1){
+			if( stuIDList.indexOf(stu3Id) >-1 ){
 				$(".errorChk").text("শিক্ষার্থীর আইডি আগে থেকেই আছে");
 			}else{
 				if(stuCount > lcProSt){
@@ -230,11 +230,11 @@ $(document).ready(function(){
 					}else{
 						stuList +="||"+stu3Id+","+stuPre+","+stuPreAbs;
 					}
-					/*if(stuIDList=="" ){
+					if(stuIDList=="" ){
 						stuIDList=stu3Id;
 					}else{
 						stuIDList +="||"+stu3Id;
-					}*/
+					}
 					
 									
 					
@@ -252,31 +252,43 @@ $(document).ready(function(){
 });
 
 function stuRemove(stu3Id){
-	
 	//alert(stu3Id)	
 	$("#"+stu3Id).remove();	
 	stuCount-=1;
+	var listS='';
+	iStrS=stuList.split('||');
+	iLenS=iStrS.length
+	for(i=0;i<iLenS;i++){
+		iStrDS=iStrS[i].split(',');
+		
+		if(iStrDS[0]!=stu3Id){
+			if (listS==''){
+				listS=iStrS[i]
+			}else{
+				listS+='||'+iStrS[i]
+			}	
+		}		
+	}
+	
+	stuList=listS
+	
+	//==========
 	var repl1='';
-	iStr=stuList.split('||');
+	iStr=stuIDList.split('||');
 	iLen=iStr.length
 	for(i=0;i<iLen;i++){
 		iStrD=iStr[i].split(',');
 		
-		if(iStrD[0]==stu3Id){
-			
-		}else{
-			
+		if(iStrD[0]!=stu3Id){
 			if (repl1==''){
 				repl1=iStr[i]
 			}else{
 				repl1+='||'+iStr[i]
 			}	
-			
-			
 		}		
 	}
 	
-	stuList=repl1
+	stuIDList=repl1
 }
 /*function stuRemove(stu3Id){	
 	$("#"+stu3Id).remove();	
@@ -1563,9 +1575,10 @@ function imageUpload(){
 }	
 
 function uploadImage(){
+	alert(imageUploadFalg);
 	if(imageUploadFalg ==1){
-		$(".errorChk").text('ইমেজ আপলোডিং...।');	
-	}else if(imageUploadFalg < 2){
+		$(".errorChk").text('ইমেজ ইমেজ আপলোডিং...।');	
+	}else if(imageUploadFalg > 1 && imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
 		syncData();	
@@ -1631,7 +1644,7 @@ function saveImageUpload(){
 
 function saveUploadImage(){
 	if(imageUploadFalg ==1){
-		$(".errorChk").text('ইমেজ আপলোডিং...।');	
+		$(".errorChk").text('ইমেজ ইমেজ আপলোডিং...।');	
 	}else if(imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
@@ -2289,7 +2302,7 @@ function syncData(){
 		}
 
 function syncData_2(sl){	
-			
+			//alert(stuList);
 			var school_id=$("#school_id").val();
 			//alert(apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+school_id+'&tempText1='+encodeURIComponent(stuList));
 			$.ajax({
