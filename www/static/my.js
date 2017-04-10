@@ -56,10 +56,10 @@ function onError(error) {
 }
 /*********************************/
 //---- online 
-var apipath="http://a006.yeapps.com/lged/syncmobile_20170401/";
+var apipath="http://a006.yeapps.com/lged/syncmobile_20170410/";
 
 //--- local
-//var apipath="http://127.0.0.1:8000/lged/syncmobile_20170401/";
+//var apipath="http://127.0.0.1:8000/lged/syncmobile_20170410/";
 /*********************************/
 
 url ="";
@@ -605,6 +605,55 @@ function attData(){
 }
 
 
+function pro_reports(){
+	
+	//alert(apipath+'provision_reports?cid=LGED&mobile_no='+localStorage.mobile_no+'&mvoID='+localStorage.ffID);
+	$.ajax({
+		type: 'POST',
+		url:apipath+'provision_reports?cid=LGED&mobile_no='+localStorage.mobile_no+'&mvoID='+localStorage.ffID,				   
+		   success: function(result) {
+			getResult=result;
+			if (getResult==''){
+				$(".errorChk").text("Sorry Network not available");
+			}else{			
+				var getResultArray = getResult.split('rdrd');
+				
+				if (getResultArray[0]=='Success'){										
+					assiReports=getResultArray[1].split(',');
+					assiDoneReport=getResultArray[2].split(',');
+							
+				var assList='<ul data-role="listview"  data-inset="true" >';
+				assList+='<li style="margin-bottom:1px;background-color:#ccefff;">School List (DUE)</li>' 			
+				for (i=0;i<assiReports.length;i++){		
+					assListTotal=assiReports[i];
+					assList+='<li class="auto_break" style="margin-bottom:1px;">'+assListTotal+'</li>' 						
+				}
+				assList+='</ul>';
+				
+				$('#proReports').empty();
+				$('#proReports').append(assList).trigger('create');	
+				
+				var assDList='<ul data-role="listview"  data-inset="true" >';
+				assDList+='<li style="margin-bottom:1px;background-color:#ccefff">School List (Completed)</li>' 	
+				for (i=0;i<assiDoneReport.length;i++){		
+					assListDoneTotal=assiDoneReport[i];
+					assDList+='<li class="auto_break" style="margin-bottom:1px;">'+assListDoneTotal+'</li>' 						
+				}
+				assDList+='</ul>';
+										
+				$('#proDoneReports').empty();
+				$('#proDoneReports').append(assDList).trigger('create');	
+					
+				}
+			   
+		   }
+		}
+		
+	});
+	
+	url="#reports_page";					
+	$.mobile.navigate(url);
+}
 
 function ruralData1Next(){	
 				
@@ -939,12 +988,14 @@ function ruralData3Next(){
 		var education_allowance_receipt=$("#education_allowance_receipt").val();		
 		var education_allowance_receipt_date=$("#education_allowance_receipt_date").val();
 		var education_allowance_not_receipt=$("#education_allowance_not_receipt").val();
+		var eduAllowOther=$("#eduAllowOther").val();
 		var education_allowance_receipt_delay=$("#education_allowance_receipt_delay").val();
 		
 		//var education_aundan_receipt=$("input[name='education_aundan_receipt']:checked").val();
 		var education_aundan_receipt=$("#education_aundan_receipt").val();
 		var education_aundan_receipt_date=$("#education_aundan_receipt_date").val();
 		var education_aundan_not_receipt=$("#education_aundan_not_receipt").val();
+		var eduAundanOther=$("#eduAundanOther").val();
 		var education_aundan_receipt_delay=$("#education_aundan_receipt_delay").val();
 		var school_necessary_rec_conservation_trank=$("#school_necessary_rec_conservation_trank").val();
 		
@@ -1027,7 +1078,9 @@ function ruralData3Next(){
 		}else if(education_allowance_receipt==1 && education_allowance_receipt_date==""){
 			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা হ্যাঁ হলে, প্রাপ্তির তারিখ");
 		}else if(education_allowance_receipt==2 && education_allowance_not_receipt==0){
-			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা না হলে, কেন পাওয়া যায়নি ");	
+			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা না হলে, কেন পাওয়া যায়নি ");
+		}else if(education_allowance_not_receipt==3 && eduAllowOther==""){
+			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা না হলে, কেন পাওয়া যায়নি উল্লেখ করুন");	
 		/*}else if(education_allowance_receipt_delay==""){
 			$(".errorChk").text("অবশ্যক- শিক্ষা ভাতা প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে");*/
 		}else if(education_allowance_receipt_delay.length >2 ){
@@ -1042,6 +1095,8 @@ function ruralData3Next(){
 			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান হ্যাঁ হলে, প্রাপ্তির তারিখ");	
 		}else if(education_aundan_receipt==2 && education_aundan_not_receipt==0 ){
 			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান না হলে, কেন পাওয়া যায়নি ");	
+		}else if(education_aundan_not_receipt==3 && eduAundanOther==""){
+			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান না হলে, কেন পাওয়া যায়নি উল্লেখ করুন");	
 		/*}else if(education_aundan_receipt_delay=="" ){
 			$(".errorChk").text("অবশ্যক- শিক্ষা অনুদান প্রাপ্তিতে বিলম্ব হয়ে থাকলে কতদিন বিলম্ব হয়েছে");	*/
 		}else if(education_aundan_receipt_delay.length >2 ){
@@ -1168,7 +1223,7 @@ function ruralData3Next(){
 		
 		}else{
 					
-			ruralData3="||education_allowance_receipt="+education_allowance_receipt+"||education_allowance_receipt_date="+education_allowance_receipt_date+"||education_allowance_not_receipt="+education_allowance_not_receipt+"||education_allowance_receipt_delay="+education_allowance_receipt_delay+"||education_aundan_receipt="+education_aundan_receipt+"||education_aundan_receipt_date="+education_aundan_receipt_date+"||education_aundan_not_receipt="+education_aundan_not_receipt+"||education_aundan_receipt_delay="+education_aundan_receipt_delay+"||school_necessary_rec_conservation_trank="+school_necessary_rec_conservation_trank+"||cmc_metting_log_register="+cmc_metting_log_register+"||cash_register="+cash_register+"||school_visit_register="+school_visit_register+"||school_aundan_expense_cashMemo="+school_aundan_expense_cashMemo+"||check_book="+check_book+"||previous_semister_ACF="+previous_semister_ACF+"||student_attendence_register="+student_attendence_register+"||repair_expense="+repair_expense+"||repair_expense_others="+repair_expense_others+"||expense_prove="+expense_prove+"||chief_executive_officer_month1="+chief_executive_officer_month1+"||chief_executive_officer_month2="+chief_executive_officer_month2+"||chief_executive_officer_month3="+chief_executive_officer_month3+"||chief_executive_officer_month4="+chief_executive_officer_month4+"||chief_executive_officer_month5="+chief_executive_officer_month5+"||chief_executive_officer_month6="+chief_executive_officer_month6+"||up_education_officer_month1="+up_education_officer_month1+"||up_education_officer_month2="+up_education_officer_month2+"||up_education_officer_month3="+up_education_officer_month3+"||up_education_officer_month4="+up_education_officer_month4+"||up_education_officer_month5="+up_education_officer_month5+"||up_education_officer_month6="+up_education_officer_month6+"||training_co_ordinator_month1="+training_co_ordinator_month1+"||training_co_ordinator_month2="+training_co_ordinator_month2+"||training_co_ordinator_month3="+training_co_ordinator_month3+"||training_co_ordinator_month4="+training_co_ordinator_month4+"||training_co_ordinator_month5="+training_co_ordinator_month5+"||training_co_ordinator_month6="+training_co_ordinator_month6+"||assistant_up_education_officer_month1="+assistant_up_education_officer_month1+"||assistant_up_education_officer_month2="+assistant_up_education_officer_month2+"||assistant_up_education_officer_month3="+assistant_up_education_officer_month3+"||assistant_up_education_officer_month4="+assistant_up_education_officer_month4+"||assistant_up_education_officer_month5="+assistant_up_education_officer_month5+"||assistant_up_education_officer_month6="+assistant_up_education_officer_month6+"||assistant_teacher_month1="+assistant_teacher_month1+"||assistant_teacher_month2="+assistant_teacher_month2+"||assistant_teacher_month3="+assistant_teacher_month3+"||assistant_teacher_month4="+assistant_teacher_month4+"||assistant_teacher_month5="+assistant_teacher_month5+"||assistant_teacher_month6="+assistant_teacher_month6+"||mobile_pool_teacher_month1="+mobile_pool_teacher_month1+"||mobile_pool_teacher_month2="+mobile_pool_teacher_month2+"||mobile_pool_teacher_month3="+mobile_pool_teacher_month3+"||mobile_pool_teacher_month4="+mobile_pool_teacher_month4+"||mobile_pool_teacher_month5="+mobile_pool_teacher_month5+"||mobile_pool_teacher_month6="+mobile_pool_teacher_month6+"||others_month1="+others_month1+"||others_month2="+others_month2+"||others_month3="+others_month3+"||others_month4="+others_month4+"||others_month5="+others_month5+"||others_month6="+others_month6;
+			ruralData3="||education_allowance_receipt="+education_allowance_receipt+"||education_allowance_receipt_date="+education_allowance_receipt_date+"||education_allowance_not_receipt="+education_allowance_not_receipt+"||eduAllowOther="+eduAllowOther+"||education_allowance_receipt_delay="+education_allowance_receipt_delay+"||education_aundan_receipt="+education_aundan_receipt+"||education_aundan_receipt_date="+education_aundan_receipt_date+"||education_aundan_not_receipt="+education_aundan_not_receipt+"||eduAundanOther="+eduAundanOther+"||education_aundan_receipt_delay="+education_aundan_receipt_delay+"||school_necessary_rec_conservation_trank="+school_necessary_rec_conservation_trank+"||cmc_metting_log_register="+cmc_metting_log_register+"||cash_register="+cash_register+"||school_visit_register="+school_visit_register+"||school_aundan_expense_cashMemo="+school_aundan_expense_cashMemo+"||check_book="+check_book+"||previous_semister_ACF="+previous_semister_ACF+"||student_attendence_register="+student_attendence_register+"||repair_expense="+repair_expense+"||repair_expense_others="+repair_expense_others+"||expense_prove="+expense_prove+"||chief_executive_officer_month1="+chief_executive_officer_month1+"||chief_executive_officer_month2="+chief_executive_officer_month2+"||chief_executive_officer_month3="+chief_executive_officer_month3+"||chief_executive_officer_month4="+chief_executive_officer_month4+"||chief_executive_officer_month5="+chief_executive_officer_month5+"||chief_executive_officer_month6="+chief_executive_officer_month6+"||up_education_officer_month1="+up_education_officer_month1+"||up_education_officer_month2="+up_education_officer_month2+"||up_education_officer_month3="+up_education_officer_month3+"||up_education_officer_month4="+up_education_officer_month4+"||up_education_officer_month5="+up_education_officer_month5+"||up_education_officer_month6="+up_education_officer_month6+"||training_co_ordinator_month1="+training_co_ordinator_month1+"||training_co_ordinator_month2="+training_co_ordinator_month2+"||training_co_ordinator_month3="+training_co_ordinator_month3+"||training_co_ordinator_month4="+training_co_ordinator_month4+"||training_co_ordinator_month5="+training_co_ordinator_month5+"||training_co_ordinator_month6="+training_co_ordinator_month6+"||assistant_up_education_officer_month1="+assistant_up_education_officer_month1+"||assistant_up_education_officer_month2="+assistant_up_education_officer_month2+"||assistant_up_education_officer_month3="+assistant_up_education_officer_month3+"||assistant_up_education_officer_month4="+assistant_up_education_officer_month4+"||assistant_up_education_officer_month5="+assistant_up_education_officer_month5+"||assistant_up_education_officer_month6="+assistant_up_education_officer_month6+"||assistant_teacher_month1="+assistant_teacher_month1+"||assistant_teacher_month2="+assistant_teacher_month2+"||assistant_teacher_month3="+assistant_teacher_month3+"||assistant_teacher_month4="+assistant_teacher_month4+"||assistant_teacher_month5="+assistant_teacher_month5+"||assistant_teacher_month6="+assistant_teacher_month6+"||mobile_pool_teacher_month1="+mobile_pool_teacher_month1+"||mobile_pool_teacher_month2="+mobile_pool_teacher_month2+"||mobile_pool_teacher_month3="+mobile_pool_teacher_month3+"||mobile_pool_teacher_month4="+mobile_pool_teacher_month4+"||mobile_pool_teacher_month5="+mobile_pool_teacher_month5+"||mobile_pool_teacher_month6="+mobile_pool_teacher_month6+"||others_month1="+others_month1+"||others_month2="+others_month2+"||others_month3="+others_month3+"||others_month4="+others_month4+"||others_month5="+others_month5+"||others_month6="+others_month6;
 			
 			//alert(ruralData3);
 				
@@ -1186,12 +1241,15 @@ function education_allowance(){
 	if(education_allowance_receipt==1){
 		$('#education_allowance_receipt_date').show();
 		$('#edu_allow_not_receipt').hide();
+		$('#eduAllowOther').hide();
 	}else if(education_allowance_receipt==2){
 		$('#edu_allow_not_receipt').show();
 		$('#education_allowance_receipt_date').hide();
+		$('#eduAllowOther').hide();
 	}else{
 		$('#education_allowance_receipt_date').hide();
-		$('#edu_allow_not_receipt').hide();;		
+		$('#edu_allow_not_receipt').hide();;	
+		//$('#eduAllowOther').hide();	
 	}
 }
 
@@ -1200,15 +1258,34 @@ function edu_aundan(){
 	if(education_aundan_receipt==1){
 		$('#education_aundan_receipt_date').show();
 		$('#edu_anudan_not_receipt').hide();
+		$('#eduAundanOther').hide();
 	}else if(education_aundan_receipt==2){
 		$('#edu_anudan_not_receipt').show();
 		$('#education_aundan_receipt_date').hide();
+		$('#eduAundanOther').hide();		
 	}else{
 		$('#education_aundan_receipt_date').hide();
 		$('#edu_anudan_not_receipt').hide();		
 	}
 }
 
+function eduAllow(){
+	var education_allowance_not_receipt=$("#education_allowance_not_receipt").val();
+	if(education_allowance_not_receipt==3){
+		$('#eduAllowOther').show();
+	}else{
+		$('#eduAllowOther').hide();
+	}	
+}
+
+function eduAundan(){
+	var education_aundan_not_receipt=$("#education_aundan_not_receipt").val();
+	if(education_aundan_not_receipt==3){
+		$('#eduAundanOther').show();
+	}else{
+		$('#eduAundanOther').hide();
+	}	
+}
 
 function expense_repair(){
 	var repair_expense4=$("input[name='repair_expense4']:checked").val();
@@ -1575,7 +1652,7 @@ function imageUpload(){
 
 function uploadImage(){
 	if(imageUploadFalg ==1){
-		$(".errorChk").text('ইমেজ আপলোডিং...।');	
+		$(".errorChk").text('ইমেজ আপলোডিং...');	
 	}else if(imageUploadFalg > 1 && imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
@@ -1642,7 +1719,7 @@ function saveImageUpload(){
 
 function saveUploadImage(){
 	if(imageUploadFalg ==1){
-		$(".errorChk").text('ইমেজ আপলোডিং...।');	
+		$(".errorChk").text('ইমেজ আপলোডিং...');	
 	}else if(imageUploadFalg > 1 && imageUploadFalg < 2){
 		$(".errorChk").text('ইমেজ আপলোড ফেইল্ড ।');		
 	}else{
@@ -1778,6 +1855,7 @@ function syncSaveData(){
 	}
 
 function saveDataSubmit_2(sl){	
+
 		//alert(apipath+'rural_data_submit_2?&sl='+sl+'&school_id='+schoolIDS+'&tempText1='+encodeURIComponent(saveStuListS));
 		$.ajax({
 				type: 'POST',
@@ -1799,7 +1877,7 @@ function saveDataSubmit_2(sl){
 						}
 					}
 					localStorage.sSchList=rSsch;
-					review();					
+										
 						
 					$("#image1").val("");
 					$("#image2").val("");	
@@ -1807,11 +1885,13 @@ function saveDataSubmit_2(sl){
 					$("#image4").val("");
 					$("#image5").val("");						
 					//school remove from list	
-					var schoolList=$("#school_list").val();
+					
 					var totalSchoolList=localStorage.schoolList.split('||');
 					var sch_list_new='';	
 					for (i=0;i<totalSchoolList.length;i++){
-						if(i!=schoolList){			
+						scId=totalSchoolList[i].split(',');
+						
+						if(scId[1]!=schoolIDS){			
 							if (sch_list_new==""){
 								sch_list_new=totalSchoolList[i]
 							}else{
@@ -1820,6 +1900,8 @@ function saveDataSubmit_2(sl){
 						}
 					}
 					localStorage.schoolList=sch_list_new;
+					
+					review();
 						
 						$(".sucChk").text('সফল ভাবে সম্পন হয়েছে');
 						$(".errorChk").text("");
@@ -2364,6 +2446,8 @@ function syncData_2(sl){
 							$("#cmc_selebrate_exchange_gardagin").val(0);
 							$("#previous_semister_school_anudan_time").val(0);
 							
+							$("#eduAllowOther").val("");
+							$("#eduAundanOther").val("");
 							$("#education_allowance_receipt").val(0);		
 							$("#education_allowance_receipt_date").val("");
 							$("#education_allowance_not_receipt").val(0);
@@ -2628,6 +2712,8 @@ function ruralDataSave(){
 			$("#cmc_selebrate_exchange_gardagin").val(0);
 			$("#previous_semister_school_anudan_time").val(0);
 			
+			$("#eduAllowOther").val("");
+			$("#eduAundanOther").val("");
 			$("#education_allowance_receipt").val(0);		
 			$("#education_allowance_receipt_date").val("");
 			$("#education_allowance_not_receipt").val(0);
@@ -2813,6 +2899,8 @@ function ruralDataSave(){
 			$("#cmc_selebrate_exchange_gardagin").val(0);
 			$("#previous_semister_school_anudan_time").val(0);
 			
+			$("#eduAllowOther").val("");
+			$("#eduAundanOther").val("");
 			$("#education_allowance_receipt").val(0);		
 			$("#education_allowance_receipt_date").val("");
 			$("#education_allowance_not_receipt").val(0);
@@ -2992,7 +3080,7 @@ function blank_data() {
 ruralData2="||school_installation_year=0||school_address_house=0||school_address_vill=0||school_address_unionName=0||distance_school_near_GPS=0||school_signboard=0||international_flag_size=0||school_house=0||school_house_others=0||school_type=0||school_type_others=0||singing_national_anthem_before_cls_start=0||classroom_aayaton_hight=0||classroom_aayaton_width=0||huse_light_air=0||classroom_windows=0||classroom_doors=0||arsenic_free_water=0||water_distance=0||student_useable_toilate=0||benefit_electricity_cls=0||seat_arragement_cls=0||cls_usable_board_draster=0||all_student_textbook=0||all_student_pen=0||management_school_calender=0||management_school_cls_routin=0||cmc_metting_previous_semister=0||last_cmc_metting_present_cmc_member=0||cmc_selebrate_exchange_gardagin=0||previous_semister_school_anudan_time=0";	
 
 
-ruralData3="||education_allowance_receipt=0||education_allowance_receipt_date=0||education_allowance_not_receipt=0||education_allowance_receipt_delay=0||education_aundan_receipt=0||education_aundan_receipt_date=||education_aundan_not_receipt=0||education_aundan_receipt_delay=0||school_necessary_rec_conservation_trank=0||cmc_metting_log_register=0||cash_register=0||school_visit_register=0||school_aundan_expense_cashMemo=0||check_book=0||previous_semister_ACF=0||student_attendence_register=0||repair_expense=0||repair_expense_others=0||expense_prove=0||chief_executive_officer_month1=0||chief_executive_officer_month2=0||chief_executive_officer_month3=0||chief_executive_officer_month4=0||chief_executive_officer_month5=0||chief_executive_officer_month6=0||up_education_officer_month1=0||up_education_officer_month2=0||up_education_officer_month3=0||up_education_officer_month4=0||up_education_officer_month5=0||up_education_officer_month6=0||training_co_ordinator_month1=0||training_co_ordinator_month2=0||training_co_ordinator_month3=0||training_co_ordinator_month4=0||training_co_ordinator_month5=0||training_co_ordinator_month6=0||assistant_up_education_officer_month1=0||assistant_up_education_officer_month2=0||assistant_up_education_officer_month3=0||assistant_up_education_officer_month4=0||assistant_up_education_officer_month5=0||assistant_up_education_officer_month6=0||assistant_teacher_month1=0||assistant_teacher_month2=0||assistant_teacher_month3=0||assistant_teacher_month4=0||assistant_teacher_month5=0||assistant_teacher_month6=0||mobile_pool_teacher_month1=0||mobile_pool_teacher_month2=0||mobile_pool_teacher_month3=0||mobile_pool_teacher_month4=0||mobile_pool_teacher_month5=0||mobile_pool_teacher_month6=0||others_month1=0||others_month2=0||others_month3=0||others_month4=0||others_month5=0||others_month6=0";
+ruralData3="||education_allowance_receipt=0||education_allowance_receipt_date=0||education_allowance_not_receipt=0||eduAllowOther=0||education_allowance_receipt_delay=0||education_aundan_receipt=0||education_aundan_receipt_date=||education_aundan_not_receipt=0||eduAundanOther=0||education_aundan_receipt_delay=0||school_necessary_rec_conservation_trank=0||cmc_metting_log_register=0||cash_register=0||school_visit_register=0||school_aundan_expense_cashMemo=0||check_book=0||previous_semister_ACF=0||student_attendence_register=0||repair_expense=0||repair_expense_others=0||expense_prove=0||chief_executive_officer_month1=0||chief_executive_officer_month2=0||chief_executive_officer_month3=0||chief_executive_officer_month4=0||chief_executive_officer_month5=0||chief_executive_officer_month6=0||up_education_officer_month1=0||up_education_officer_month2=0||up_education_officer_month3=0||up_education_officer_month4=0||up_education_officer_month5=0||up_education_officer_month6=0||training_co_ordinator_month1=0||training_co_ordinator_month2=0||training_co_ordinator_month3=0||training_co_ordinator_month4=0||training_co_ordinator_month5=0||training_co_ordinator_month6=0||assistant_up_education_officer_month1=0||assistant_up_education_officer_month2=0||assistant_up_education_officer_month3=0||assistant_up_education_officer_month4=0||assistant_up_education_officer_month5=0||assistant_up_education_officer_month6=0||assistant_teacher_month1=0||assistant_teacher_month2=0||assistant_teacher_month3=0||assistant_teacher_month4=0||assistant_teacher_month5=0||assistant_teacher_month6=0||mobile_pool_teacher_month1=0||mobile_pool_teacher_month2=0||mobile_pool_teacher_month3=0||mobile_pool_teacher_month4=0||mobile_pool_teacher_month5=0||mobile_pool_teacher_month6=0||others_month1=0||others_month2=0||others_month3=0||others_month4=0||others_month5=0||others_month6=0";
 
 ruralData4="||v_LC_reg_tea_pre=0||reg_tea_inst_tea_name=0||reg_tea_inst_tea_type=0||tea_rep_appo_office=0||v_dis_id_card_tea=0||dis_tea_house_to_sch=0||pre_semr_schl_tea_trai=0||cls_atte_stu=0||v_day_atte_stu_boys=0||v_day_atte_stu_girls=0||v_day_atte_stu_total=0||pre_sem_total_sch=0";
 

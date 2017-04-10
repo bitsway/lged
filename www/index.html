@@ -37,6 +37,9 @@
 				$('#education_aundan_receipt_date').hide();
 				$('#education_aundan_not_receipt').hide();
 				
+				$('#eduAllowOther').hide();
+				$('#eduAundanOther').hide();
+				
 				$("#stuPresent").hide();
 				$("#stuAbsent").hide();
 				
@@ -96,10 +99,11 @@
             <br />
             <label style="color:#666; font-size:11px;">School List Updated On:</label>
             <div id="suncTime" style="color:#666; font-size:10px;"></div>
+            
            
     </div>
     
-    <div data-theme="c" data-role="footer" data-position="fixed" style="font-size:12px;background-color:#CCC;" align="center" >m-Reporting 20170406</div><!------/footer  -->
+    <div data-theme="c" data-role="footer" data-position="fixed" style="font-size:15px;background-color:#A9F3D0; height:20px; padding-top:2px;" align="center" >Version 10-04-2017</div><!------/footer  -->
     
     <div data-role="panel" id="leftpanel" data-position="left" data-display="overlay" data-theme="c">
         <div align="center"></div>
@@ -177,6 +181,8 @@
   <a data-role="button" onclick="attendance()" href="#" data-transition="slide" class="ui-btn ui-mini" >Attendance</a>
   <br /><br />
   <a data-role="button" id="btn_renew" onClick="review();" class="ui-btn ui-mini" >Review</a>
+  <br /><br />
+  <a data-role="button" id="btn_reports" onClick="pro_reports();" class="ui-btn ui-mini" >Reports</a>
         <div class="errorChk"></div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
@@ -229,6 +235,22 @@
   <br /><br />
         <div class="errorChk"></div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </div>
+</div>
+
+
+<div data-role="page" data-theme="c" id="reports_page" style="overflow:scroll;">
+    <div data-theme="c" data-role="header" data-position="fixed" >
+        <a data-role="button" onClick="menuClick();" data-icon="bullets" data-iconpos="left" class="ui-btn ui-shadow ui-corner-all ui-icon-bullets " ><img src="menu.png" /></a>
+        <a data-role="button" onclick="backClick();" data-rel="back" class="ui-btn-right" data-transition="slide"><img src="back.png" /></a>
+        <h3>ROSC</h3>
+    </div>
+    
+    <div data-role="content" > 
+    	<div class="errorChk"></div>    	  
+         <div id="proReports" ></div>
+         <div id="proDoneReports"></div>
+     <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
 </div>
                 
@@ -694,13 +716,14 @@
                             <td><input type="date" id="education_allowance_receipt_date" name="education_allowance_receipt_date" /></td>
                             <td>
                             <div id="edu_allow_not_receipt">
-                            	<select name="education_allowance_not_receipt" id="education_allowance_not_receipt" data-native-menu="false"  >
+                            	<select name="education_allowance_not_receipt" id="education_allowance_not_receipt" data-native-menu="false"  onchange="eduAllow()">
                                 	<option value="0" selected="selected">-</option> 
                                     <option value="1" class="auto_break">১-স্থানীয় সোনালী ব্যাংকে টাকা আসেনি</option>
                                     <option value="2" class="auto_break">২-স্থানীয় সোনালী ব্যাংক যথাসময়ে টাকা বিতরণ করেনি</option>
                                     <option value="3" >৩-অন্যান্য </option>
                                  </select>
                              </div>
+                             <input type="text" id="eduAllowOther" name="eduAllowOther" />
                             </td>
                             <td>
                             	<input type="number" id="education_allowance_receipt_delay" name="education_allowance_receipt_delay" />
@@ -720,13 +743,14 @@
                             </td>
                             <td>
                             <div id="edu_anudan_not_receipt">
-                            	<select name="education_aundan_not_receipt" id="education_aundan_not_receipt" data-native-menu="false" >
+                            	<select name="education_aundan_not_receipt" id="education_aundan_not_receipt" data-native-menu="false" onchange="eduAundan()">
                                 	<option value="0" selected="selected">-</option> 
                                     <option value="1" class="auto_break">১-স্থানীয় সোনালী ব্যাংকে টাকা আসেনি</option>
                                     <option value="2" class="auto_break">২-স্থানীয় সোনালী ব্যাংক যথাসময়ে টাকা বিতরণ করেনি</option>
                                     <option value="3">৩- অন্যান্য </option>
                                  </select>
                             </div>
+                            <input type="text" id="eduAundanOther" name="eduAundanOther" />
                             </td>
                             <td>
                             	<input type="number" id="education_aundan_receipt_delay" name="education_aundan_receipt_delay" />
